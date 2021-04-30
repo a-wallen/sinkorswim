@@ -12,12 +12,14 @@ var TaskModel = /** @class */ (function () {
     TaskModel.prototype.createSchema = function () {
         this.schema = new Mongoose.Schema({
             listId: Number,
-            tasks: [{
+            tasks: [
+                {
                     description: String,
                     taskId: Number,
                     shared: String,
                     status: String
-                }]
+                }
+            ]
         }, { collection: 'tasks' });
     };
     TaskModel.prototype.createModel = function () {
@@ -30,10 +32,21 @@ var TaskModel = /** @class */ (function () {
         });
     };
     TaskModel.prototype.retrieveTasksCount = function (response, filter) {
-        var query = this.model.find(filter).select('tasks').count();
-        query.exec(function (err, numberOfTasks) {
-            console.log('number of tasks: ' + numberOfTasks);
-            response.json(numberOfTasks);
+        var query = this.model.findOne(filter);
+        query.exec(function (err, innerTaskList) {
+            if (err) {
+                console.log('error retrieving count');
+            }
+            else {
+                if (innerTaskList == null) {
+                    response.status(404);
+                    response.json('{count: -1}');
+                }
+                else {
+                    console.log('number of tasks: ' + innerTaskList.tasks.length);
+                    response.json('{count:' + innerTaskList.tasks.length + '}');
+                }
+            }
         });
     };
     return TaskModel;

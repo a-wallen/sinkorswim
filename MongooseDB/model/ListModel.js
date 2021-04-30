@@ -28,6 +28,14 @@ var ListModel = /** @class */ (function () {
             response.json(itemArray);
         });
     };
+    ListModel.prototype.retrieveListCount = function (response) {
+        console.log("retrieve List Count ...");
+        var query = this.model.estimatedDocumentCount();
+        query.exec(function (err, numberOfLists) {
+            console.log("numberOfLists: " + numberOfLists);
+            response.json(numberOfLists);
+        });
+    };
     return ListModel;
 }());
 exports.ListModel = ListModel;

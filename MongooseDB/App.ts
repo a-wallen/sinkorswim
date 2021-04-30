@@ -9,7 +9,7 @@ import * as bodyParser from 'body-parser';
 
 import {ListModel} from './model/ListModel';
 import {TaskModel} from './model/TaskModel';
-//import {DataAccess} from './DataAccess';
+import {DataAccess} from './DataAccess';
 
 // Creates and configures an ExpressJS web server.
 class App {
