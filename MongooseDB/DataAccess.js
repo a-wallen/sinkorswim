@@ -2,6 +2,7 @@
 exports.__esModule = true;
 exports.DataAccess = void 0;
 var Mongoose = require("mongoose");
+var mongoose_1 = require("./configs/mongoose");
 var DataAccess = /** @class */ (function () {
     function DataAccess() {
         DataAccess.connect();
@@ -16,7 +17,7 @@ var DataAccess = /** @class */ (function () {
         this.mongooseInstance = Mongoose.connect(this.DB_CONNECTION_STRING);
         return this.mongooseInstance;
     };
-    DataAccess.DB_CONNECTION_STRING = 'mongodb+srv://soscluster.0r8jh.mongodb.net/dev?authSource=admin';
+    DataAccess.DB_CONNECTION_STRING = mongoose_1["default"].host;
     return DataAccess;
 }());
 exports.DataAccess = DataAccess;

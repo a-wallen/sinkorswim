@@ -1,9 +1,10 @@
 import Mongoose = require("mongoose");
+import MONGO from "./configs/mongoose";
 
 class DataAccess {
     static mongooseInstance: any;
     static mongooseConnection: Mongoose.Connection;
-    static DB_CONNECTION_STRING:string = 'mongodb+srv://soscluster.0r8jh.mongodb.net/dev?authSource=admin';
+    static DB_CONNECTION_STRING:string = MONGO.host;
     
     constructor () {
         DataAccess.connect();
