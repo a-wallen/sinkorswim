@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+exports.App = void 0;
 //import * as path from 'path';
 var express = require("express");
 var logger = require("morgan");
@@ -10,7 +11,6 @@ var bodyParser = require("body-parser");
 //var Q = require('q');
 var ListModel_1 = require("./model/ListModel");
 var TaskModel_1 = require("./model/TaskModel");
-//import {DataAccess} from './DataAccess';
 // Creates and configures an ExpressJS web server.
 var App = /** @class */ (function () {
     //Run configuration methods on the Express instance.
@@ -53,6 +53,25 @@ var App = /** @class */ (function () {
             var id = req.params.listId;
             console.log('Query single list with id: ' + id);
             _this.Tasks.retrieveTasksDetails(res, { listId: id });
+        });
+        router.get('/app/helloworld', function (req, res) {
+            console.log("Hello, World!");
+            var data = { listId: "Hello",
+                tasks: [{
+                        description: "Hello",
+                        taskId: 1,
+                        shared: "Hello",
+                        status: "Hello"
+                    }] };
+            // this.[CollectionName].model.method( param1, param.... () => {
+            // })
+            _this.Tasks.model.create([data], function (err) {
+                if (err) {
+                    console.log('object creation failed');
+                }
+            });
+            _this.Tasks.model.save();
+            res.send(data);
         });
         router.get('/app/list/', function (req, res) {
             console.log('Query All list');

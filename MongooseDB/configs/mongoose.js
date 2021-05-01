@@ -12,7 +12,7 @@ var ADMINS = {
 var dev_usr = 'wallenstephe';
 var MONGO_USERNAME = process.env.MONGO_USERNAME || dev_usr;
 var MONGO_PASSWORD = process.env.MONGO_PASSWORD || ADMINS[dev_usr];
-var MONGO_HOST = process.env.MONGO_URL || 'mongodb+srv://soscluster.0r8jh.mongodb.net/dev?authSource=admin';
+var MONGO_HOST_URL = process.env.MONGO_URL || 'mongodb+srv://soscluster.0r8jh.mongodb.net/dev?authSource=admin';
 var MONGO_OPTIONS = {
     useUnifiedTopology: true,
     useNewUrlParser: true,
@@ -23,7 +23,7 @@ var MONGO_OPTIONS = {
     retryWrites: false
 };
 var MONGO = {
-    host: MONGO_HOST,
+    host: MONGO_HOST_URL,
     username: MONGO_USERNAME,
     password: MONGO_PASSWORD,
     options: MONGO_OPTIONS

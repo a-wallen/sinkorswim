@@ -6,6 +6,7 @@ import * as url from 'url';
 import * as bodyParser from 'body-parser';
 import {App} from './App';
 import { Mongoose } from 'mongoose';
+import { DataAccess } from './DataAccess';
 
 let server: any = new App().expressApp;
 server.listen(8080);

@@ -10,6 +10,7 @@ import * as bodyParser from 'body-parser';
 import {ListModel} from './model/ListModel';
 import {TaskModel} from './model/TaskModel';
 import {DataAccess} from './DataAccess';
+import { ITaskModel } from './interfaces/ITaskModel';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -63,6 +64,27 @@ class App {
         var id = req.params.listId;
         console.log('Query single list with id: ' + id);
         this.Tasks.retrieveTasksDetails(res, {listId: id});
+    });
+
+    router.get('/app/helloworld', (req, res) => {
+        console.log("Hello, World!");
+        let data = {listId: "Hello",
+          tasks: [ {
+              description: "Hello",
+              taskId: 1,
+              shared: "Hello",
+              status: "Hello",
+        }]};
+        // this.[CollectionName].model.method( param1, param.... () => {
+
+        // })
+        this.Tasks.model.create([data], (err) => {
+          if (err) {
+              console.log('object creation failed');
+          }
+        });
+        this.Tasks.model.save();
+        res.send(data);
     });
 
     router.get('/app/list/', (req, res) => {

@@ -15,7 +15,7 @@ let dev_usr: string = 'wallenstephe';
 
 const MONGO_USERNAME = process.env.MONGO_USERNAME || dev_usr;
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || ADMINS[dev_usr];
-const MONGO_HOST = process.env.MONGO_URL || 'mongodb+srv://soscluster.0r8jh.mongodb.net/dev?authSource=admin';
+const MONGO_HOST_URL = process.env.MONGO_URL || 'mongodb+srv://soscluster.0r8jh.mongodb.net/dev?authSource=admin';
 const MONGO_OPTIONS = {
 	useUnifiedTopology: true,
 	useNewUrlParser: true,
@@ -27,7 +27,7 @@ const MONGO_OPTIONS = {
 };
 
 const MONGO = {
-	host: MONGO_HOST,
+	host: MONGO_HOST_URL,
 	username: MONGO_USERNAME,
 	password: MONGO_PASSWORD,
 	options: MONGO_OPTIONS,
