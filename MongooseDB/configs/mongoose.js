@@ -10,17 +10,13 @@ var ADMINS = {
 };
 // SET YOUR THIS VARIABLE TO YOUR USERNAME
 var dev_usr = 'wallenstephe';
+var uri = "mongodb://" + dev_usr + ':' + ADMINS[dev_usr] + "@soscluster-shard-00-00.0r8jh.mongodb.net:27017,soscluster-shard-00-01.0r8jh.mongodb.net:27017,soscluster-shard-00-02.0r8jh.mongodb.net:27017/test?ssl=true&replicaSet=atlas-hmsogf-shard-0&authSource=admin&retryWrites=true&w=majority";
 var MONGO_USERNAME = process.env.MONGO_USERNAME || dev_usr;
 var MONGO_PASSWORD = process.env.MONGO_PASSWORD || ADMINS[dev_usr];
-var MONGO_HOST_URL = process.env.MONGO_URL || 'mongodb+srv://soscluster.0r8jh.mongodb.net/dev?authSource=admin';
+var MONGO_HOST_URL = process.env.MONGO_URL || uri;
 var MONGO_OPTIONS = {
     useUnifiedTopology: true,
-    useNewUrlParser: true,
-    socketTimeoutMS: 30000,
-    keepAlive: true,
-    poolSize: 50,
-    autoIndex: false,
-    retryWrites: false
+    useNewUrlParser: true
 };
 var MONGO = {
     host: MONGO_HOST_URL,

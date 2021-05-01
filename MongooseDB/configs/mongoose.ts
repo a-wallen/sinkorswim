@@ -11,19 +11,15 @@ const ADMINS = {
 };
 
 // SET YOUR THIS VARIABLE TO YOUR USERNAME
-let dev_usr: string = 'wallenstephe';
+const dev_usr: string = 'wallenstephe';
+const uri = "mongodb://"+dev_usr +':'+ADMINS[dev_usr]+"@soscluster-shard-00-00.0r8jh.mongodb.net:27017,soscluster-shard-00-01.0r8jh.mongodb.net:27017,soscluster-shard-00-02.0r8jh.mongodb.net:27017/test?ssl=true&replicaSet=atlas-hmsogf-shard-0&authSource=admin&retryWrites=true&w=majority";
 
 const MONGO_USERNAME = process.env.MONGO_USERNAME || dev_usr;
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || ADMINS[dev_usr];
-const MONGO_HOST_URL = process.env.MONGO_URL || 'mongodb+srv://soscluster.0r8jh.mongodb.net/dev?authSource=admin';
+const MONGO_HOST_URL = process.env.MONGO_URL || uri;
 const MONGO_OPTIONS = {
 	useUnifiedTopology: true,
 	useNewUrlParser: true,
-	socketTimeoutMS: 30000,
-	keepAlive: true,
-	poolSize: 50,
-	autoIndex: false,
-	retryWrites: false
 };
 
 const MONGO = {

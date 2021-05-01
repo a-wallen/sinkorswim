@@ -67,8 +67,7 @@ class App {
     });
 
     router.get('/app/helloworld', (req, res) => {
-        console.log("Hello, World!");
-        let data = {listId: "Hello",
+        let data = {listId: 123,
           tasks: [ {
               description: "Hello",
               taskId: 1,
@@ -80,10 +79,9 @@ class App {
         // })
         this.Tasks.model.create([data], (err) => {
           if (err) {
-              console.log('object creation failed');
+              console.log(err);
           }
         });
-        this.Tasks.model.save();
         res.send(data);
     });
 

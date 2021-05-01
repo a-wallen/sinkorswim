@@ -55,8 +55,7 @@ var App = /** @class */ (function () {
             _this.Tasks.retrieveTasksDetails(res, { listId: id });
         });
         router.get('/app/helloworld', function (req, res) {
-            console.log("Hello, World!");
-            var data = { listId: "Hello",
+            var data = { listId: 123,
                 tasks: [{
                         description: "Hello",
                         taskId: 1,
@@ -67,10 +66,9 @@ var App = /** @class */ (function () {
             // })
             _this.Tasks.model.create([data], function (err) {
                 if (err) {
-                    console.log('object creation failed');
+                    console.log(err);
                 }
             });
-            _this.Tasks.model.save();
             res.send(data);
         });
         router.get('/app/list/', function (req, res) {
