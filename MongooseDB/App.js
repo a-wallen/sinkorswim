@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+exports.App = void 0;
 //import * as path from 'path';
 var express = require("express");
 var logger = require("morgan");
@@ -10,7 +11,6 @@ var bodyParser = require("body-parser");
 //var Q = require('q');
 var ListModel_1 = require("./model/ListModel");
 var TaskModel_1 = require("./model/TaskModel");
-//import {DataAccess} from './DataAccess';
 // Creates and configures an ExpressJS web server.
 var App = /** @class */ (function () {
     //Run configuration methods on the Express instance.
