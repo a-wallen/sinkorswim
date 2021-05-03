@@ -10,12 +10,20 @@ import * as bodyParser from "body-parser";
 import { ListModel } from "./model/ListModel";
 import { TaskModel } from "./model/TaskModel";
 import { DataAccess } from "./DataAccess";
+import { UserModel } from "./model/UserModel";
+import { PostModel } from "./model/PostModel";
+import { CommentModel } from "./model/CommentModel";
 
 // Creates and configures an ExpressJS web server.
 class App {
   // ref to Express instance
   public expressApp: express.Application;
   public Lists: ListModel;
+  //added these
+  public User: UserModel;
+  public Post: PostModel;
+  public Comment: CommentModel;
+
   public Tasks: TaskModel;
   public idGenerator: number;
 
@@ -27,6 +35,11 @@ class App {
     this.idGenerator = 102;
     this.Lists = new ListModel();
     this.Tasks = new TaskModel();
+
+    //added these
+    this.User = new UserModel();
+    this.Comment = new CommentModel();
+    this.Post = new PostModel();
   }
 
   // Configure Express middleware.
@@ -44,8 +57,7 @@ class App {
     //What do we need
     /*
     Create User
-    Get User ID
-    Get User Progile
+    Get User 
     Authentication
     Create Post
     Get Post
@@ -59,10 +71,80 @@ class App {
     
     */
 
-    router.get("/app/list/:listId/count", (req, res) => {
-      var id = req.params.listId;
-      console.log("Query single list with id: " + id);
-      this.Tasks.retrieveTasksCount(res, { listId: id });
+    //Create User
+    router.post("/app/user/", (req, res) => {
+      console.log(req.body);
+      var jsonObj = req.body;
+      //jsonObj.listId = this.idGenerator;
+      this.User.model.create([jsonObj], (err) => {
+        if (err) {
+          console.log("object creation failed");
+        }
+      });
+
+      //TODO - Potentially change this later? Use Mongo built in?
+      res.send(this.idGenerator.toString());
+      this.idGenerator++;
+    });
+
+    //Get User Details
+    router.get("/app/user/:userId/", (req, res) => {
+      var id = req.params.userId;
+      console.log("Query User with id: " + id);
+      this.User.retrieveUserDetails(res, { userId: id });
+    });
+
+    //create a post
+    router.post("/app/post/", (req, res) => {
+      console.log(req.body);
+      var jsonObj = req.body;
+      //jsonObj.listId = this.idGenerator;
+      this.Post.model.create([jsonObj], (err) => {
+        if (err) {
+          console.log("object creation failed");
+        }
+      });
+
+      //TODO - Potentially change this later? Use Mongo built in?
+      res.send(this.idGenerator.toString());
+      this.idGenerator++;
+    });
+
+    //get post
+    router.get("/app/post/:postId/", (req, res) => {
+      var id = req.params.postId;
+      console.log("Query post with id: " + id);
+      this.Post.retrievePost(res, { postId: id });
+    });
+
+    //get all comments on a post
+    router.get("/app/post/comments/:postId/", (req, res) => {
+      var id = req.params.postId;
+      console.log("Query all comments with post id: " + id);
+      this.Post.getAllComments(res, { postId: id });
+    });
+
+    //create a comment
+    router.post("/app/comment/", (req, res) => {
+      console.log(req.body);
+      var jsonObj = req.body;
+      //jsonObj.listId = this.idGenerator;
+      this.Comment.model.create([jsonObj], (err) => {
+        if (err) {
+          console.log("object creation failed");
+        }
+      });
+
+      //TODO - Potentially change this later? Use Mongo built in?
+      res.send(this.idGenerator.toString());
+      this.idGenerator++;
+    });
+
+    //get post
+    router.get("/app/comment/:commentId/", (req, res) => {
+      var id = req.params.commentId;
+      console.log("Query comment with id: " + id);
+      this.Comment.retrieveComment(res, { commentId: id });
     });
 
     router.post("/app/list/", (req, res) => {

@@ -1,6 +1,6 @@
 import Mongoose = require("mongoose");
-import {DataAccess} from './../DataAccess';
-import {IPostModel} from '../interfaces/IPostModel';
+import { DataAccess } from "./../DataAccess";
+import { IPostModel } from "../interfaces/IPostModel";
 import { STATUS_CODES } from "http";
 
 let mongooseConnection = DataAccess.mongooseConnection;
@@ -21,61 +21,70 @@ delete: delete a post (done by a user or when a user account gets deleted?)
 */
 
 class PostModel {
-    public schema:any;
-    public innerSchema:any;
-    public model:any;
+  public schema: any;
+  public innerSchema: any;
+  public model: any;
 
-    public constructor() {
-        this.createSchema();
-        this.createModel();
-    }
+  public constructor() {
+    this.createSchema();
+    this.createModel();
+  }
 
-    public createSchema(): void {
-        this.schema = new Mongoose.Schema(
-            {
-                postId: Number,
-                userId: Number,
-                feedId: Number, 
-                totalVotes: Number, 
-                caption: String,
-                timePost: Date,
-                imageUrl: String,
-                reports: Number
-            }, {collection: 'posts'}
-        );
-    }
+  public createSchema(): void {
+    this.schema = new Mongoose.Schema(
+      {
+        postId: Number,
+        userId: Number,
+        feedId: Number,
+        totalVotes: Number,
+        caption: String,
+        timePost: Date,
+        imageUrl: String,
+        reports: Number,
+      },
+      { collection: "posts" }
+    );
+  }
 
-    public createModel(): void {
-        this.model = mongooseConnection.model<IPostModel>("Post", this.schema);
-    }
-    
-    // get a post (via post id)
-    public retrievePost(response: any, filter:Object) {
-        var query = this.model.findOne(filter); 
-        query.exec( (err, post) => {
-            response.json(post); 
-        }); 
-    }
+  public createModel(): void {
+    this.model = mongooseConnection.model<IPostModel>("Post", this.schema);
+  }
 
-    // vote on a post (via post id)
-    public voteForPost(response: any, voteValue: Number, filter:Object) {
-        var query = this.model.findOne(filter);
-        query.totalVotes += voteValue; 
-        query.save();
-    }
+  // get a post (via post id)
+  public retrievePost(response: any, filter: Object) {
+    var query = this.model.findOne(filter);
+    query.exec((err, post) => {
+      response.json(post);
+    });
+  }
 
-    // delete a post (via post id) 
-    // TODO: update user info by number of posts 
-    public deletePost(response: any, filter:Object) {
-        var query = this.model.deleteOne(filter); 
-        query.exec( (err, post) => {
-            if (err) {
-                console.log("Error deleting post."); 
-            }
-        }); 
-    }
+  // vote on a post (via post id)
+  public voteForPost(response: any, voteValue: Number, filter: Object) {
+    var query = this.model.findOne(filter);
+    query.totalVotes += voteValue;
+    query.save();
+  }
 
-    /*
+  // delete a post (via post id)
+  // TODO: update user info by number of posts
+  public deletePost(response: any, filter: Object) {
+    var query = this.model.deleteOne(filter);
+    query.exec((err, post) => {
+      if (err) {
+        console.log("Error deleting post.");
+      }
+    });
+  }
+
+  // get all comments (via post id)
+  public getAllComments(response: any, filter: Object) {
+    var query = this.model.find({ postId: { filter: "postId" } });
+    query.exec((err, post) => {
+      response.json(post);
+    });
+  }
+
+  /*
     public retrieveTasksDetails(response:any, filter:Object) {
         var query = this.model.findOne(filter);
         query.exec( (err, itemArray) => {
@@ -102,6 +111,5 @@ class PostModel {
         });
     }
     */
-
 }
-export {PostModel};
+export { PostModel };
