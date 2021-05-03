@@ -20,7 +20,7 @@ var UserModel = /** @class */ (function () {
     }
     UserModel.prototype.createSchema = function () {
         this.schema = new Mongoose.Schema({
-            userId: Number,
+            userId: String,
             userName: String,
             password: String,
             email: String,

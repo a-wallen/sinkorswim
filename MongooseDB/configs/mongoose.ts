@@ -1,13 +1,12 @@
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
-
 const ADMINS = {
-	'wallenstephe' : 'WMNUeZvP8zL8VIP0',
-	'ssheikh' : '0sZvkQhy40adwPxk',
-	'outcaltk' : '4NwFs2HdBRPIMbyY',
-	'larsonlaura' : 'nX0oolK6ReQ5X9Eu'
+  wallenstephe: "WMNUeZvP8zL8VIP0",
+  ssheikh: "0sZvkQhy40adwPxk",
+  outcaltk: "4NwFs2HdBRPIMbyY",
+  larsonlaura: "nX0oolK6ReQ5X9Eu",
 };
 
 // SET YOUR THIS VARIABLE TO YOUR USERNAME

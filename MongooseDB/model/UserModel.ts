@@ -2,7 +2,6 @@ import Mongoose = require("mongoose");
 import {DataAccess} from './../DataAccess';
 import {IUserModel} from '../interfaces/IUserModel';
 import { STATUS_CODES } from "http";
-import { ITaskModel } from "../interfaces/ITaskModel";
 
 let mongooseConnection = DataAccess.mongooseConnection;
 let mongooseObj = DataAccess.mongooseInstance;
@@ -30,7 +29,7 @@ class UserModel {
     public createSchema(): void {
         this.schema = new Mongoose.Schema(
             {
-                userId: Number,
+                userId: String,
                 userName: String, 
                 password: String,
                 email: String, 

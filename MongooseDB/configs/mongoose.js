@@ -3,10 +3,10 @@ exports.__esModule = true;
 var dotenv = require("dotenv");
 dotenv.config();
 var ADMINS = {
-    'wallenstephe': 'WMNUeZvP8zL8VIP0',
-    'ssheikh': '0sZvkQhy40adwPxk',
-    'outcaltk': '4NwFs2HdBRPIMbyY',
-    'larsonlaura': 'nX0oolK6ReQ5X9Eu'
+    wallenstephe: "WMNUeZvP8zL8VIP0",
+    ssheikh: "0sZvkQhy40adwPxk",
+    outcaltk: "4NwFs2HdBRPIMbyY",
+    larsonlaura: "nX0oolK6ReQ5X9Eu"
 };
 // SET YOUR THIS VARIABLE TO YOUR USERNAME
 var dev_usr = 'wallenstephe';
