@@ -33,14 +33,14 @@ class PostModel {
   public createSchema(): void {
     this.schema = new Mongoose.Schema(
       {
-        postId: String,
-        userId: String,
-        feedId: String,
-        totalVotes: Number,
-        caption: String,
-        timePost: Date,
-        imageUrl: String,
-        reports: Number,
+        postId: {type: String, required: true, index: {unique: true}},
+        userId: {type: String, required: true}, 
+        feedId: {type: String, required: true}, 
+        totalVotes: {type: Number, required: true}, 
+        imageUrl: {type: String, required: true}, // FIXME: how to format
+        caption: {type: String}, 
+        timePost: {type: Date}, 
+        reports: {type: Number},
       },
       { collection: "posts" }
     );

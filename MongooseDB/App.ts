@@ -7,9 +7,8 @@ import * as bodyParser from "body-parser";
 //var MongoClient = require('mongodb').MongoClient;
 //var Q = require('q');
 
-import { ListModel } from "./model/ListModel";
-import { TaskModel } from "./model/TaskModel";
 import { DataAccess } from "./DataAccess";
+import { FeedModel } from "./model/FeedModel";
 import { UserModel } from "./model/UserModel";
 import { PostModel } from "./model/PostModel";
 import { CommentModel } from "./model/CommentModel";
@@ -18,13 +17,12 @@ import { CommentModel } from "./model/CommentModel";
 class App {
   // ref to Express instance
   public expressApp: express.Application;
-  public Lists: ListModel;
   //added these
   public User: UserModel;
   public Post: PostModel;
   public Comment: CommentModel;
+  public Feed: FeedModel;
 
-  public Tasks: TaskModel;
   public idGenerator: number;
 
   //Run configuration methods on the Express instance.
@@ -33,13 +31,12 @@ class App {
     this.middleware();
     this.routes();
     this.idGenerator = 102;
-    this.Lists = new ListModel();
-    this.Tasks = new TaskModel();
-
+  
     //added these
     this.User = new UserModel();
     this.Comment = new CommentModel();
     this.Post = new PostModel();
+    this.Feed = new FeedModel();
   }
 
   // Configure Express middleware.
@@ -147,52 +144,19 @@ class App {
       this.Comment.retrieveComment(res, { commentId: id });
     });
 
-    router.post("/app/list/", (req, res) => {
-      console.log(req.body);
-      var jsonObj = req.body;
-      //jsonObj.listId = this.idGenerator;
-      this.Lists.model.create([jsonObj], (err) => {
-        if (err) {
-          console.log("object creation failed");
-        }
-      });
-      res.send(this.idGenerator.toString());
-      this.idGenerator++;
+    router.get("/app/feed/:feedId/", (req, res) => {
+      var f_id = req.params.feedId;
+      console.log("Query comment with id: " + f_id);
+      this.Feed.retrieveFeed(res, {feedId: f_id}, 1);
     });
 
-    router.get("/app/list/:listId", (req, res) => {
-      var id = req.params.listId;
-      console.log("Query single list with id: " + id);
-      this.Tasks.retrieveTasksDetails(res, { listId: id });
-    });
-
-    router.get('/app/helloworld', (req, res) => {
-        let data = {listId: 123,
-          tasks: [ {
-              description: "Hello",
-              taskId: 1,
-              shared: "Hello",
-              status: "Hello",
-        }]};
-        // this.[CollectionName].model.method( param1, param.... () => {
-
-        // })
-        this.Tasks.model.create([data], (err) => {
-          if (err) {
-              console.log(err);
-          }
-        });
-        res.send(data);
-    });
-
-    router.get('/app/list/', (req, res) => {
-        console.log('Query All list');
-        this.Lists.retrieveAllLists(res);
-    });
-
-    router.get("/app/listcount", (req, res) => {
-      console.log("Query the number of list elements in db");
-      this.Lists.retrieveListCount(res);
+    router.get("/app/feed/:start:end", (req, res) => {
+      var start:number = parseInt(req.params.start);
+      var end:number = parseInt(req.params.end);
+      console.log(start);
+      console.log(end);
+      this.Feed.retrieveFeed(res, {}, (end-start));
+      res.send(res);
     });
 
     this.expressApp.use("/", router);
