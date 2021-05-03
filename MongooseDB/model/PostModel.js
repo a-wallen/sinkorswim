@@ -33,7 +33,7 @@ var PostModel = /** @class */ (function () {
             timePost: Date,
             imageUrl: String,
             reports: Number
-        }, { collection: 'posts' });
+        }, { collection: "posts" });
     };
     PostModel.prototype.createModel = function () {
         this.model = mongooseConnection.model("Post", this.schema);
@@ -51,14 +51,21 @@ var PostModel = /** @class */ (function () {
         query.totalVotes += voteValue;
         query.save();
     };
-    // delete a post (via post id) 
-    // TODO: update user info by number of posts 
+    // delete a post (via post id)
+    // TODO: update user info by number of posts
     PostModel.prototype.deletePost = function (response, filter) {
         var query = this.model.deleteOne(filter);
         query.exec(function (err, post) {
             if (err) {
                 console.log("Error deleting post.");
             }
+        });
+    };
+    // get all comments (via post id)
+    PostModel.prototype.getAllComments = function (response, filter) {
+        var query = this.model.find({ postId: { filter: "postId" } });
+        query.exec(function (err, post) {
+            response.json(post);
         });
     };
     return PostModel;
