@@ -42,8 +42,8 @@ var FeedModel = /** @class */ (function () {
     // get a post (via post id)
     FeedModel.prototype.retrieveFeed = function (response, filter, limit) {
         var query = this.model.find(filter).limit(limit);
-        query.exec(function (err, post) {
-            response.json(post);
+        query.exec(function (err, feed) {
+            response.json(feed);
         });
     };
     // delete a post (via post id)

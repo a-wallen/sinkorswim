@@ -54,9 +54,9 @@ class FeedModel {
   // get a post (via post id)
   public retrieveFeed(response: any, filter: Object, limit:number) {
     var query = this.model.find(filter).limit(limit);
-    query.exec((err, post) => {
-      response.json(post);
-    });
+    query.exec((err, feed) => {
+      response.json(feed);
+    }); 
   }
 
   // delete a post (via post id)

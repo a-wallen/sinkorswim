@@ -74,16 +74,14 @@ var App = /** @class */ (function () {
         //create a post
         router.post("/app/post/", function (req, res) {
             console.log(req.body);
-            var jsonObj = req.body;
-            //jsonObj.listId = this.idGenerator;
-            _this.Post.model.create([jsonObj], function (err) {
+            _this.Post.model.create([req.body], function (err) {
                 if (err) {
-                    console.log("object creation failed");
+                    console.log(err);
                 }
             });
-            //TODO - Potentially change this later? Use Mongo built in?
-            res.send(_this.idGenerator.toString());
-            _this.idGenerator++;
+            // //TODO - Potentially change this later? Use Mongo built in?
+            // res.send(this.idGenerator.toString());
+            // this.idGenerator++;
         });
         //get post
         router.get("/app/post/:postId/", function (req, res) {
@@ -117,6 +115,14 @@ var App = /** @class */ (function () {
             console.log("Query comment with id: " + id);
             _this.Comment.retrieveComment(res, { commentId: id });
         });
+        router.post("/app/feed/", function (req, res) {
+            console.log(req.body);
+            _this.Feed.model.create(req.body, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        });
         router.get("/app/feed/:feedId/", function (req, res) {
             var f_id = req.params.feedId;
             console.log("Query comment with id: " + f_id);
@@ -125,10 +131,7 @@ var App = /** @class */ (function () {
         router.get("/app/feed/:start:end", function (req, res) {
             var start = parseInt(req.params.start);
             var end = parseInt(req.params.end);
-            console.log(start);
-            console.log(end);
             _this.Feed.retrieveFeed(res, {}, (end - start));
-            res.send(res);
         });
         this.expressApp.use("/", router);
         this.expressApp.use("/app/json/", express.static(__dirname + "/app/json"));

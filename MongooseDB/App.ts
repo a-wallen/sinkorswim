@@ -94,17 +94,12 @@ class App {
     //create a post
     router.post("/app/post/", (req, res) => {
       console.log(req.body);
-      var jsonObj = req.body;
-      //jsonObj.listId = this.idGenerator;
-      this.Post.model.create([jsonObj], (err) => {
-        if (err) {
-          console.log("object creation failed");
-        }
+      this.Post.model.create([req.body], (err) => {
+        if (err) { console.log(err); }
       });
-
-      //TODO - Potentially change this later? Use Mongo built in?
-      res.send(this.idGenerator.toString());
-      this.idGenerator++;
+      // //TODO - Potentially change this later? Use Mongo built in?
+      // res.send(this.idGenerator.toString());
+      // this.idGenerator++;
     });
 
     //get post
@@ -144,6 +139,15 @@ class App {
       this.Comment.retrieveComment(res, { commentId: id });
     });
 
+    router.post("/app/feed/", (req, res) => {
+      console.log(req.body);
+      this.Feed.model.create(req.body, (err) => {
+        if(err) {
+          console.log(err);
+        }
+      })
+    })
+
     router.get("/app/feed/:feedId/", (req, res) => {
       var f_id = req.params.feedId;
       console.log("Query comment with id: " + f_id);
@@ -153,10 +157,7 @@ class App {
     router.get("/app/feed/:start:end", (req, res) => {
       var start:number = parseInt(req.params.start);
       var end:number = parseInt(req.params.end);
-      console.log(start);
-      console.log(end);
       this.Feed.retrieveFeed(res, {}, (end-start));
-      res.send(res);
     });
 
     this.expressApp.use("/", router);
