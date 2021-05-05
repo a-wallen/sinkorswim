@@ -87,6 +87,9 @@ class App {
 
     router.delete("/app/users/", (req, res) => {
       this.User.deleteUser(res, req.body);
+      if(res.json["deletedCount"] == 0) return;
+      this.Post.deletePost(res, req.body);
+      this.Comment.deleteComment(res, req.body);
     });
 
     // #################################################

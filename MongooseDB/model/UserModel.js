@@ -35,29 +35,21 @@ var UserModel = /** @class */ (function () {
         this.model = mongooseConnection.model("User", this.schema);
     };
     UserModel.prototype.createUser = function (response, userObject) {
-        var mongoQuery = this.model.create(userObject, function () { });
-        mongoQuery.exec(function (err, result) {
-            response.json(err ? err : result);
-        });
+        this.model.insertMany(userObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     // get user details
     UserModel.prototype.retrieveUserDetails = function (response, filter) {
-        var mongoQuery = this.model.findOne(filter);
-        mongoQuery.exec(function (err, result) {
-            response.json(err ? err : result);
-        });
+        this.mongoExecHandler(response, this.model.findOne(filter));
     };
     UserModel.prototype.updateUserDetails = function (response, userObject) {
-        var mongoQuery = this.model.update({ userId: userObject["userId"] }, userObject);
-        mongoQuery.exec(function (err, result) {
-            response.json(err ? err : result);
-        });
+        console.log(userObject);
+        this.model.replaceOne({ userId: userObject["userId"] }, userObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     UserModel.prototype.deleteUser = function (response, userObject) {
-        var mongoQuery = this.model["delete"](userObject);
-        mongoQuery.exec(function (err, result) {
-            response.json(err ? err : result);
-        });
+        this.model.deleteOne(userObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     UserModel.prototype.mongoExecHandler = function (response, mongoQuery) {
         mongoQuery.exec(function (err, result) {

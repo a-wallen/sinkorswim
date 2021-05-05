@@ -49,32 +49,27 @@ class UserModel {
     }
     
     public createUser(response, userObject: IUserModel){
-        var mongoQuery = this.model.create(userObject, () => {});
-        mongoQuery.exec((err, result) => {
-            response.json(err ? err : result);
-        });
+        this.model.insertMany(userObject)
+            .then((result) => { response.json(result); })
+            .catch((err) => { response.json(err) });
     }
 
     // get user details
     public retrieveUserDetails(response:any, filter:Object) {
-        var mongoQuery = this.model.findOne(filter);
-        mongoQuery.exec( (err, result) => {
-            response.json(err ? err : result);
-        });
+        this.mongoExecHandler(response, this.model.findOne(filter));
     }
 
     public updateUserDetails(response:any, userObject:IUserModel){
-        var mongoQuery = this.model.update({userId: userObject["userId"]}, userObject);
-        mongoQuery.exec( (err, result) => {
-            response.json(err ? err : result);
-        });
+        console.log(userObject);
+        this.model.replaceOne({userId: userObject["userId"]}, userObject)
+            .then((result) => { response.json(result); })
+            .catch((err) => { response.json(err); });
     }
 
     public deleteUser(response:any, userObject:IUserModel){
-        var mongoQuery = this.model.delete(userObject);
-        mongoQuery.exec( (err, result) => {
-            response.json(err ? err : result);
-        });
+        this.model.deleteOne(userObject)
+            .then((result) => { response.json(result); })
+            .catch((err) => { response.json(err) });
     }
 
     private mongoExecHandler(response:any, mongoQuery){
