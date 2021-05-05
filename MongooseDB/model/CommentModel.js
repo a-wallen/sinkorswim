@@ -32,6 +32,8 @@ var CommentModel = /** @class */ (function () {
         this.model = mongooseConnection.model("Comments", this.schema);
     };
     CommentModel.prototype.createComment = function (response, commentObject) {
+        this.model.insertMany(commentObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     // view a comment 
     CommentModel.prototype.retrieveComments = function (response, filter) {

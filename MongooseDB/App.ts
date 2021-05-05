@@ -71,6 +71,7 @@ class App {
     // #################################################
     // ##############  USERS METHODS    ################
     // #################################################
+    
     //Create User
     router.post("/app/users/", (req, res) => {
       this.User.createUser(res, req.body as IUserModel);

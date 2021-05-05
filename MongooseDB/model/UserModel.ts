@@ -60,14 +60,14 @@ class UserModel {
     }
 
     public updateUserDetails(response:any, userObject:IUserModel){
-        console.log(userObject);
         this.model.replaceOne({userId: userObject["userId"]}, userObject)
             .then((result) => { response.json(result); })
             .catch((err) => { response.json(err); });
     }
 
     public deleteUser(response:any, userObject:IUserModel){
-        this.model.deleteOne(userObject)
+        console.log(userObject);
+        this.model.deleteOne({userId: userObject["userId"]})
             .then((result) => { response.json(result); })
             .catch((err) => { response.json(err) });
     }

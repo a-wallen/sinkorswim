@@ -43,12 +43,12 @@ var UserModel = /** @class */ (function () {
         this.mongoExecHandler(response, this.model.findOne(filter));
     };
     UserModel.prototype.updateUserDetails = function (response, userObject) {
-        console.log(userObject);
         this.model.replaceOne({ userId: userObject["userId"] }, userObject)
             .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     UserModel.prototype.deleteUser = function (response, userObject) {
-        this.model.deleteOne(userObject)
+        console.log(userObject);
+        this.model.deleteOne({ userId: userObject["userId"] })
             .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     UserModel.prototype.mongoExecHandler = function (response, mongoQuery) {
