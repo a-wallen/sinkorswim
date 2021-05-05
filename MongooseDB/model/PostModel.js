@@ -47,10 +47,12 @@ var PostModel = /** @class */ (function () {
         });
     };
     // vote on a post (via post id)
-    PostModel.prototype.voteForPost = function (response, voteValue, filter) {
-        var query = this.model.findOne(filter);
-        query.totalVotes += voteValue;
-        query.save();
+    PostModel.prototype.voteForPost = function (response, filter) {
+        var query = this.model.updateOne({ postId: filter["postId"] }, { totalVotes: filter["totalVotes"] + 1 });
+        query.exec(function (err, post) {
+            if (err)
+                console.log("Error voting for a post.");
+        });
     };
     // delete a post (via post id)
     PostModel.prototype.deletePost = function (response, filter) {
@@ -62,8 +64,8 @@ var PostModel = /** @class */ (function () {
         });
     };
     // update a post via caption 
-    PostModel.prototype.updatePost = function (response, filter) {
-        var query = this.model.updateOne(filter, { "caption": { caption: String } });
+    PostModel.prototype.updatePost = function (filter) {
+        var query = this.model.updateOne({ postId: filter["postId"] }, { caption: filter["caption"] });
         query.exec(function (err) {
             if (err)
                 console.log("Error updating post");

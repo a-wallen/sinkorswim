@@ -95,7 +95,8 @@ var App = /** @class */ (function () {
         router.put("/app/post/:postId/", function (req, res) {
             var id = req.params.postId;
             console.log("Updating a post with an id of: " + id);
-            _this.Post.updatePost(res, { postId: id });
+            _this.Post.updatePost(req.body);
+            res.statusCode = 500;
         });
         // delete a post
         router["delete"]("/app/post/:postId/", function (req, res) {

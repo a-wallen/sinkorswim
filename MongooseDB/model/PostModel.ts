@@ -60,10 +60,12 @@ class PostModel {
   }
 
   // vote on a post (via post id)
-  public voteForPost(response: any, voteValue: Number, filter: Object) {
-    var query = this.model.findOne(filter);
-    query.totalVotes += voteValue;
-    query.save();
+  public voteForPost(response: any, filter: Object) {
+    var query = this.model.updateOne({ postId: filter["postId"] }, { totalVotes: filter["totalVotes"] + 1 });
+    query.exec((err, post) => {
+      if (err) 
+        console.log("Error voting for a post."); 
+    });
   }
 
   // delete a post (via post id)
@@ -77,8 +79,8 @@ class PostModel {
   }
 
   // update a post via caption 
-  public updatePost(response: any, filter: Object) {
-    var query = this.model.updateOne(filter, { "caption" : { caption: String } })
+  public updatePost(filter: Object) {
+    var query = this.model.updateOne({ postId: filter["postId"] }, { caption: filter["caption"]})
     query.exec((err) => {
       if (err) 
         console.log("Error updating post"); 

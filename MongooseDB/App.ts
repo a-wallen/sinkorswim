@@ -118,7 +118,8 @@ class App {
     router.put("/app/post/:postId/", (req, res) => {
       var id = req.params.postId; 
       console.log("Updating a post with an id of: " + id);
-      this.Post.updatePost(res, { postId: id });
+      this.Post.updatePost(req.body);
+      res.statusCode = 500; 
     });
 
     // delete a post
