@@ -7,6 +7,7 @@ let mongooseConnection = DataAccess.mongooseConnection;
 let mongooseObj = DataAccess.mongooseInstance;
 
 /* Post Methods
+// TODO: update user info by number of posts 
 CRUD
 Create: create a post
 read: getting posts: getting posts by feed, by a user
@@ -66,13 +67,21 @@ class PostModel {
   }
 
   // delete a post (via post id)
-  // TODO: update user info by number of posts
   public deletePost(response: any, filter: Object) {
     var query = this.model.deleteOne(filter);
     query.exec((err, post) => {
       if (err) {
         console.log("Error deleting post.");
       }
+    });
+  }
+
+  // update a post via caption 
+  public updatePost(response: any, filter: Object) {
+    var query = this.model.updateOne(filter, { "caption" : { caption: String } })
+    query.exec((err) => {
+      if (err) 
+        console.log("Error updating post"); 
     });
   }
 

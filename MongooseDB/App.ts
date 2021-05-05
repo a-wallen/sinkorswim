@@ -114,6 +114,20 @@ class App {
       this.Post.retrievePost(res, { postId: id });
     });
 
+    // update a post (caption)
+    router.put("/app/post/:postId/", (req, res) => {
+      var id = req.params.postId; 
+      console.log("Updating a post with an id of: " + id);
+      this.Post.updatePost(res, { postId: id });
+    });
+
+    // delete a post
+    router.delete("/app/post/:postId/", (req, res) => {
+      var id = req.params.postId; 
+      console.log("Deleting a post with id of + " + id); 
+      this.Post.deletePost(res, { postId: id }) 
+    });
+
     //get all comments on a post
     router.get("/app/post/comments/:postId/", (req, res) => {
       var id = req.params.postId;
@@ -138,7 +152,7 @@ class App {
       this.idGenerator++;
     });
 
-    //get post
+    //get comment
     router.get("/app/comment/:commentId/", (req, res) => {
       var id = req.params.commentId;
       console.log("Query comment with id: " + id);
