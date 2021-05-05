@@ -27,7 +27,6 @@ var PostModel = /** @class */ (function () {
         this.schema = new Mongoose.Schema({
             postId: { type: String, required: true, index: { unique: true } },
             userId: { type: String, required: true },
-            feedId: { type: String, required: true },
             totalVotes: { type: Number, required: true },
             imageUrl: { type: String, required: true },
             caption: { type: String },
@@ -38,18 +37,25 @@ var PostModel = /** @class */ (function () {
     PostModel.prototype.createModel = function () {
         this.model = mongooseConnection.model("Post", this.schema);
     };
+    PostModel.prototype.createPost = function (response, postObject) {
+    };
     // get a post (via post id)
-    PostModel.prototype.retrievePost = function (response, filter) {
+    PostModel.prototype.retrievePostDetails = function (response, filter) {
         var query = this.model.findOne(filter);
         query.exec(function (err, post) {
             response.json(post);
         });
     };
-    // vote on a post (via post id)
-    PostModel.prototype.voteForPost = function (response, voteValue, filter) {
-        var query = this.model.findOne(filter);
-        query.totalVotes += voteValue;
-        query.save();
+    PostModel.prototype.getFeed = function (response, filter) {
+    };
+    // This can be done with a update query....
+    // // vote on a post (via post id)
+    // public voteForPost(response: any, voteValue: Number, filter: Object) {
+    //   var query = this.model.findOne(filter);
+    //   query.totalVotes += voteValue;
+    //   query.save();
+    // }
+    PostModel.prototype.updatePostDetails = function (response, postObject) {
     };
     // delete a post (via post id)
     // TODO: update user info by number of posts

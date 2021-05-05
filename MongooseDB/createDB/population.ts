@@ -2,27 +2,23 @@ const fake = require("faker");
 import { UserModel } from '../model/UserModel';
 import { PostModel } from '../model/PostModel';
 import { CommentModel } from '../model/CommentModel';
-import { FeedModel } from '../model/FeedModel';
 
 enum SOSCollections {
 	Users,
 	Posts,
 	Comments,
-	Feeds,
 }
 
 class SOSRemoteCollectionInstance {
 	public Users: UserModel;
 	public Posts: PostModel;
 	public Comments: CommentModel;
-	public Feeds: FeedModel;
 	public RemoteCollectionGroup;
 	constructor() {
 		this.Users = new UserModel();
 		this.Posts = new PostModel();
 		this.Comments = new CommentModel();
-		this.Feeds = new FeedModel();
-		this.RemoteCollectionGroup = [this.Users, this.Posts, this.Comments, this.Feeds];
+		this.RemoteCollectionGroup = [this.Users, this.Posts, this.Comments];
 	}
 }; 
 
@@ -31,7 +27,7 @@ class SOSDocumentGenerator {
 	private collectionGeneratorFunctions: Array<Function>;
 	constructor() {
 		this.remotecollection = new SOSRemoteCollectionInstance();
-		this.collectionGeneratorFunctions = [this.generateRandomUser, this.generateRandomPost, this.generateRandomComment, this.generateRandomFeed];
+		this.collectionGeneratorFunctions = [this.generateRandomUser, this.generateRandomPost, this.generateRandomComment];
 	}
 
 	public generateNDocuments(threshold:number, collection:SOSCollections){
@@ -81,15 +77,7 @@ class SOSDocumentGenerator {
 			timestamp: fake.date.recent(),
 		}
 	}
-
-	private generateRandomFeed(){
-		return {
-			feedId: fake.random.uuid(),
-			date: fake.date.recent(),
-		}
-	}
 }
 
 
 let Generator = new SOSDocumentGenerator();
-Generator.generateNDocuments(10, SOSCollections.Feeds);
