@@ -20,30 +20,26 @@ var CommentModel = /** @class */ (function () {
     }
     CommentModel.prototype.createSchema = function () {
         this.schema = new Mongoose.Schema({
-            commentId: { type: String, required: true },
-            postId: { type: String, required: true },
-            userId: { type: String, required: true },
-            content: { type: String, required: true },
-            timestamp: { type: String, required: true },
-            likes: { type: Number }
+            postId: String,
+            userId: String,
+            commentId: String,
+            content: String,
+            likes: Number,
+            timestamp: Date
         }, { collection: 'comments' });
     };
     CommentModel.prototype.createModel = function () {
         this.model = mongooseConnection.model("Comments", this.schema);
     };
-    CommentModel.prototype.createComment = function (response, commentObject) {
-    };
     // view a comment 
-    CommentModel.prototype.retrieveComments = function (response, filter) {
-        var query = this.model.find(filter);
+    CommentModel.prototype.retrieveComment = function (response, filter) {
+        var query = this.model.findOne(filter);
         query.exec(function (err, comment) {
             if (err) {
                 console.log('Error retrieving comment.');
             }
             response.json(comment);
         });
-    };
-    CommentModel.prototype.updateComment = function (response, commentObject) {
     };
     // delete a comment 
     CommentModel.prototype.deleteComment = function (response, filter) {

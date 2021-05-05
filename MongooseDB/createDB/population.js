@@ -4,18 +4,21 @@ var fake = require("faker");
 var UserModel_1 = require("../model/UserModel");
 var PostModel_1 = require("../model/PostModel");
 var CommentModel_1 = require("../model/CommentModel");
+var FeedModel_1 = require("../model/FeedModel");
 var SOSCollections;
 (function (SOSCollections) {
     SOSCollections[SOSCollections["Users"] = 0] = "Users";
     SOSCollections[SOSCollections["Posts"] = 1] = "Posts";
     SOSCollections[SOSCollections["Comments"] = 2] = "Comments";
+    SOSCollections[SOSCollections["Feeds"] = 3] = "Feeds";
 })(SOSCollections || (SOSCollections = {}));
 var SOSRemoteCollectionInstance = /** @class */ (function () {
     function SOSRemoteCollectionInstance() {
         this.Users = new UserModel_1.UserModel();
         this.Posts = new PostModel_1.PostModel();
         this.Comments = new CommentModel_1.CommentModel();
-        this.RemoteCollectionGroup = [this.Users, this.Posts, this.Comments];
+        this.Feeds = new FeedModel_1.FeedModel();
+        this.RemoteCollectionGroup = [this.Users, this.Posts, this.Comments, this.Feeds];
     }
     return SOSRemoteCollectionInstance;
 }());
@@ -23,7 +26,7 @@ var SOSRemoteCollectionInstance = /** @class */ (function () {
 var SOSDocumentGenerator = /** @class */ (function () {
     function SOSDocumentGenerator() {
         this.remotecollection = new SOSRemoteCollectionInstance();
-        this.collectionGeneratorFunctions = [this.generateRandomUser, this.generateRandomPost, this.generateRandomComment];
+        this.collectionGeneratorFunctions = [this.generateRandomUser, this.generateRandomPost, this.generateRandomComment, this.generateRandomFeed];
     }
     SOSDocumentGenerator.prototype.generateNDocuments = function (threshold, collection) {
         // generate random users
@@ -71,6 +74,13 @@ var SOSDocumentGenerator = /** @class */ (function () {
             timestamp: fake.date.recent()
         };
     };
+    SOSDocumentGenerator.prototype.generateRandomFeed = function () {
+        return {
+            feedId: fake.random.uuid(),
+            date: fake.date.recent()
+        };
+    };
     return SOSDocumentGenerator;
 }());
 var Generator = new SOSDocumentGenerator();
+Generator.generateNDocuments(10, SOSCollections.Feeds);

@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.PostModel = void 0;
+exports.FeedModel = void 0;
 var Mongoose = require("mongoose");
 var DataAccess_1 = require("./../DataAccess");
 var mongooseConnection = DataAccess_1.DataAccess.mongooseConnection;
@@ -18,42 +18,37 @@ feedId that we can use as a query parameter for the post collection
 update: vote, update caption, get reported
 delete: delete a post (done by a user or when a user account gets deleted?)
 */
-var PostModel = /** @class */ (function () {
-    function PostModel() {
+var FeedModel = /** @class */ (function () {
+    function FeedModel() {
         this.createSchema();
         this.createModel();
     }
-    PostModel.prototype.createSchema = function () {
+    FeedModel.prototype.createSchema = function () {
         this.schema = new Mongoose.Schema({
-            postId: { type: String, required: true, index: { unique: true } },
-            userId: { type: String, required: true },
-            feedId: { type: String, required: true },
-            totalVotes: { type: Number, required: true },
-            imageUrl: { type: String, required: true },
-            caption: { type: String },
-            timePost: { type: Date },
-            reports: { type: Number }
-        }, { collection: "posts" });
+            feedId: { type: String, required: true, index: { unique: true } },
+            date: { type: String, required: true }
+        }, { collection: "feeds" });
     };
-    PostModel.prototype.createModel = function () {
-        this.model = mongooseConnection.model("Post", this.schema);
+    FeedModel.prototype.createModel = function () {
+        this.model = mongooseConnection.model("Feed", this.schema);
     };
-    // get a post (via post id)
-    PostModel.prototype.retrievePost = function (response, filter) {
-        var query = this.model.findOne(filter);
-        query.exec(function (err, post) {
-            response.json(post);
+    FeedModel.prototype.createFeed = function (response, feedObj) {
+        var _this = this;
+        var query = this.model.create(feedObj, function (err) { return _this.errorHandler(err); });
+        query.exec(function (feedObj, err) {
+            response.json(feedObj);
         });
     };
-    // vote on a post (via post id)
-    PostModel.prototype.voteForPost = function (response, voteValue, filter) {
-        var query = this.model.findOne(filter);
-        query.totalVotes += voteValue;
-        query.save();
+    // get a post (via post id)
+    FeedModel.prototype.retrieveFeed = function (response, filter, limit) {
+        var query = this.model.find(filter).limit(limit);
+        query.exec(function (err, feed) {
+            response.json(feed);
+        });
     };
     // delete a post (via post id)
     // TODO: update user info by number of posts
-    PostModel.prototype.deletePost = function (response, filter) {
+    FeedModel.prototype.deleteFeed = function (response, filter) {
         var query = this.model.deleteOne(filter);
         query.exec(function (err, post) {
             if (err) {
@@ -62,12 +57,14 @@ var PostModel = /** @class */ (function () {
         });
     };
     // get all comments (via post id)
-    PostModel.prototype.getAllComments = function (response, filter) {
+    FeedModel.prototype.getAllFeeds = function (response, filter) {
         var query = this.model.find({ postId: { filter: "postId" } });
         query.exec(function (err, post) {
             response.json(post);
         });
     };
-    return PostModel;
+    FeedModel.prototype.errorHandler = function (error) {
+    };
+    return FeedModel;
 }());
-exports.PostModel = PostModel;
+exports.FeedModel = FeedModel;

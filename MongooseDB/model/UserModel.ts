@@ -2,8 +2,6 @@ import Mongoose = require("mongoose");
 import {DataAccess} from './../DataAccess';
 import {IUserModel} from '../interfaces/IUserModel';
 import { STATUS_CODES } from "http";
-import HTTP_STATUS from "../data/http_status";
-
 
 let mongooseConnection = DataAccess.mongooseConnection;
 let mongooseObj = DataAccess.mongooseInstance;
@@ -31,14 +29,14 @@ class UserModel {
     public createSchema(): void {
         this.schema = new Mongoose.Schema(
             {
-                userId: { type: String, required: true, index: {unique: true}},
-                userName: { type: String, required: true }, 
-                password: { type: String, required: true },
-                email: { type: String, required: true }, 
-                totalUpvotes: { type: Number },
-                swimmingPosts: { type: Number },
-                sinkingPosts: { type: Number }, 
-                reports: { type: Number }
+                userId: String,
+                userName: String, 
+                password: String,
+                email: String, 
+                totalUpvotes: Number,
+                swimmingPosts: Number,
+                sinkingPosts: Number, 
+                reports: Number
             }, {collection: 'users'}
         );
     }
@@ -48,40 +46,45 @@ class UserModel {
         this.model = mongooseConnection.model<IUserModel>("User", this.schema);
     }
     
-    public createUser(response, userObject: IUserModel){
-        var mongoQuery = this.model.create(userObject, () => {});
-        mongoQuery.exec((err, result) => {
-            response.json(err ? err : result);
-        });
-    }
-
     // get user details
     public retrieveUserDetails(response:any, filter:Object) {
-        var mongoQuery = this.model.findOne(filter);
-        mongoQuery.exec( (err, result) => {
-            response.json(err ? err : result);
-        });
-    }
-
-    public updateUserDetails(response:any, userObject:IUserModel){
-        var mongoQuery = this.model.update({userId: userObject["userId"]}, userObject);
-        mongoQuery.exec( (err, result) => {
-            response.json(err ? err : result);
-        });
-    }
-
-    public deleteUser(response:any, userObject:IUserModel){
-        var mongoQuery = this.model.delete(userObject);
-        mongoQuery.exec( (err, result) => {
-            response.json(err ? err : result);
-        });
-    }
-
-    private mongoExecHandler(response:any, mongoQuery){
-        mongoQuery.exec( (err, result) => {
-            response.json(err ? err : result);
+        var query = this.model.findOne(filter); 
+        query.exec( (err, userDetails) => {
+            response.json(userDetails); 
         }); 
     }
+    
+    public saveUser(userObj:IUserModel){
+        console.log(userObj);
+        //var query = this.model.save(userObj);
+    } 
+    /*
+    public retrieveTasksDetails(response:any, filter:Object) {
+        var query = this.model.findOne(filter);
+        query.exec( (err, itemArray) => {
+            response.json(itemArray); 
+        });
+    }
+
+    public retrieveTasksCount(response:any, filter:Object) {
+        var query = this.model.findOne(filter);
+        query.exec( (err, innerTaskList) => {
+            if (err) {
+                console.log('error retrieving count');
+            }
+            else {
+                if (innerTaskList == null) {
+                    response.status(404);
+                    response.json('{count: -1}');
+                }
+                else {
+                    console.log('number of tasks: ' + innerTaskList.tasks.length);
+                    response.json('{count:' + innerTaskList.tasks.length + '}');
+                }
+            }
+        });
+    }
+    */
 
 }
 export {UserModel};

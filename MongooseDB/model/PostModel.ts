@@ -35,6 +35,7 @@ class PostModel {
       {
         postId: {type: String, required: true, index: {unique: true}},
         userId: {type: String, required: true}, 
+        feedId: {type: String, required: true}, 
         totalVotes: {type: Number, required: true}, 
         imageUrl: {type: String, required: true}, // FIXME: how to format
         caption: {type: String}, 
@@ -49,33 +50,19 @@ class PostModel {
     this.model = mongooseConnection.model<IPostModel>("Post", this.schema);
   }
 
-  public createPost(response:any, postObject:IPostModel){
-      
-  }
-  
-
   // get a post (via post id)
-  public retrievePostDetails(response: any, filter:Object) {
+  public retrievePost(response: any, filter: Object) {
     var query = this.model.findOne(filter);
     query.exec((err, post) => {
       response.json(post);
     });
   }
 
-  public getFeed(response:any, filter:Object){
-
-  }
-
-  // This can be done with a update query....
-  // // vote on a post (via post id)
-  // public voteForPost(response: any, voteValue: Number, filter: Object) {
-  //   var query = this.model.findOne(filter);
-  //   query.totalVotes += voteValue;
-  //   query.save();
-  // }
-
-  public updatePostDetails(response:any, postObject:IPostModel){
-
+  // vote on a post (via post id)
+  public voteForPost(response: any, voteValue: Number, filter: Object) {
+    var query = this.model.findOne(filter);
+    query.totalVotes += voteValue;
+    query.save();
   }
 
   // delete a post (via post id)
@@ -97,6 +84,32 @@ class PostModel {
     });
   }
 
+  /*
+    public retrieveTasksDetails(response:any, filter:Object) {
+        var query = this.model.findOne(filter);
+        query.exec( (err, itemArray) => {
+            response.json(itemArray);
+        });
+    }
 
+    public retrieveTasksCount(response:any, filter:Object) {
+        var query = this.model.findOne(filter);
+        query.exec( (err, innerTaskList) => {
+            if (err) {
+                console.log('error retrieving count');
+            }
+            else {
+                if (innerTaskList == null) {
+                    response.status(404);
+                    response.json('{count: -1}');
+                }
+                else {
+                    console.log('number of tasks: ' + innerTaskList.tasks.length);
+                    response.json('{count:' + innerTaskList.tasks.length + '}');
+                }
+            }
+        });
+    }
+    */
 }
 export { PostModel };

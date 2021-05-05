@@ -1,6 +1,7 @@
 import Mongoose = require("mongoose");
 import {DataAccess} from './../DataAccess';
 import {ICommentModel} from '../interfaces/ICommentModel';
+import { STATUS_CODES } from "http";
 
 let mongooseConnection = DataAccess.mongooseConnection;
 let mongooseObj = DataAccess.mongooseInstance;
@@ -27,12 +28,12 @@ class CommentModel {
     public createSchema(): void {
         this.schema = new Mongoose.Schema(
             {
-                commentId: { type:String, required:true },
-                postId: { type:String, required:true },
-                userId: { type:String, required:true },
-                content: { type:String, required:true },
-                timestamp: { type:String, required:true },
-                likes: { type:Number }
+                postId: String,
+                userId: String,
+                commentId: String,
+                content: String,
+                likes: Number,
+                timestamp: Date
             }, {collection: 'comments'}
         );
     }
@@ -40,24 +41,16 @@ class CommentModel {
     public createModel(): void {
         this.model = mongooseConnection.model<ICommentModel>("Comments", this.schema);
     }
-
-    public createComment(response:any, commentObject:ICommentModel) {
-
-    }
-
+    
     // view a comment 
-    public retrieveComments(response:any, filter:Object) {
-        var query = this.model.find(filter);
+    public retrieveComment(response:any, filter:Object) {
+        var query = this.model.findOne(filter);
         query.exec( (err, comment) => {
             if (err) {
                 console.log('Error retrieving comment.'); 
             }
             response.json(comment);
         });
-    }
-
-    public updateComment(response:any, commentObject:ICommentModel){
-      
     }
 
     // delete a comment 

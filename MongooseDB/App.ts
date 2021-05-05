@@ -6,12 +6,9 @@ import * as logger from "morgan";
 import * as bodyParser from "body-parser";
 //var MongoClient = require('mongodb').MongoClient;
 //var Q = require('q');
+
 import { DataAccess } from "./DataAccess";
-
-import { IUserModel } from "./interfaces/IUserModel";
-import { IPostModel } from "./interfaces/IPostModel"
-import { ICommentModel } from "./interfaces/ICommentModel";
-
+import { FeedModel } from "./model/FeedModel";
 import { UserModel } from "./model/UserModel";
 import { PostModel } from "./model/PostModel";
 import { CommentModel } from "./model/CommentModel";
@@ -24,6 +21,7 @@ class App {
   public User: UserModel;
   public Post: PostModel;
   public Comment: CommentModel;
+  public Feed: FeedModel;
 
   public idGenerator: number;
 
@@ -38,6 +36,7 @@ class App {
     this.User = new UserModel();
     this.Comment = new CommentModel();
     this.Post = new PostModel();
+    this.Feed = new FeedModel();
   }
 
   // Configure Express middleware.
@@ -66,78 +65,102 @@ class App {
     create comment
     update comment
     delete comment
+    
     */
 
-    // #################################################
-    // ##############  USERS METHODS    ################
-    // #################################################
     //Create User
-    router.post("/app/users/", (req, res) => {
-      this.User.createUser(res, req.body as IUserModel);
+    router.post("/app/user/", (req, res) => {
+      console.log(req.body);
+      var jsonObj = req.body;
+      //jsonObj.listId = this.idGenerator;
+      this.User.model.create([jsonObj], (err) => {
+        if (err) {
+          console.log("object creation failed");
+        }
+      });
+
+      //TODO - Potentially change this later? Use Mongo built in?
+      res.send(this.idGenerator.toString());
+      this.idGenerator++;
     });
 
     //Get User Details
-    router.get("/app/users/:userId/", (req, res) => {
-      this.User.retrieveUserDetails(res, { userId: req.params.userId});
+    router.get("/app/user/:userId/", (req, res) => {
+      var id = req.params.userId;
+      console.log("Query User with id: " + id);
+      this.User.retrieveUserDetails(res, { userId: id });
     });
-
-    router.put("/app/users/", (req, res) => {
-      this.User.updateUserDetails(res, req.body as IUserModel);
-    });
-
-    router.delete("/app/users/", (req, res) => {
-      this.User.deleteUser(res, req.body);
-    });
-
-    // #################################################
-    // ##############  POSTS METHODS    ################
-    // #################################################
 
     //create a post
-    router.post("/app/posts/", (req, res) => {
-      this.Post.createPost(res, req.body as IPostModel);
+    router.post("/app/post/", (req, res) => {
+      console.log(req.body);
+      var jsonObj = req.body;
+      //jsonObj.listId = this.idGenerator;
+      this.Post.model.create([jsonObj], (err) => {
+        if (err) {
+          console.log("object creation failed");
+        }
+      });
+
+      //TODO - Potentially change this later? Use Mongo built in?
+      res.send(this.idGenerator.toString());
+      this.idGenerator++;
     });
 
-    //get individual post details by id
-    router.get("/app/posts/:postId/", (req, res) => {
-      this.Post.retrievePostDetails(res, { postId: req.params.postId });
-    });
-
-    //load feed (get post by day)
-    router.get("/app/posts/:day", (req, res) => {
-      this.Post.getFeed(res, { timePost: new Date(req.params.day) });
-    });
-
-    router.put("/app/posts//", (req, res) => {
-      this.Post.updatePostDetails(res, req.body as IPostModel);
-    })
-
-    router.delete("/app/posts/:postId/", (req, res) => {
-      this.Post.deletePost(res, req.body as IPostModel);
-    });
-    
-    // #################################################
-    // ##############  COMMENT METHODS    ################
-    // #################################################
-    
-    router.post("/app/comments/:postId/", (req, res) => {
-      this.Comment.createComment(res, req.body as ICommentModel);
+    //get post
+    router.get("/app/post/:postId/", (req, res) => {
+      var id = req.params.postId;
+      console.log("Query post with id: " + id);
+      this.Post.retrievePost(res, { postId: id });
     });
 
     //get all comments on a post
     router.get("/app/post/comments/:postId/", (req, res) => {
-      this.Comment.retrieveComments(res, { postId: req.params.postId });
+      var id = req.params.postId;
+      console.log("Query all comments with post id: " + id);
+      this.Post.getAllComments(res, { postId: id });
     });
 
-    router.put("/app/post/comments/", (req, res) => {
-      this.Comment.updateComment(res, req.body as ICommentModel);
-    })
+    //create a comment
+    router.post("/app/comment/", (req, res) => {
+      console.log(req.body);
+      var jsonObj = req.body;
+      //jsonObj.listId = this.idGenerator;
+      this.Comment.model.create([jsonObj], (err) => {
+        if (err) {
+          console.log("object creation failed");
+        }
+      });
 
-    router.delete("/app/post/comments/:commentId", (req, res) => {
-      this.Comment.deleteComment(res, req.body as ICommentModel);
-    })
+      //TODO - Potentially change this later? Use Mongo built in?
+      res.send(this.idGenerator.toString());
+      this.idGenerator++;
+    });
+
+    //get post
+    router.get("/app/comment/:commentId/", (req, res) => {
+      var id = req.params.commentId;
+      console.log("Query comment with id: " + id);
+      this.Comment.retrieveComment(res, { commentId: id });
+    });
+
+    router.get("/app/feed/:feedId/", (req, res) => {
+      var f_id = req.params.feedId;
+      console.log("Query comment with id: " + f_id);
+      this.Feed.retrieveFeed(res, {feedId: f_id}, 1);
+    });
+
+    router.get("/app/feed/:start:end", (req, res) => {
+      var start:number = parseInt(req.params.start);
+      var end:number = parseInt(req.params.end);
+      console.log(start);
+      console.log(end);
+      this.Feed.retrieveFeed(res, {}, (end-start));
+      res.send(res);
+    });
 
     this.expressApp.use("/", router);
+
     this.expressApp.use("/app/json/", express.static(__dirname + "/app/json"));
     this.expressApp.use("/images", express.static(__dirname + "/img"));
     this.expressApp.use("/", express.static(__dirname + "/pages"));
