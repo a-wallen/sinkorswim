@@ -20,7 +20,7 @@ var CommentModel = /** @class */ (function () {
     }
     CommentModel.prototype.createSchema = function () {
         this.schema = new Mongoose.Schema({
-            commentId: { type: String, required: true },
+            commentId: { type: String, required: true, index: { unique: true } },
             postId: { type: String, required: true },
             userId: { type: String, required: true },
             content: { type: String, required: true },
@@ -35,32 +35,23 @@ var CommentModel = /** @class */ (function () {
         this.model.insertMany(commentObject)
             .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
+    CommentModel.prototype.retrieveComment = function (response, commentObject) {
+        this.model.findOne({ commentId: commentObject["commentId"] })
+            .then(function (result) { response.json(result); });
+    };
     // view a comment 
-    CommentModel.prototype.retrieveComments = function (response, filter) {
-        var query = this.model.find(filter);
-        query.exec(function (err, comment) {
-            if (err) {
-                console.log('Error retrieving comment.');
-            }
-            response.json(comment);
-        });
+    CommentModel.prototype.retrieveComments = function (response, postObject) {
+        this.model.find({ postId: postObject["postId"] })
+            .then(function (result) { response.json(result); });
     };
     CommentModel.prototype.updateComment = function (response, commentObject) {
+        this.model.replaceOne({ commentId: commentObject["commentId"] }, commentObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     // delete a comment 
-    CommentModel.prototype.deleteComment = function (response, filter) {
-        var query = this.model.deleteOne(filter);
-        query.exec(function (err, comment) {
-            if (err) {
-                console.log('Error deleting comment.');
-            }
-        });
-    };
-    // like a comment
-    CommentModel.prototype.likeComment = function (response, filter) {
-        var query = this.model.findOne(Object);
-        query.likes += 1;
-        query.save();
+    CommentModel.prototype.deleteComment = function (response, commentObject) {
+        this.model.deleteMany({ commentId: commentObject["commentId"] })
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     return CommentModel;
 }());

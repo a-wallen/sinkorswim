@@ -48,7 +48,7 @@ class UserModel {
         this.model = mongooseConnection.model<IUserModel>("User", this.schema);
     }
     
-    public createUser(response, userObject: IUserModel){
+    public createUser(response:any, userObject: IUserModel){
         this.model.insertMany(userObject)
             .then((result) => { response.json(result); })
             .catch((err) => { response.json(err) });
@@ -66,8 +66,7 @@ class UserModel {
     }
 
     public deleteUser(response:any, userObject:IUserModel){
-        console.log(userObject);
-        this.model.deleteOne({userId: userObject["userId"]})
+        this.model.deleteOne(userObject)
             .then((result) => { response.json(result); })
             .catch((err) => { response.json(err) });
     }

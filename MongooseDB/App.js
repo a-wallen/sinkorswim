@@ -66,8 +66,9 @@ var App = /** @class */ (function () {
             _this.User.deleteUser(res, req.body);
             if (res.json["deletedCount"] == 0)
                 return;
-            _this.Post.deletePost(res, req.body);
-            _this.Comment.deleteComment(res, req.body);
+            var _userId = req.body["userId"];
+            _this.Post.deletePost(res, { userId: _userId });
+            _this.Comment.deleteComment(res, { commentId: _userId });
         });
         // #################################################
         // ##############  POSTS METHODS    ################
@@ -84,26 +85,32 @@ var App = /** @class */ (function () {
         router.get("/app/posts/:day", function (req, res) {
             _this.Post.getFeed(res, { timePost: new Date(req.params.day) });
         });
-        router.put("/app/posts//", function (req, res) {
+        router.put("/app/posts/", function (req, res) {
             _this.Post.updatePostDetails(res, req.body);
         });
-        router["delete"]("/app/posts/:postId/", function (req, res) {
+        router["delete"]("/app/posts/", function (req, res) {
             _this.Post.deletePost(res, req.body);
+            if (res.json["deletedCount"] != 0)
+                _this.Comment.deleteComment(res, { commentId: req.body["postId"] });
         });
         // #################################################
         // ##############  COMMENT METHODS    ################
         // #################################################
-        router.post("/app/comments/:postId/", function (req, res) {
+        router.post("/app/comments/", function (req, res) {
             _this.Comment.createComment(res, req.body);
         });
+        router.get("/app/comments/", function (req, res) {
+            _this.Comment.retrieveComment(res, req.body);
+        });
         //get all comments on a post
-        router.get("/app/post/comments/:postId/", function (req, res) {
-            _this.Comment.retrieveComments(res, { postId: req.params.postId });
+        router.get("/app/post/comment/", function (req, res) {
+            _this.Comment.retrieveComments(res, req.body);
         });
         router.put("/app/post/comments/", function (req, res) {
+            console.log(req.body);
             _this.Comment.updateComment(res, req.body);
         });
-        router["delete"]("/app/post/comments/:commentId", function (req, res) {
+        router["delete"]("/app/post/comments/", function (req, res) {
             _this.Comment.deleteComment(res, req.body);
         });
         this.expressApp.use("/", router);

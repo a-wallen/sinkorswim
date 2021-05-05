@@ -47,8 +47,7 @@ var UserModel = /** @class */ (function () {
             .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     UserModel.prototype.deleteUser = function (response, userObject) {
-        console.log(userObject);
-        this.model.deleteOne({ userId: userObject["userId"] })
+        this.model.deleteOne(userObject)
             .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     UserModel.prototype.mongoExecHandler = function (response, mongoQuery) {

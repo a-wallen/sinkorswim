@@ -89,8 +89,9 @@ class App {
     router.delete("/app/users/", (req, res) => {
       this.User.deleteUser(res, req.body as IUserModel);
       if(res.json["deletedCount"] == 0) return;
-      this.Post.deletePost(res, req.body);
-      this.Comment.deleteComment(res, req.body);
+      let _userId = req.body["userId"];
+      this.Post.deletePost(res, {userId: _userId});
+      this.Comment.deleteComment(res, {commentId: _userId});
     });
 
     // #################################################
@@ -112,32 +113,39 @@ class App {
       this.Post.getFeed(res, { timePost: new Date(req.params.day) });
     });
 
-    router.put("/app/posts//", (req, res) => {
+    router.put("/app/posts/", (req, res) => {
       this.Post.updatePostDetails(res, req.body as IPostModel);
     })
 
-    router.delete("/app/posts/:postId/", (req, res) => {
+    router.delete("/app/posts/", (req, res) => {
       this.Post.deletePost(res, req.body as IPostModel);
+      if(res.json["deletedCount"] != 0)
+        this.Comment.deleteComment(res, {commentId: req.body["postId"]});
     });
     
     // #################################################
     // ##############  COMMENT METHODS    ################
     // #################################################
     
-    router.post("/app/comments/:postId/", (req, res) => {
+    router.post("/app/comments/", (req, res) => {
       this.Comment.createComment(res, req.body as ICommentModel);
     });
 
+    router.get("/app/comments/", (req, res) => {
+      this.Comment.retrieveComment(res, req.body as ICommentModel);
+    });
+
     //get all comments on a post
-    router.get("/app/post/comments/:postId/", (req, res) => {
-      this.Comment.retrieveComments(res, { postId: req.params.postId });
+    router.get("/app/post/comment/", (req, res) => {
+      this.Comment.retrieveComments(res, req.body as IPostModel);
     });
 
     router.put("/app/post/comments/", (req, res) => {
+      console.log(req.body);
       this.Comment.updateComment(res, req.body as ICommentModel);
     })
 
-    router.delete("/app/post/comments/:commentId", (req, res) => {
+    router.delete("/app/post/comments/", (req, res) => {
       this.Comment.deleteComment(res, req.body as ICommentModel);
     })
 

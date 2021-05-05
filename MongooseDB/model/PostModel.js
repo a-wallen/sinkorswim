@@ -52,31 +52,15 @@ var PostModel = /** @class */ (function () {
         this.model.find(filter)
             .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
-    // This can be done with a update query....
-    // // vote on a post (via post id)
-    // public voteForPost(response: any, voteValue: Number, filter: Object) {
-    //   var query = this.model.findOne(filter);
-    //   query.totalVotes += voteValue;
-    //   query.save();
-    // }
     PostModel.prototype.updatePostDetails = function (response, postObject) {
+        this.model.replaceOne({ postId: postObject["postId"] }, postObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     // delete a post (via post id)
     // TODO: update user info by number of posts
-    PostModel.prototype.deletePost = function (response, filter) {
-        var query = this.model.deleteOne(filter);
-        query.exec(function (err, post) {
-            if (err) {
-                console.log("Error deleting post.");
-            }
-        });
-    };
-    // get all comments (via post id)
-    PostModel.prototype.getAllComments = function (response, filter) {
-        var query = this.model.find({ postId: { filter: "postId" } });
-        query.exec(function (err, post) {
-            response.json(post);
-        });
+    PostModel.prototype.deletePost = function (response, postObject) {
+        this.model.deleteMany({ postId: postObject["postId"] })
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     return PostModel;
 }());

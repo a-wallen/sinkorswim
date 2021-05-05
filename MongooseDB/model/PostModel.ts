@@ -1,7 +1,6 @@
 import Mongoose = require("mongoose");
 import { DataAccess } from "./../DataAccess";
 import { IPostModel } from "../interfaces/IPostModel";
-import { STATUS_CODES } from "http";
 
 let mongooseConnection = DataAccess.mongooseConnection;
 let mongooseObj = DataAccess.mongooseInstance;
@@ -70,37 +69,19 @@ class PostModel {
       .catch((err) => { response.json(err) });
   }
 
-  // This can be done with a update query....
-  // // vote on a post (via post id)
-  // public voteForPost(response: any, voteValue: Number, filter: Object) {
-  //   var query = this.model.findOne(filter);
-  //   query.totalVotes += voteValue;
-  //   query.save();
-  // }
-
   public updatePostDetails(response:any, postObject:IPostModel){
-
+    this.model.replaceOne({ postId: postObject["postId"]}, postObject)
+      .then((result) => { response.json(result); })
+      .catch((err) => { response.json(err); });
   }
 
   // delete a post (via post id)
   // TODO: update user info by number of posts
-  public deletePost(response: any, filter: Object) {
-    var query = this.model.deleteOne(filter);
-    query.exec((err, post) => {
-      if (err) {
-        console.log("Error deleting post.");
-      }
-    });
+  public deletePost(response: any, postObject:Object) {
+    this.model.deleteMany({postId: postObject["postId"]})
+      .then((result) => { response.json(result); })
+      .catch((err) => { response.json(err); });
   }
-
-  // get all comments (via post id)
-  public getAllComments(response: any, filter: Object) {
-    var query = this.model.find({ postId: { filter: "postId" } });
-    query.exec((err, post) => {
-      response.json(post);
-    });
-  }
-
 
 }
 export { PostModel };

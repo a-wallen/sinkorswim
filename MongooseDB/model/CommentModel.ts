@@ -1,6 +1,8 @@
 import Mongoose = require("mongoose");
 import {DataAccess} from './../DataAccess';
 import {ICommentModel} from '../interfaces/ICommentModel';
+import {IPostModel} from '../interfaces/IPostModel';
+import { json } from "body-parser";
 
 let mongooseConnection = DataAccess.mongooseConnection;
 let mongooseObj = DataAccess.mongooseInstance;
@@ -27,7 +29,7 @@ class CommentModel {
     public createSchema(): void {
         this.schema = new Mongoose.Schema(
             {
-                commentId: { type:String, required:true },
+                commentId: { type:String, required:true, index: { unique:true }},
                 postId: { type:String, required:true },
                 userId: { type:String, required:true },
                 content: { type:String, required:true },
@@ -38,46 +40,36 @@ class CommentModel {
     }
 
     public createModel(): void {
-        this.model = mongooseConnection.model<ICommentModel>("Comments", this.schema);
+      this.model = mongooseConnection.model<ICommentModel>("Comments", this.schema);
     }
 
     public createComment(response:any, commentObject:ICommentModel) {
-        this.model.insertMany(commentObject)
-          .then((result) => { response.json(result); })
-          .catch((err) => { response.json(err); });
+      this.model.insertMany(commentObject)
+        .then((result) => { response.json(result); })
+        .catch((err) => { response.json(err); });
     }
 
+    public retrieveComment(response:any, commentObject:ICommentModel){
+      this.model.findOne({commentId: commentObject["commentId"]})
+        .then((result) => {response.json(result); });
+    }
     // view a comment 
-    public retrieveComments(response:any, filter:Object) {
-        var query = this.model.find(filter);
-        query.exec( (err, comment) => {
-            if (err) {
-                console.log('Error retrieving comment.'); 
-            }
-            response.json(comment);
-        });
+    public retrieveComments(response:any, postObject:IPostModel) {
+      this.model.find({postId: postObject["postId"]})
+        .then((result) => { response.json(result); });
     }
 
     public updateComment(response:any, commentObject:ICommentModel){
-      
+      this.model.replaceOne({commentId: commentObject["commentId"]}, commentObject)
+        .then((result) => { response.json(result); })
+        .catch((err) => { response.json(err); });
     }
 
     // delete a comment 
-    public deleteComment(response: any, filter: Object) {
-        var query = this.model.deleteOne(filter); 
-        query.exec( (err, comment) => {
-            if (err) {
-                console.log('Error deleting comment.'); 
-            }
-        }); 
+    public deleteComment(response: any, commentObject: Object) {
+      this.model.deleteMany({commentId: commentObject["commentId"]})
+        .then((result) => { response.json(result); })
+        .catch((err) => { response.json(err); });
     }
-
-    // like a comment
-    public likeComment(response: any, filter: Object) {
-        var query = this.model.findOne(Object); 
-        query.likes += 1;
-        query.save(); 
-    }
-
 }
 export {CommentModel};
