@@ -60,11 +60,14 @@ var App = /** @class */ (function () {
             _this.User.retrieveUserDetails(res, { userId: req.params.userId });
         });
         router.put("/app/users/", function (req, res) {
-            console.log(req);
             _this.User.updateUserDetails(res, req.body);
         });
         router["delete"]("/app/users/", function (req, res) {
             _this.User.deleteUser(res, req.body);
+            if (res.json["deletedCount"] == 0)
+                return;
+            _this.Post.deletePost(res, req.body);
+            _this.Comment.deleteComment(res, req.body);
         });
         // #################################################
         // ##############  POSTS METHODS    ################
