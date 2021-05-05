@@ -43,7 +43,6 @@ class SOSDocumentGenerator {
 		}
 	}
 
-
 	private generateRandomUser() {
 		let firstName = fake.name.firstName();
 		let lastName = fake.name.lastName();
