@@ -33,14 +33,14 @@ class PostModel {
   public createSchema(): void {
     this.schema = new Mongoose.Schema(
       {
-        postId: { type: String, required: true, index: { unique: true } },
-        userId: { type: String, required: true },
-        feedId: { type: String, required: true },
-        totalVotes: { type: Number, required: true },
-        imageUrl: { type: String, required: true }, // FIXME: how to format
-        caption: { type: String },
-        timePost: { type: Date },
-        reports: { type: Number },
+        postId: {type: String, required: true, index: {unique: true}},
+        userId: {type: String, required: true}, 
+        feedId: {type: String, required: true}, 
+        totalVotes: {type: Number, required: true}, 
+        imageUrl: {type: String, required: true}, // FIXME: how to format
+        caption: {type: String}, 
+        timePost: {type: Date}, 
+        reports: {type: Number},
       },
       { collection: "posts" }
     );
@@ -73,6 +73,14 @@ class PostModel {
       if (err) {
         console.log("Error deleting post.");
       }
+    });
+  }
+
+  // get all comments (via post id)
+  public getAllComments(response: any, filter: Object) {
+    var query = this.model.find({ postId: { filter: "postId" } });
+    query.exec((err, post) => {
+      response.json(post);
     });
   }
 

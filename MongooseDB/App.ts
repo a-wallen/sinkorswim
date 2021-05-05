@@ -31,7 +31,7 @@ class App {
     this.middleware();
     this.routes();
     this.idGenerator = 102;
-
+  
     //added these
     this.User = new UserModel();
     this.Comment = new CommentModel();
@@ -118,8 +118,7 @@ class App {
     router.get("/app/post/comments/:postId/", (req, res) => {
       var id = req.params.postId;
       console.log("Query all comments with post id: " + id);
-
-      this.Comment.getAllComments(res, { postId: id });
+      this.Post.getAllComments(res, { postId: id });
     });
 
     //create a comment
@@ -148,15 +147,15 @@ class App {
     router.get("/app/feed/:feedId/", (req, res) => {
       var f_id = req.params.feedId;
       console.log("Query comment with id: " + f_id);
-      this.Feed.retrieveFeed(res, { feedId: f_id }, 1);
+      this.Feed.retrieveFeed(res, {feedId: f_id}, 1);
     });
 
     router.get("/app/feed/:start:end", (req, res) => {
-      var start: number = parseInt(req.params.start);
-      var end: number = parseInt(req.params.end);
+      var start:number = parseInt(req.params.start);
+      var end:number = parseInt(req.params.end);
       console.log(start);
       console.log(end);
-      this.Feed.retrieveFeed(res, {}, end - start);
+      this.Feed.retrieveFeed(res, {}, (end-start));
       res.send(res);
     });
 
