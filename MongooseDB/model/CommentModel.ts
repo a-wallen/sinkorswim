@@ -42,7 +42,9 @@ class CommentModel {
     }
 
     public createComment(response:any, commentObject:ICommentModel) {
-
+        this.model.insertMany(commentObject)
+          .then((result) => { response.json(result); })
+          .catch((err) => { response.json(err); });
     }
 
     // view a comment 

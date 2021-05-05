@@ -38,6 +38,8 @@ var PostModel = /** @class */ (function () {
         this.model = mongooseConnection.model("Post", this.schema);
     };
     PostModel.prototype.createPost = function (response, postObject) {
+        this.model.insertMany(postObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     // get a post (via post id)
     PostModel.prototype.retrievePostDetails = function (response, filter) {
@@ -47,6 +49,8 @@ var PostModel = /** @class */ (function () {
         });
     };
     PostModel.prototype.getFeed = function (response, filter) {
+        this.model.find(filter)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     // This can be done with a update query....
     // // vote on a post (via post id)

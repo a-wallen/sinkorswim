@@ -50,7 +50,9 @@ class PostModel {
   }
 
   public createPost(response:any, postObject:IPostModel){
-      
+      this.model.insertMany(postObject)
+        .then((result) => { response.json(result); })
+        .catch((err) => { response.json(err); });
   }
   
 
@@ -62,8 +64,10 @@ class PostModel {
     });
   }
 
-  public getFeed(response:any, filter:Object){
-
+  public getFeed(response:any, filter:Object) {
+    this.model.find(filter)
+      .then((result) => { response.json(result) })
+      .catch((err) => { response.json(err) });
   }
 
   // This can be done with a update query....
