@@ -141,7 +141,6 @@ class App {
     });
 
     router.put("/app/post/comments/", (req, res) => {
-      console.log(req.body);
       this.Comment.updateComment(res, req.body as ICommentModel);
     })
 

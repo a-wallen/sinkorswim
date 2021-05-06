@@ -4,12 +4,6 @@ var fake = require("faker");
 var UserModel_1 = require("../model/UserModel");
 var PostModel_1 = require("../model/PostModel");
 var CommentModel_1 = require("../model/CommentModel");
-var SOSCollections;
-(function (SOSCollections) {
-    SOSCollections[SOSCollections["Users"] = 0] = "Users";
-    SOSCollections[SOSCollections["Posts"] = 1] = "Posts";
-    SOSCollections[SOSCollections["Comments"] = 2] = "Comments";
-})(SOSCollections || (SOSCollections = {}));
 var SOSRemoteCollectionInstance = /** @class */ (function () {
     function SOSRemoteCollectionInstance() {
         this.Users = new UserModel_1.UserModel();
@@ -23,17 +17,48 @@ var SOSRemoteCollectionInstance = /** @class */ (function () {
 var SOSDocumentGenerator = /** @class */ (function () {
     function SOSDocumentGenerator() {
         this.remotecollection = new SOSRemoteCollectionInstance();
-        this.collectionGeneratorFunctions = [this.generateRandomUser, this.generateRandomPost, this.generateRandomComment];
     }
-    SOSDocumentGenerator.prototype.generateNDocuments = function (threshold, collection) {
-        // generate random users
-        for (var i = 0; i < threshold; i++) {
-            this.remotecollection.RemoteCollectionGroup[collection].model.create(this.collectionGeneratorFunctions[collection](), function (err) {
+    SOSDocumentGenerator.prototype.generateUserFootprints = function (amount) {
+        var _this = this;
+        var _userDocs = [];
+        var _userPostDocs = [];
+        var _userCommentDocs = [];
+        for (var i = 0; i < amount; i++) {
+            var _currentUser = this.generateRandomUser();
+            _userDocs.push(_currentUser);
+            for (var j = 0; j < amount; j++) {
+                var _userPost = this.generateRandomPost();
+                _userPost["userId"] = _currentUser["userId"];
+                _userPostDocs.push(_userPost);
+                for (var k = 0; k < amount; k++) {
+                    var _userComment = this.generateRandomComment();
+                    _userComment["userId"] = _currentUser["userId"];
+                    _userComment["postId"] = _userPost["postId"];
+                    _userCommentDocs.push(_userComment);
+                }
+            }
+        }
+        _userDocs.forEach(function (document) {
+            _this.remotecollection.Users.model.create(document, function (err) {
                 if (err) {
                     console.log(err);
                 }
             });
-        }
+        });
+        _userPostDocs.forEach(function (document) {
+            _this.remotecollection.Posts.model.create(document, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        });
+        _userCommentDocs.forEach(function (document) {
+            _this.remotecollection.Comments.model.create(document, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        });
     };
     SOSDocumentGenerator.prototype.generateRandomUser = function () {
         var firstName = fake.name.firstName();
@@ -74,3 +99,4 @@ var SOSDocumentGenerator = /** @class */ (function () {
     return SOSDocumentGenerator;
 }());
 var Generator = new SOSDocumentGenerator();
+Generator.generateUserFootprints(3);
