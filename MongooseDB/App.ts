@@ -11,10 +11,12 @@ import { DataAccess } from "./DataAccess";
 import { IUserModel } from "./interfaces/IUserModel";
 import { IPostModel } from "./interfaces/IPostModel"
 import { ICommentModel } from "./interfaces/ICommentModel";
+import { IVoteModel } from "./interfaces/IVoteModel"; 
 
 import { UserModel } from "./model/UserModel";
 import { PostModel } from "./model/PostModel";
 import { CommentModel } from "./model/CommentModel";
+import { VoteModel } from "./model/VoteModel"; 
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -24,6 +26,7 @@ class App {
   public User: UserModel;
   public Post: PostModel;
   public Comment: CommentModel;
+  public Vote: VoteModel; 
 
   public idGenerator: number;
 
@@ -38,6 +41,7 @@ class App {
     this.User = new UserModel();
     this.Comment = new CommentModel();
     this.Post = new PostModel();
+    this.Vote = new VoteModel(); 
   }
 
   // Configure Express middleware.
@@ -147,6 +151,19 @@ class App {
     router.delete("/app/post/comments/", (req, res) => {
       this.Comment.deleteComment(res, req.body as ICommentModel);
     })
+
+    // #################################################
+    // ##############  VOTE METHODS    #################
+    // #################################################
+
+    router.post("/app/post/votes/", (req, res) => {
+      this.Vote.createVote(res, req.body as IVoteModel); 
+    })
+
+    router.delete("/app/post/votes/", (req, res) => {
+      this.Vote.deleteVote(res, req.body as IVoteModel); 
+    })
+
 
     this.expressApp.use("/", router);
     this.expressApp.use("/app/json/", express.static(__dirname + "/app/json"));
