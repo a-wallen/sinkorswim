@@ -1,7 +1,8 @@
 import Mongoose = require("mongoose");
-import { DataAccess } from "./../DataAccess";
-import { ICommentModel } from "../interfaces/ICommentModel";
-import { STATUS_CODES } from "http";
+import {DataAccess} from './../DataAccess';
+import {ICommentModel} from '../interfaces/ICommentModel';
+import {IPostModel} from '../interfaces/IPostModel';
+import { json } from "body-parser";
 
 let mongooseConnection = DataAccess.mongooseConnection;
 let mongooseObj = DataAccess.mongooseInstance;
@@ -16,70 +17,59 @@ delete: delete a comment
 */
 
 class CommentModel {
-  public schema: any;
-  public innerSchema: any;
-  public model: any;
+    public schema:any;
+    public innerSchema:any;
+    public model:any;
 
-  public constructor() {
-    this.createSchema();
-    this.createModel();
-  }
+    public constructor() {
+        this.createSchema();
+        this.createModel();
+    }
 
-  public createSchema(): void {
-    this.schema = new Mongoose.Schema(
-      {
-        postId: String,
-        userId: String,
-        commentId: String,
-        content: String,
-        likes: Number,
-        timestamp: Date,
-      },
-      { collection: "comments" }
-    );
-  }
+    public createSchema(): void {
+        this.schema = new Mongoose.Schema(
+            {
+                commentId: { type:String, required:true, index: { unique:true }},
+                postId: { type:String, required:true },
+                userId: { type:String, required:true },
+                content: { type:String, required:true },
+                timestamp: { type:String, required:true },
+                likes: { type:Number }
+            }, {collection: 'comments'}
+        );
+    }
 
-  public createModel(): void {
-    this.model = mongooseConnection.model<ICommentModel>(
-      "Comments",
-      this.schema
-    );
-  }
+    public createModel(): void {
+      this.model = mongooseConnection.model<ICommentModel>("Comments", this.schema);
+    }
 
-  // view a comment
-  public retrieveComment(response: any, filter: Object) {
-    var query = this.model.findOne(filter);
-    query.exec((err, comment) => {
-      if (err) {
-        console.log("Error retrieving comment.");
-      }
-      response.json(comment);
-    });
-  }
+    public createComment(response:any, commentObject:ICommentModel) {
+      this.model.insertMany(commentObject)
+        .then((result) => { response.json(result); })
+        .catch((err) => { response.json(err); });
+    }
 
-  // delete a comment
-  public deleteComment(response: any, filter: Object) {
-    var query = this.model.deleteOne(filter);
-    query.exec((err, comment) => {
-      if (err) {
-        console.log("Error deleting comment.");
-      }
-    });
-  }
+    public retrieveComment(response:any, commentObject:ICommentModel){
+      this.model.findOne({commentId: commentObject["commentId"]})
+        .then((result) => {response.json(result); });
+    }
+    // view a comment 
+    public retrieveComments(response:any, postObject:IPostModel) {
+      this.model.find({postId: postObject["postId"]})
+        .then((result) => { response.json(result); });
+    }
 
-  // like a comment
-  public likeComment(response: any, filter: Object) {
-    var query = this.model.findOne(Object);
-    query.likes += 1;
-    query.save();
-  }
+    public updateComment(response:any, commentObject:ICommentModel){
+      this.model.replaceOne({commentId: commentObject["commentId"]}, commentObject)
+        .then((result) => { response.json(result); })
+        .catch((err) => { response.json(err); });
+    }
 
-  // get all comments (via post id)
-  public getAllComments(response: any, filter: Object) {
-    var query = this.model.find(filter);
-    query.exec((err, post) => {
-      response.json(post);
-    });
-  }
+    // delete a comment 
+    public deleteComment(response: any, commentObject: Object) {
+      this.model.deleteMany({commentId: commentObject["commentId"]})
+        .then((result) => { response.json(result); })
+        .catch((err) => { response.json(err); });
+    }
 }
-export { CommentModel };
+export {CommentModel};

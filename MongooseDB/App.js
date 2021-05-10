@@ -7,7 +7,6 @@ var logger = require("morgan");
 //import * as mongodb from 'mongodb';
 //import * as url from 'url';
 var bodyParser = require("body-parser");
-var FeedModel_1 = require("./model/FeedModel");
 var UserModel_1 = require("./model/UserModel");
 var PostModel_1 = require("./model/PostModel");
 var CommentModel_1 = require("./model/CommentModel");
@@ -23,7 +22,6 @@ var App = /** @class */ (function () {
         this.User = new UserModel_1.UserModel();
         this.Comment = new CommentModel_1.CommentModel();
         this.Post = new PostModel_1.PostModel();
-        this.Feed = new FeedModel_1.FeedModel();
     }
     // Configure Express middleware.
     App.prototype.middleware = function () {
@@ -49,99 +47,71 @@ var App = /** @class */ (function () {
         create comment
         update comment
         delete comment
-        
         */
+        // #################################################
+        // ##############  USERS METHODS    ################
+        // #################################################
         //Create User
-        router.post("/app/user/", function (req, res) {
-            console.log(req.body);
-            var jsonObj = req.body;
-            //jsonObj.listId = this.idGenerator;
-            _this.User.model.create([jsonObj], function (err) {
-                if (err) {
-                    console.log("object creation failed");
-                }
-            });
-            //TODO - Potentially change this later? Use Mongo built in?
-            res.send(_this.idGenerator.toString());
-            _this.idGenerator++;
+        router.post("/app/users/", function (req, res) {
+            _this.User.createUser(res, req.body);
         });
         //Get User Details
-        router.get("/app/user/:userId/", function (req, res) {
-            var id = req.params.userId;
-            console.log("Query User with id: " + id);
-            _this.User.retrieveUserDetails(res, { userId: id });
+        router.get("/app/users/:userId/", function (req, res) {
+            _this.User.retrieveUserDetails(res, { userId: req.params.userId });
         });
+        router.put("/app/users/", function (req, res) {
+            _this.User.updateUserDetails(res, req.body);
+        });
+        router["delete"]("/app/users/", function (req, res) {
+            _this.User.deleteUser(res, req.body);
+            if (res.json["deletedCount"] == 0)
+                return;
+            var _userId = req.body["userId"];
+            _this.Post.deletePost(res, { userId: _userId });
+            _this.Comment.deleteComment(res, { commentId: _userId });
+        });
+        // #################################################
+        // ##############  POSTS METHODS    ################
+        // #################################################
         //create a post
-        router.post("/app/post/", function (req, res) {
-            console.log(req.body);
-            var jsonObj = req.body;
-            //jsonObj.listId = this.idGenerator;
-            _this.Post.model.create([jsonObj], function (err) {
-                if (err) {
-                    console.log("object creation failed");
-                }
-            });
-            //TODO - Potentially change this later? Use Mongo built in?
-            res.send(_this.idGenerator.toString());
-            _this.idGenerator++;
+        router.post("/app/posts/", function (req, res) {
+            _this.Post.createPost(res, req.body);
         });
-        //get post
-        router.get("/app/post/:postId/", function (req, res) {
-            var id = req.params.postId;
-            console.log("Query post with id: " + id);
-            _this.Post.retrievePost(res, { postId: id });
+        //get individual post details by id
+        router.get("/app/posts/:postId/", function (req, res) {
+            _this.Post.retrievePostDetails(res, { postId: req.params.postId });
         });
-        // update a post (caption)
-        router.put("/app/post/:postId/", function (req, res) {
-            var id = req.params.postId;
-            console.log("Updating a post with an id of: " + id);
-            _this.Post.updatePost(req.body);
-            res.statusCode = 500;
+        //load feed (get post by day)
+        router.get("/app/posts/:day", function (req, res) {
+            _this.Post.getFeed(res, { timePost: new Date(req.params.day) });
         });
-        // delete a post
-        router["delete"]("/app/post/:postId/", function (req, res) {
-            var id = req.params.postId;
-            console.log("Deleting a post with id of + " + id);
-            _this.Post.deletePost(res, { postId: id });
+        router.put("/app/posts/", function (req, res) {
+            _this.Post.updatePostDetails(res, req.body);
+        });
+        router["delete"]("/app/posts/", function (req, res) {
+            _this.Post.deletePost(res, req.body);
+            if (res.json["deletedCount"] != 0)
+                _this.Comment.deleteComment(res, { commentId: req.body["postId"] });
+        });
+        // #################################################
+        // ##############  COMMENT METHODS    ################
+        // #################################################
+        router.post("/app/comments/", function (req, res) {
+            _this.Comment.createComment(res, req.body);
+        });
+        router.get("/app/comments/", function (req, res) {
+            _this.Comment.retrieveComment(res, req.body);
         });
         //get all comments on a post
-        router.get("/app/post/comments/:postId/", function (req, res) {
-            var id = req.params.postId;
-            console.log("Query all comments with post id: " + id);
-            _this.Comment.getAllComments(res, { postId: id });
+        router.get("/app/post/comment/", function (req, res) {
+            _this.Comment.retrieveComments(res, req.body);
         });
-        //create a comment
-        router.post("/app/comment/", function (req, res) {
+        router.put("/app/post/comments/", function (req, res) {
             console.log(req.body);
-            var jsonObj = req.body;
-            //jsonObj.listId = this.idGenerator;
-            _this.Comment.model.create([jsonObj], function (err) {
-                if (err) {
-                    console.log("object creation failed");
-                }
-            });
-            //TODO - Potentially change this later? Use Mongo built in?
-            res.send(_this.idGenerator.toString());
-            _this.idGenerator++;
+            _this.Comment.updateComment(res, req.body);
         });
-        //get comment
-        router.get("/app/comment/:commentId/", function (req, res) {
-            var id = req.params.commentId;
-            console.log("Query comment with id: " + id);
-            _this.Comment.retrieveComment(res, { commentId: id });
-        });
-        router.get("/app/feed/:feedId/", function (req, res) {
-            var f_id = req.params.feedId;
-            console.log("Query comment with id: " + f_id);
-            _this.Feed.retrieveFeed(res, { feedId: f_id }, 1);
-        });
-        router.get("/app/feed/:start:end", function (req, res) {
-            var start = parseInt(req.params.start);
-            var end = parseInt(req.params.end);
-            console.log(start);
-            console.log(end);
-            _this.Feed.retrieveFeed(res, {}, end - start);
-            res.send(res);
+        router["delete"]("/app/post/comments/", function (req, res) {
+            _this.Comment.deleteComment(res, req.body);
         });
         this.expressApp.use("/", router);
         this.expressApp.use("/app/json/", express.static(__dirname + "/app/json"));

@@ -20,48 +20,38 @@ var CommentModel = /** @class */ (function () {
     }
     CommentModel.prototype.createSchema = function () {
         this.schema = new Mongoose.Schema({
-            postId: String,
-            userId: String,
-            commentId: String,
-            content: String,
-            likes: Number,
-            timestamp: Date
-        }, { collection: "comments" });
+            commentId: { type: String, required: true, index: { unique: true } },
+            postId: { type: String, required: true },
+            userId: { type: String, required: true },
+            content: { type: String, required: true },
+            timestamp: { type: String, required: true },
+            likes: { type: Number }
+        }, { collection: 'comments' });
     };
     CommentModel.prototype.createModel = function () {
         this.model = mongooseConnection.model("Comments", this.schema);
     };
-    // view a comment
-    CommentModel.prototype.retrieveComment = function (response, filter) {
-        var query = this.model.findOne(filter);
-        query.exec(function (err, comment) {
-            if (err) {
-                console.log("Error retrieving comment.");
-            }
-            response.json(comment);
-        });
+    CommentModel.prototype.createComment = function (response, commentObject) {
+        this.model.insertMany(commentObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
-    // delete a comment
-    CommentModel.prototype.deleteComment = function (response, filter) {
-        var query = this.model.deleteOne(filter);
-        query.exec(function (err, comment) {
-            if (err) {
-                console.log("Error deleting comment.");
-            }
-        });
+    CommentModel.prototype.retrieveComment = function (response, commentObject) {
+        this.model.findOne({ commentId: commentObject["commentId"] })
+            .then(function (result) { response.json(result); });
     };
-    // like a comment
-    CommentModel.prototype.likeComment = function (response, filter) {
-        var query = this.model.findOne(Object);
-        query.likes += 1;
-        query.save();
+    // view a comment 
+    CommentModel.prototype.retrieveComments = function (response, postObject) {
+        this.model.find({ postId: postObject["postId"] })
+            .then(function (result) { response.json(result); });
     };
-    // get all comments (via post id)
-    CommentModel.prototype.getAllComments = function (response, filter) {
-        var query = this.model.find(filter);
-        query.exec(function (err, post) {
-            response.json(post);
-        });
+    CommentModel.prototype.updateComment = function (response, commentObject) {
+        this.model.replaceOne({ commentId: commentObject["commentId"] }, commentObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+    };
+    // delete a comment 
+    CommentModel.prototype.deleteComment = function (response, commentObject) {
+        this.model.deleteMany({ commentId: commentObject["commentId"] })
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     return CommentModel;
 }());

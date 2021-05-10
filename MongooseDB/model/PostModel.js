@@ -28,7 +28,6 @@ var PostModel = /** @class */ (function () {
         this.schema = new Mongoose.Schema({
             postId: { type: String, required: true, index: { unique: true } },
             userId: { type: String, required: true },
-            feedId: { type: String, required: true },
             totalVotes: { type: Number, required: true },
             imageUrl: { type: String, required: true },
             caption: { type: String },
@@ -39,37 +38,30 @@ var PostModel = /** @class */ (function () {
     PostModel.prototype.createModel = function () {
         this.model = mongooseConnection.model("Post", this.schema);
     };
+    PostModel.prototype.createPost = function (response, postObject) {
+        this.model.insertMany(postObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+    };
     // get a post (via post id)
-    PostModel.prototype.retrievePost = function (response, filter) {
+    PostModel.prototype.retrievePostDetails = function (response, filter) {
         var query = this.model.findOne(filter);
         query.exec(function (err, post) {
             response.json(post);
         });
     };
-    // vote on a post (via post id)
-    PostModel.prototype.voteForPost = function (response, filter) {
-        var query = this.model.updateOne({ postId: filter["postId"] }, { totalVotes: filter["totalVotes"] + 1 });
-        query.exec(function (err, post) {
-            if (err)
-                console.log("Error voting for a post.");
-        });
+    PostModel.prototype.getFeed = function (response, filter) {
+        this.model.find(filter)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+    };
+    PostModel.prototype.updatePostDetails = function (response, postObject) {
+        this.model.replaceOne({ postId: postObject["postId"] }, postObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     // delete a post (via post id)
-    PostModel.prototype.deletePost = function (response, filter) {
-        var query = this.model.deleteOne(filter);
-        query.exec(function (err, post) {
-            if (err) {
-                console.log("Error deleting post.");
-            }
-        });
-    };
-    // update a post via caption 
-    PostModel.prototype.updatePost = function (filter) {
-        var query = this.model.updateOne({ postId: filter["postId"] }, { caption: filter["caption"] });
-        query.exec(function (err) {
-            if (err)
-                console.log("Error updating post");
-        });
+    // TODO: update user info by number of posts
+    PostModel.prototype.deletePost = function (response, postObject) {
+        this.model.deleteMany({ postId: postObject["postId"] })
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     return PostModel;
 }());

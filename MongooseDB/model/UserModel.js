@@ -20,30 +20,40 @@ var UserModel = /** @class */ (function () {
     }
     UserModel.prototype.createSchema = function () {
         this.schema = new Mongoose.Schema({
-            userId: String,
-            userName: String,
-            password: String,
-            email: String,
-            totalUpvotes: Number,
-            swimmingPosts: Number,
-            sinkingPosts: Number,
-            reports: Number
+            userId: { type: String, required: true, index: { unique: true } },
+            userName: { type: String, required: true },
+            password: { type: String, required: true },
+            email: { type: String, required: true },
+            totalUpvotes: { type: Number },
+            swimmingPosts: { type: Number },
+            sinkingPosts: { type: Number },
+            reports: { type: Number }
         }, { collection: 'users' });
     };
     // create a user
     UserModel.prototype.createModel = function () {
         this.model = mongooseConnection.model("User", this.schema);
     };
+    UserModel.prototype.createUser = function (response, userObject) {
+        this.model.insertMany(userObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+    };
     // get user details
     UserModel.prototype.retrieveUserDetails = function (response, filter) {
-        var query = this.model.findOne(filter);
-        query.exec(function (err, userDetails) {
-            response.json(userDetails);
-        });
+        this.mongoExecHandler(response, this.model.findOne(filter));
     };
-    UserModel.prototype.saveUser = function (userObj) {
-        console.log(userObj);
-        //var query = this.model.save(userObj);
+    UserModel.prototype.updateUserDetails = function (response, userObject) {
+        this.model.replaceOne({ userId: userObject["userId"] }, userObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+    };
+    UserModel.prototype.deleteUser = function (response, userObject) {
+        this.model.deleteOne(userObject)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+    };
+    UserModel.prototype.mongoExecHandler = function (response, mongoQuery) {
+        mongoQuery.exec(function (err, result) {
+            response.json(err ? err : result);
+        });
     };
     return UserModel;
 }());
