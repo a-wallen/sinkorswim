@@ -55,8 +55,8 @@ class UserModel {
     }
 
     // get user details
-    public retrieveUserDetails(response:any, filter:Object) {
-        this.mongoExecHandler(response, this.model.findOne(filter));
+    public retrieveUserDetails(filter:Object) : Promise<IUserModel> {
+        return this.model.findOne(filter);
     }
 
     public updateUserDetails(response:any, userObject:IUserModel){

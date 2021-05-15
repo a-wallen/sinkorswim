@@ -1,6 +1,6 @@
 import Mongoose = require("mongoose");
 import { DataAccess } from "./../DataAccess";
-import { IPostModel } from "../interfaces/IPostModel";
+import { IMemeModel } from "../interfaces/IMemeModel";
 
 let mongooseConnection = DataAccess.mongooseConnection;
 let mongooseObj = DataAccess.mongooseInstance;
@@ -19,7 +19,7 @@ update: vote, update caption, get reported
 delete: delete a post (done by a user or when a user account gets deleted?)
 */
 
-class PostModel {
+class MemeModel {
   public schema: any;
   public innerSchema: any;
   public model: any;
@@ -32,7 +32,7 @@ class PostModel {
   public createSchema(): void {
     this.schema = new Mongoose.Schema(
       {
-        postId: {type: String, required: true, index: {unique: true}},
+        memeId: {type: String, required: true, index: {unique: true}},
         userId: {type: String, required: true}, 
         totalVotes: {type: Number, required: true}, 
         imageUrl: {type: String, required: true}, // FIXME: how to format
@@ -40,48 +40,66 @@ class PostModel {
         timePost: {type: Date}, 
         reports: {type: Number},
       },
-      { collection: "posts" }
+      { collection: "memes" }
     );
   }
 
   public createModel(): void {
-    this.model = mongooseConnection.model<IPostModel>("Post", this.schema);
+    this.model = mongooseConnection.model<IMemeModel>("Meme", this.schema);
   }
 
-  public createPost(response:any, postObject:IPostModel){
-      this.model.insertMany(postObject)
-        .then((result) => { response.json(result); })
-        .catch((err) => { response.json(err); });
+  public createPost(response:any, memeObject:IMemeModel) : Boolean {
+    var operationSuccess = false;
+    this.model.insertMany(memeObject)
+      .then((result) => { 
+        operationSuccess = true; 
+        response.json(result); 
+      })
+      .catch((err) => { 
+        response.json(err); 
+      });
+    return operationSuccess;
   }
   
 
   // get a post (via post id)
-  public retrievePostDetails(response: any, filter:Object) {
-    var query = this.model.findOne(filter);
-    query.exec((err, post) => {
-      response.json(post);
-    });
+  public retrieveMemeDetails(filter:Object) : Promise<IMemeModel> {
+    return this.model.find(filter);
   }
 
-  public getFeed(response:any, filter:Object) {
-    this.model.find(filter)
+  public getFeed(response:any, filter:Object) : IMemeModel[] {
+    return this.model.find(filter)
       .then((result) => { response.json(result) })
       .catch((err) => { response.json(err) });
   }
 
-  public updatePostDetails(response:any, postObject:IPostModel){
-    this.model.replaceOne({ postId: postObject["postId"]}, postObject)
-      .then((result) => { response.json(result); })
-      .catch((err) => { response.json(err); });
+  public updatePostDetails(response:any, memeObject:IMemeModel) : Boolean {
+    var operationSuccess = false;
+    this.model.replaceOne({ memeId: memeObject["postId"]}, memeObject)
+      .then((result) => { 
+        operationSuccess = true; 
+        response.json(result); 
+      })
+      .catch((err) => { 
+        response.json(err); 
+      });
+    return operationSuccess;
   }
 
   // delete a post (via post id)
   // TODO: update user info by number of posts
-  public deletePost(response: any, postObject:Object) {
-    this.model.deleteMany({postId: postObject["postId"]})
-      .then((result) => { response.json(result); })
-      .catch((err) => { response.json(err); });
+  public deleteMeme(response: any, memeObject:Object) {
+    var operationSuccess = false;
+    this.model.deleteMany({memeId: memeObject["memeId"]})
+      .then((result) => { 
+        operationSuccess = true; 
+        response.json(result); 
+      })
+      .catch((err) => { 
+        response.json(err); 
+      });
+    return operationSuccess;
   }
 
 }
-export { PostModel };
+export { MemeModel };

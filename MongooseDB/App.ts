@@ -9,12 +9,14 @@ import * as bodyParser from "body-parser";
 import { DataAccess } from "./DataAccess";
 
 import { IUserModel } from "./interfaces/IUserModel";
-import { IPostModel } from "./interfaces/IPostModel"
+import { IMemeModel } from "./interfaces/IMemeModel"
 import { ICommentModel } from "./interfaces/ICommentModel";
+import { IVoteModel } from "./interfaces/IVoteModel";
 
 import { UserModel } from "./model/UserModel";
-import { PostModel } from "./model/PostModel";
+import { MemeModel } from "./model/MemeModel";
 import { CommentModel } from "./model/CommentModel";
+import { VoteModel } from "./model/VoteModel";
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -22,8 +24,9 @@ class App {
   public expressApp: express.Application;
   //added these
   public User: UserModel;
-  public Post: PostModel;
+  public Meme: MemeModel;
   public Comment: CommentModel;
+  public Vote: VoteModel;
 
   public idGenerator: number;
 
@@ -37,7 +40,8 @@ class App {
     //added these
     this.User = new UserModel();
     this.Comment = new CommentModel();
-    this.Post = new PostModel();
+    this.Meme = new MemeModel();
+    this.Vote = new VoteModel(); 
   }
 
   // Configure Express middleware.
@@ -78,8 +82,8 @@ class App {
     });
 
     //Get User Details
-    router.get("/app/users/:userId/", (req, res) => {
-      this.User.retrieveUserDetails(res, { userId: req.params.userId});
+    router.get("/app/users/:userId/", async (req, res) => {
+      res.json(await this.User.retrieveUserDetails({ userId: req.params.userId}));
     });
 
     router.put("/app/users/", (req, res) => {
@@ -90,37 +94,36 @@ class App {
       this.User.deleteUser(res, req.body as IUserModel);
       if(res.json["deletedCount"] == 0) return;
       let _userId = req.body["userId"];
-      this.Post.deletePost(res, {userId: _userId});
+      this.Meme.deleteMeme(res, {userId: _userId});
       this.Comment.deleteComment(res, {commentId: _userId});
     });
 
     // #################################################
-    // ##############  POSTS METHODS    ################
+    // ##############  memes METHODS    ################
     // #################################################
 
     //create a post
-    router.post("/app/posts/", (req, res) => {
-      this.Post.createPost(res, req.body as IPostModel);
+    router.post("/app/memes/", (req, res) => {
+      this.Meme.createPost(res, req.body as IMemeModel);
     });
 
     //get individual post details by id
-    router.get("/app/posts/:postId/", (req, res) => {
-      this.Post.retrievePostDetails(res, { postId: req.params.postId });
+    router.get("/app/memes/:memeId/", async (req, res) => {
+      res.json(await this.Meme.retrieveMemeDetails({ memeId: req.params.memeId }));
     });
 
     //load feed (get post by day)
-    router.get("/app/posts/:day", (req, res) => {
-      this.Post.getFeed(res, { timePost: new Date(req.params.day) });
+    router.get("/app/memes/:day", (req, res) => {
+      this.Meme.getFeed(res, { timePost: new Date(req.params.day) });
     });
 
-    router.put("/app/posts/", (req, res) => {
-      this.Post.updatePostDetails(res, req.body as IPostModel);
+    router.put("/app/memes/", (req, res) => {
+      this.Meme.updatePostDetails(res, req.body as IMemeModel);
     })
 
-    router.delete("/app/posts/", (req, res) => {
-      this.Post.deletePost(res, req.body as IPostModel);
-      if(res.json["deletedCount"] != 0)
-        this.Comment.deleteComment(res, {commentId: req.body["postId"]});
+    router.delete("/app/memes/", (req, res) => {
+      if(this.Meme.deleteMeme(res, req.body as IMemeModel))
+        this.Comment.deleteComment(res, {commentId: req.body["memeId"]});
     });
     
     // #################################################
@@ -131,23 +134,35 @@ class App {
       this.Comment.createComment(res, req.body as ICommentModel);
     });
 
-    router.get("/app/comments/", (req, res) => {
-      this.Comment.retrieveComment(res, req.body as ICommentModel);
+    router.get("/app/comments/", async (req, res) => {
+      res.json(await this.Comment.retrieveComment(req.body as ICommentModel));
     });
 
     //get all comments on a post
-    router.get("/app/post/comment/", (req, res) => {
-      this.Comment.retrieveComments(res, req.body as IPostModel);
+    router.get("/app/memes/comment/", async (req, res) => {
+      res.json(await this.Comment.retrieveComments(req.body as IMemeModel));
     });
 
-    router.put("/app/post/comments/", (req, res) => {
-      console.log(req.body);
+    router.put("/app/memes/comments/", (req, res) => {
       this.Comment.updateComment(res, req.body as ICommentModel);
     })
 
-    router.delete("/app/post/comments/", (req, res) => {
+    router.delete("/app/memes/comments/", (req, res) => {
       this.Comment.deleteComment(res, req.body as ICommentModel);
     })
+
+    // #################################################
+    // ##############  VOTE METHODS    #################
+    // #################################################
+
+    router.post("/app/memes/votes/", (req, res) => {
+      this.Vote.createVote(res, req.body as IVoteModel); 
+    })
+
+    router.delete("/app/memes/votes/", (req, res) => {
+      this.Vote.deleteVote(res, req.body as IVoteModel); 
+    })
+
 
     this.expressApp.use("/", router);
     this.expressApp.use("/app/json/", express.static(__dirname + "/app/json"));
@@ -157,3 +172,5 @@ class App {
 }
 
 export { App };
+
+

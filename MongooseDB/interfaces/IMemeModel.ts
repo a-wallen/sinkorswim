@@ -1,7 +1,7 @@
 import Mongoose = require("mongoose");
 
-interface IPostModel extends Mongoose.Document {
-    postId: String;
+interface IMemeModel extends Mongoose.Document {
+    memeId: String;
     userId: String; 
     feedId: String; 
     totalVotes: Number; 
@@ -10,4 +10,4 @@ interface IPostModel extends Mongoose.Document {
     imageUrl: String; // FIXME: how to format
     reports: Number;
 }
-export {IPostModel};
+export {IMemeModel};
