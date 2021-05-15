@@ -6,7 +6,6 @@ var DataAccess_1 = require("./../DataAccess");
 var mongooseConnection = DataAccess_1.DataAccess.mongooseConnection;
 var mongooseObj = DataAccess_1.DataAccess.mongooseInstance;
 /* Post Methods
-// TODO: update user info by number of posts
 CRUD
 Create: create a post
 read: getting posts: getting posts by feed, by a user
