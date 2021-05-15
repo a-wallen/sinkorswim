@@ -11,12 +11,12 @@ import { DataAccess } from "./DataAccess";
 import { IUserModel } from "./interfaces/IUserModel";
 import { IMemeModel } from "./interfaces/IMemeModel"
 import { ICommentModel } from "./interfaces/ICommentModel";
-import { IVoteModel } from "./interfaces/IVoteModel";
+import { IVoteModel } from "./interfaces/IVoteModel"; 
 
 import { UserModel } from "./model/UserModel";
 import { MemeModel } from "./model/MemeModel";
 import { CommentModel } from "./model/CommentModel";
-import { VoteModel } from "./model/VoteModel";
+import { VoteModel } from "./model/VoteModel"; 
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -26,7 +26,7 @@ class App {
   public User: UserModel;
   public Meme: MemeModel;
   public Comment: CommentModel;
-  public Vote: VoteModel;
+  public Vote: VoteModel; 
 
   public idGenerator: number;
 

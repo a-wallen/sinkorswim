@@ -1,13 +1,12 @@
 const fake = require("faker");
+
 import { UserModel } from '../model/UserModel';
 import { PostModel } from '../model/PostModel';
 import { CommentModel } from '../model/CommentModel';
 
-enum SOSCollections {
-	Users,
-	Posts,
-	Comments,
-}
+import {IUserModel} from '../interfaces/IUserModel';
+import {IPostModel} from '../interfaces/IPostModel';
+import {ICommentModel} from '../interfaces/ICommentModel';
 
 class SOSRemoteCollectionInstance {
 	public Users: UserModel;
@@ -24,19 +23,44 @@ class SOSRemoteCollectionInstance {
 
 class SOSDocumentGenerator {
 	private remotecollection: SOSRemoteCollectionInstance;
-	private collectionGeneratorFunctions: Array<Function>;
 	constructor() {
 		this.remotecollection = new SOSRemoteCollectionInstance();
-		this.collectionGeneratorFunctions = [this.generateRandomUser, this.generateRandomPost, this.generateRandomComment];
 	}
 
-	public generateNDocuments(threshold:number, collection:SOSCollections){
-		// generate random users
-		for(let i:number = 0; i < threshold; i++){
-			this.remotecollection.RemoteCollectionGroup[collection].model.create(this.collectionGeneratorFunctions[collection](), (err) => {
-				if (err) { console.log(err); }
-			});
+	public generateUserFootprints(amount:number){
+		var _userDocs:IUserModel[] = [];
+		var _userPostDocs:IPostModel[] = [];
+		var _userCommentDocs:ICommentModel[] = [];
+		for(let i:number = 0; i < amount; i++){ // generates amount (n) users
+			var _currentUser:IUserModel = this.generateRandomUser();
+			_userDocs.push(_currentUser);
+			for(let j:number = 0; j < amount; j++){ // generates amount^2 posts [ n posts under n users ]
+				var _userPost:IPostModel = this.generateRandomPost();
+				_userPost["userId"] = _currentUser["userId"];
+				_userPostDocs.push(_userPost);
+				for(let k:number = 0; k < amount; k++){ // generates amount^3 comments [ n comments for n posts for n users ]
+					var _userComment:ICommentModel = this.generateRandomComment();
+					_userComment["userId"] = _currentUser["userId"];
+					_userComment["postId"] = _userPost["postId"];
+					_userCommentDocs.push(_userComment);
+				}
+			}
 		}
+		_userDocs.forEach((document) => {
+			this.remotecollection.Users.model.create(document, (err) =>{
+				if(err) { console.log(err); }
+			});
+		});
+		_userPostDocs.forEach((document) => {
+			this.remotecollection.Posts.model.create(document, (err) =>{
+				if(err) { console.log(err); }
+			});
+		});
+		_userCommentDocs.forEach((document) => {
+			this.remotecollection.Comments.model.create(document, (err) =>{
+				if(err) { console.log(err); }
+			});
+		});
 	}
 
 	private generateRandomUser() {
@@ -81,3 +105,4 @@ class SOSDocumentGenerator {
 
 
 let Generator = new SOSDocumentGenerator();
+Generator.generateUserFootprints(3);

@@ -6,6 +6,7 @@ let mongooseConnection = DataAccess.mongooseConnection;
 let mongooseObj = DataAccess.mongooseInstance;
 
 /* Post Methods
+// TODO: update user info by number of posts 
 CRUD
 Create: create a post
 read: getting posts: getting posts by feed, by a user
@@ -61,7 +62,6 @@ class MemeModel {
     return operationSuccess;
   }
   
-
   // get a post (via post id)
   public retrieveMemeDetails(filter:Object) : Promise<IMemeModel> {
     return this.model.find(filter);
@@ -85,6 +85,11 @@ class MemeModel {
       });
     return operationSuccess;
   }
+
+  // TODO: This function is created to increment a post's vote 
+  // Params: postId, voteValue 
+  // returns: json
+  
 
   // delete a post (via post id)
   // TODO: update user info by number of posts
