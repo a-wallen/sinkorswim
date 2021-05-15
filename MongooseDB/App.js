@@ -10,6 +10,7 @@ var bodyParser = require("body-parser");
 var UserModel_1 = require("./model/UserModel");
 var PostModel_1 = require("./model/PostModel");
 var CommentModel_1 = require("./model/CommentModel");
+var VoteModel_1 = require("./model/VoteModel");
 // Creates and configures an ExpressJS web server.
 var App = /** @class */ (function () {
     //Run configuration methods on the Express instance.
@@ -22,6 +23,7 @@ var App = /** @class */ (function () {
         this.User = new UserModel_1.UserModel();
         this.Comment = new CommentModel_1.CommentModel();
         this.Post = new PostModel_1.PostModel();
+        this.Vote = new VoteModel_1.VoteModel();
     }
     // Configure Express middleware.
     App.prototype.middleware = function () {
@@ -107,11 +109,24 @@ var App = /** @class */ (function () {
             _this.Comment.retrieveComments(res, req.body);
         });
         router.put("/app/post/comments/", function (req, res) {
-            console.log(req.body);
             _this.Comment.updateComment(res, req.body);
         });
         router["delete"]("/app/post/comments/", function (req, res) {
             _this.Comment.deleteComment(res, req.body);
+        });
+        // #################################################
+        // ##############  VOTE METHODS    #################
+        // #################################################
+        // updates a post and deletes a vote 
+        // proper way: separate all actions (keep business logic outside of API) 
+        router.post("/app/post/votes/", function (req, res) {
+            _this.Vote.createVote(res, req.body);
+            _this.Post.retrievePostDetails(res, { postId: req.body["postId"] });
+            _this.Post.updatePostDetails(res, res.json.arguments);
+        });
+        router["delete"]("/app/post/votes/", function (req, res) {
+            _this.Vote.deleteVote(res, req.body);
+            // this.Post.updatePostDetails(res, req.body as IPostModel);
         });
         this.expressApp.use("/", router);
         this.expressApp.use("/app/json/", express.static(__dirname + "/app/json"));

@@ -156,14 +156,18 @@ class App {
     // ##############  VOTE METHODS    #################
     // #################################################
 
+    // updates a post and deletes a vote 
+    // proper way: separate all actions (keep business logic outside of API) 
     router.post("/app/post/votes/", (req, res) => {
       this.Vote.createVote(res, req.body as IVoteModel); 
+      this.Post.retrievePostDetails(res, { postId: req.body["postId"] });
+      this.Post.updatePostDetails(res, res.json.arguments as IPostModel); 
     })
 
     router.delete("/app/post/votes/", (req, res) => {
       this.Vote.deleteVote(res, req.body as IVoteModel); 
+      // this.Post.updatePostDetails(res, req.body as IPostModel);
     })
-
 
     this.expressApp.use("/", router);
     this.expressApp.use("/app/json/", express.static(__dirname + "/app/json"));

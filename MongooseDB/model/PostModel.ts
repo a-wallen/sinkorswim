@@ -55,7 +55,6 @@ class PostModel {
         .catch((err) => { response.json(err); });
   }
   
-
   // get a post (via post id)
   public retrievePostDetails(response: any, filter:Object) {
     var query = this.model.findOne(filter);
