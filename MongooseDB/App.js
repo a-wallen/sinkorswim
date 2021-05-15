@@ -122,7 +122,9 @@ var App = /** @class */ (function () {
         router.post("/app/post/votes/", function (req, res) {
             _this.Vote.createVote(res, req.body);
             _this.Post.retrievePostDetails(res, { postId: req.body["postId"] });
-            _this.Post.updatePostDetails(res, res.json.arguments);
+            var json = res.json();
+            var postObj = json;
+            _this.Post.updatePostDetails(res, postObj);
         });
         router["delete"]("/app/post/votes/", function (req, res) {
             _this.Vote.deleteVote(res, req.body);

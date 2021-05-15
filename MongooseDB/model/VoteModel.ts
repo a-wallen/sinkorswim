@@ -44,7 +44,7 @@ class VoteModel {
     // pre: user hasn't voted on this post before 
     // post: vote create and post changed 
     public createVote(response: any, voteObject: IVoteModel) {
-        this.model.insert(voteObject) 
+        this.model.insertMany(voteObject) 
             .then((result) => { response.json(result); })
             .catch((err) => { response.json(err); }); 
     }

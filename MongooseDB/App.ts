@@ -161,7 +161,9 @@ class App {
     router.post("/app/post/votes/", (req, res) => {
       this.Vote.createVote(res, req.body as IVoteModel); 
       this.Post.retrievePostDetails(res, { postId: req.body["postId"] });
-      this.Post.updatePostDetails(res, res.json.arguments as IPostModel); 
+      const json: Object = res.json(); 
+      const postObj: IPostModel = json as IPostModel; 
+      this.Post.updatePostDetails(res, postObj); 
     })
 
     router.delete("/app/post/votes/", (req, res) => {

@@ -32,7 +32,7 @@ var VoteModel = /** @class */ (function () {
     // pre: user hasn't voted on this post before 
     // post: vote create and post changed 
     VoteModel.prototype.createVote = function (response, voteObject) {
-        this.model.insert(voteObject)
+        this.model.insertMany(voteObject)
             .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     // delete vote: deletes a vote obj and updates a meme/post

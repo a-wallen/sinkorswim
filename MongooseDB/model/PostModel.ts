@@ -75,6 +75,11 @@ class PostModel {
       .catch((err) => { response.json(err); });
   }
 
+  // TODO: This function is created to increment a post's vote 
+  // Params: postId, voteValue 
+  // returns: json
+  
+
   // delete a post (via post id)
   // TODO: update user info by number of posts
   public deletePost(response: any, postObject:Object) {
