@@ -1,7 +1,6 @@
 import Mongoose = require("mongoose");
 import {DataAccess} from './../DataAccess';
 import {IVoteModel} from '../interfaces/IVoteModel';
-import {IPostModel} from '../interfaces/IPostModel';
 import { json } from "body-parser";
 
 let mongooseConnection = DataAccess.mongooseConnection;
@@ -28,7 +27,7 @@ class VoteModel {
         this.schema = new Mongoose.Schema(
             {
                 voteId: { type:String, required:true, index: { unique:true }},
-                postId: { type:String, required:true },
+                memeId: { type:String, required:true },
                 userId: { type:String, required:true },
                 voteValue: { type:Number, required:true },
                 timestamp: { type:String, required:true },
@@ -42,7 +41,7 @@ class VoteModel {
 
     // create vote: create a vote obj and update a meme/post
     // pre: user hasn't voted on this post before 
-    // post: vote create and post changed 
+    // post: vote created
     public createVote(response: any, voteObject: IVoteModel) {
         this.model.insertMany(voteObject) 
             .then((result) => { response.json(result); })
@@ -51,7 +50,6 @@ class VoteModel {
 
     // delete vote: deletes a vote obj and updates a meme/post
     // pre: none
-    // post: post has one fewer votes 
     public deleteVote(response: any, voteObject: IVoteModel) {
         this.model.deleteOne({ voteId: voteObject["voteId"] })
             .then((result) => { response.json(result); })

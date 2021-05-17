@@ -86,9 +86,19 @@ class MemeModel {
     return operationSuccess;
   }
 
-  // TODO: This function is created to increment a post's vote 
-  // Params: postId, voteValue 
+  // This function is created to increment a meme's vote 
+  // Params: memeId, voteValue 
   // returns: json
+  public voteMeme(response: any, memeId: Number, voteValue: Number) {
+    this.model.findByIdAndUpdate(memeId, { $inc: { totalVotes: voteValue } }, 
+      { new: true })
+      .then((result) => {
+        response.json(result); 
+      })
+      .catch((err) => {
+        response.json(err); 
+      }); 
+  }
   
 
   // delete a post (via post id)

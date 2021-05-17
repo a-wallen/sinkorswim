@@ -118,7 +118,7 @@ class App {
     });
 
     router.put("/app/memes/", (req, res) => {
-      this.Meme.updatePostDetails(res, req.body as IMemeModel);
+      this.Meme.updatePostDetails(res, req.body as IMemeModel); 
     })
 
     router.delete("/app/memes/", (req, res) => {
@@ -155,8 +155,12 @@ class App {
     // ##############  VOTE METHODS    #################
     // #################################################
 
-    router.post("/app/memes/votes/", (req, res) => {
+    router.post("/app/memes/votes/", async (req, res) => {
       this.Vote.createVote(res, req.body as IVoteModel); 
+      await this.Meme.retrieveMemeDetails({ memeId: req.body["memeId"] })
+      .then((result) => {
+          this.Meme.updatePostDetails(res, result as IMemeModel); 
+        });
     })
 
     router.delete("/app/memes/votes/", (req, res) => {
