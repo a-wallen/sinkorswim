@@ -1,0 +1,10 @@
+Steps
+Add a button  to test functionality
+    make sure database for getting details is succesful
+    make sure it displays it all (maybe as a json?)
+    button---
+        how do we "pass in" the meme id to the button 
+            --maybe hard code at first?
+Get it to display result as a single block of text
+if works- make pretty
+else-fix shit
