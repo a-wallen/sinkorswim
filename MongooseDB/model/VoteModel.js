@@ -19,28 +19,45 @@ var VoteModel = /** @class */ (function () {
     VoteModel.prototype.createSchema = function () {
         this.schema = new Mongoose.Schema({
             voteId: { type: String, required: true, index: { unique: true } },
-            postId: { type: String, required: true },
+            memeId: { type: String, required: true },
             userId: { type: String, required: true },
             voteValue: { type: Number, required: true },
             timestamp: { type: String, required: true }
-        }, { collection: 'votes' });
+        }, { collection: "votes" });
     };
     VoteModel.prototype.createModel = function () {
         this.model = mongooseConnection.model("Votes", this.schema);
     };
     // create vote: create a vote obj and update a meme/post
-    // pre: user hasn't voted on this post before 
-    // post: vote create and post changed 
+    // pre: user hasn't voted on this post before
+    // post: vote created
     VoteModel.prototype.createVote = function (response, voteObject) {
-        this.model.insertMany(voteObject)
-            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+        this.model
+            .insertMany(voteObject)
+            .then(function (result) {
+            response.json(result);
+        })["catch"](function (err) {
+            response.json(err);
+        });
     };
+    //     // create vote: create a vote obj and update a meme/post
+    // // pre: user hasn't voted on this post before
+    // // post: vote created
+    // public createVote(response: any, voteObject: IVoteModel) {
+    //     this.model.insertMany(voteObject)
+    //         .then((result) => { response.json(result); })
+    //         .catch((err) => { response.json(err); });
+    // }
     // delete vote: deletes a vote obj and updates a meme/post
     // pre: none
-    // post: post has one fewer votes 
     VoteModel.prototype.deleteVote = function (response, voteObject) {
-        this.model.deleteOne({ voteId: voteObject["voteId"] })
-            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+        this.model
+            .deleteOne({ voteId: voteObject["voteId"] })
+            .then(function (result) {
+            response.json(result);
+        })["catch"](function (err) {
+            response.json(err);
+        });
     };
     return VoteModel;
 }());
