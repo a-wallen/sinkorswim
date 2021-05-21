@@ -1,1 +1,40 @@
-/* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css?family=Bebas+Neue|Montserrat|Oswald|Poppins');
+
+:root {
+    --primary-color: #000022;
+    --secondary-color: #CE2842;
+    --primary-light-color: #FFEFD3;
+    --secondary-light-color: #EC544B;
+    --highlight-color: #F49722;
+    --text-color: #FFFFFF;
+  }
+
+h1 {
+    color: var(--primary-light-color);
+    font-family: 'Bebas Neue';
+    font-size: 250%;
+  }
+  h2, h3 {
+    color: var(--secondary-color);
+    font-family: 'Oswald';
+  }
+  h4 {
+    color: var(--secondary-light-color);
+    font-family: 'Poppins';
+    font-weight: 'light';
+    font-style: italic;
+  }
+  body {
+      background-color: var(--primary-color);
+    margin: 2em;
+  }
+  body, input[type="text"], button {
+    color: var(--text-color);
+    font-family: 'Bebas Neue';
+  }
+
+  * {
+    font-family: 'Montserrat';
+    color: var(--primary-light-color)
+  }
