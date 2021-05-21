@@ -13,7 +13,6 @@
 h1 {
     color: var(--primary-light-color);
     font-family: 'Bebas Neue';
-    font-size: 250%;
   }
   h2, h3 {
     color: var(--secondary-color);
@@ -30,11 +29,23 @@ h1 {
     margin: 2em;
   }
   body, input[type="text"], button {
-    color: var(--text-color);
-    font-family: 'Bebas Neue';
+    color: var(--primary-color);
+    font-family: 'Montserrat';
   }
+  p {
+      font-family: 'Montserrat';
+      color: var(--primary-color);
+  }
+  label {
+      font-family: 'Oswald';
+      color: var(--primary-color);
+  }
+  /* title-nav{
+      font-size: 250%;
+  } */
+
 
   * {
-    font-family: 'Montserrat';
-    color: var(--primary-light-color)
+    font-family: 'Bebas Neue','Montserrat';
+    color: var(--primary-color)
   }
