@@ -39,10 +39,12 @@ export class MemeComponent implements OnInit {
       .getMemeDetails(this.memeId) //change this
       .subscribe(
         (result) => {
-          this.userId = result.userId;
-          this.caption = result.caption;
-          this.totalVotes = result.totalVotes;
-          this.imageUrl = result.imageUrl;
+          // console.log(result);
+          //console.log("in component");
+          this.userId = result[0].userId;
+          this.caption = result[0].caption;
+          this.totalVotes = result[0].totalVotes;
+          this.imageUrl = result[0].imageUrl;
         },
         () => {},
         () => {}

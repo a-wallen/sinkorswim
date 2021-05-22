@@ -25,6 +25,8 @@ export class MemeService {
   }
 
   getMemeDetails(memeId: string) {
+    console.log("Enters get meme detials");
+    console.log(memeId);
     //IS THIS ROUTE CORRECT? ==============================================================================
     return this.http
       .get("http://localhost:8080/app/memes/" + memeId)
