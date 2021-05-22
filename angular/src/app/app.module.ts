@@ -17,6 +17,8 @@ import { ItemsTableComponent } from "./list/items-table/items-table.component";
 //Added this
 import { MemeComponent } from "./meme/meme.component";
 import { MemeService } from "app/meme-service.service";
+import { FeedComponent } from './feed/feed.component';
+import { MemeListItemComponent } from './meme-list-item/meme-list-item.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { MemeService } from "app/meme-service.service";
     ListsTableComponent,
     ItemsTableComponent,
     MemeComponent,
+    FeedComponent,
+    MemeListItemComponent,
   ],
   imports: [BrowserModule, FormsModule, HttpModule, routing],
 
