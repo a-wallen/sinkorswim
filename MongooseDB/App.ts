@@ -160,7 +160,10 @@ class App {
       await this.Meme.retrieveMemeDetails({ memeId: req.body["memeId"] })
       .then((result) => {
           this.Meme.updatePostDetails(res, result as IMemeModel); 
-        });
+        })
+      .catch((error) => {
+        res.send(error); 
+      });
     })
 
     router.delete("/app/memes/votes/", (req, res) => {
