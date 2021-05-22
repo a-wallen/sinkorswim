@@ -27,7 +27,7 @@ export class MemeComponent implements OnInit {
   imageUrl: String;
   timePost: Date;
 
-  userName: string; 
+  userName: string;
   //not sure what else we need, if any
 
   constructor(
@@ -36,6 +36,7 @@ export class MemeComponent implements OnInit {
     private meme$: MemeService
   ) {
     this.memeId = route.snapshot.params["memeId"];
+    var result2 = meme$.getUserInfo(this.memeId);
 
     meme$
       .getMemeDetails(this.memeId) //change this
@@ -52,17 +53,17 @@ export class MemeComponent implements OnInit {
         () => {}
       );
     meme$
-        .getUserInfo("101594") // const for userId 
-        .subscribe(
-          (result1) => {
-            // console.log("username for userid of :" + this.userId); 
-            console.log(result1); 
-            console.log("Get userinfo from a meme"); 
-            console.log(result1); 
-          },
-          () => {},
-          () => {}
-        );
+      .getUserInfo("42069") // const for userId
+      .subscribe(
+        (result1) => {
+          // console.log("username for userid of :" + this.userId);
+          console.log(result1);
+          // console.log("Get userinfo from a meme");
+          //console.log(result1);
+        },
+        () => {},
+        () => {}
+      );
   }
 
   ngOnInit(): void {}
