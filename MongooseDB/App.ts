@@ -109,11 +109,11 @@ class App {
 
     //get individual post details by id
     router.get("/app/memes/:memeId/", async (req, res) => {
-      res.json(await this.Meme.retrieveMemeDetails({ memeId: req.params.memeId }));
+      this.Meme.retrieveMemeDetails(res, { memeId: req.params.memeId });
     });
 
     //load feed (get post by day)
-    router.get("/app/memes/:day", (req, res) => {
+    router.get("/app/memes/day/:day", (req, res) => {
       this.Meme.getFeed(res, { timePost: new Date(req.params.day) });
     });
 

@@ -63,8 +63,10 @@ class MemeModel {
   }
   
   // get a post (via post id)
-  public retrieveMemeDetails(filter:Object) : Promise<IMemeModel> {
-    return this.model.find(filter);
+  public retrieveMemeDetails(response: any, filter:Object) : Promise<IMemeModel> {
+    return this.model.find(filter)
+      .then((result) => response.json(result))
+      .catch((err) => response.json(err));
   }
 
   public getFeed(response:any, filter:Object) : IMemeModel[] {
@@ -73,17 +75,14 @@ class MemeModel {
       .catch((err) => { response.json(err) });
   }
 
-  public updatePostDetails(response:any, memeObject:IMemeModel) : Boolean {
-    var operationSuccess = false;
-    this.model.replaceOne({ memeId: memeObject["postId"]}, memeObject)
+  public updatePostDetails(response:any, memeObject:IMemeModel) {
+    this.model.replaceOne({ memeId: memeObject["memeId"]}, memeObject)
       .then((result) => { 
-        operationSuccess = true; 
         response.json(result); 
       })
       .catch((err) => { 
         response.json(err); 
       });
-    return operationSuccess;
   }
 
   // TODO: This function is created to increment a post's vote 

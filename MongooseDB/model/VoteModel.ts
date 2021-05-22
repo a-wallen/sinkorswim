@@ -1,7 +1,7 @@
 import Mongoose = require("mongoose");
 import {DataAccess} from './../DataAccess';
 import {IVoteModel} from '../interfaces/IVoteModel';
-import {IPostModel} from '../interfaces/IPostModel';
+import {IMemeModel} from '../interfaces/IMemeModel';
 import { json } from "body-parser";
 
 let mongooseConnection = DataAccess.mongooseConnection;

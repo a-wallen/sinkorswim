@@ -6,6 +6,7 @@ var DataAccess_1 = require("./../DataAccess");
 var mongooseConnection = DataAccess_1.DataAccess.mongooseConnection;
 var mongooseObj = DataAccess_1.DataAccess.mongooseInstance;
 /* Post Methods
+// TODO: update user info by number of posts
 CRUD
 Create: create a post
 read: getting posts: getting posts by feed, by a user
@@ -49,24 +50,25 @@ var MemeModel = /** @class */ (function () {
         return operationSuccess;
     };
     // get a post (via post id)
-    MemeModel.prototype.retrieveMemeDetails = function (filter) {
-        return this.model.find(filter);
+    MemeModel.prototype.retrieveMemeDetails = function (response, filter) {
+        return this.model.find(filter)
+            .then(function (result) { return response.json(result); })["catch"](function (err) { return response.json(err); });
     };
     MemeModel.prototype.getFeed = function (response, filter) {
         return this.model.find(filter)
             .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     MemeModel.prototype.updatePostDetails = function (response, memeObject) {
-        var operationSuccess = false;
-        this.model.replaceOne({ memeId: memeObject["postId"] }, memeObject)
+        this.model.replaceOne({ memeId: memeObject["memeId"] }, memeObject)
             .then(function (result) {
-            operationSuccess = true;
             response.json(result);
         })["catch"](function (err) {
             response.json(err);
         });
-        return operationSuccess;
     };
+    // TODO: This function is created to increment a post's vote 
+    // Params: postId, voteValue 
+    // returns: json
     // delete a post (via post id)
     // TODO: update user info by number of posts
     MemeModel.prototype.deleteMeme = function (response, memeObject) {

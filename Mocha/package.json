@@ -27,5 +27,8 @@
   "license": "Apache",
   "engines": {
     "node": ">=0.12.2"
+  },
+  "scripts" : {
+    "test" : "mocha"
   }
 }
