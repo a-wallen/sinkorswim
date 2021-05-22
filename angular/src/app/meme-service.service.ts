@@ -32,4 +32,14 @@ export class MemeService {
       .get("http://localhost:8080/app/memes/" + memeId)
       .map((response) => response.json());
   }
+
+  getUserInfo(userId: string) {
+    console.log("Gets username for a meme");
+    console.log(userId); 
+    return this.http
+      .get("http://localhost:8080/app/users/" + userId)
+      .map((data) => {
+        data["userId"]; 
+      }); 
+  }
 }
