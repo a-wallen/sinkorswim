@@ -7,6 +7,7 @@ export class ListsService {
   constructor(private http: Http) {}
 
   getListsIndex() {
+    console.log("enters getListsIndex in list-service.service.ts");
     return (
       this.http
         .get("http://localhost:8080/json/lists.json")

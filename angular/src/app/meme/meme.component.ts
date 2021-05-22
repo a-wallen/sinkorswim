@@ -26,6 +26,8 @@ export class MemeComponent implements OnInit {
   totalVotes: Number;
   imageUrl: String;
   timePost: Date;
+
+  userName: string; 
   //not sure what else we need, if any
 
   constructor(
@@ -39,14 +41,28 @@ export class MemeComponent implements OnInit {
       .getMemeDetails(this.memeId) //change this
       .subscribe(
         (result) => {
-          this.userId = result.userId;
-          this.caption = result.caption;
-          this.totalVotes = result.totalVotes;
-          this.imageUrl = result.imageUrl;
+          // console.log(result);
+          //console.log("in component");
+          this.userId = result[0].userId;
+          this.caption = result[0].caption;
+          this.totalVotes = result[0].totalVotes;
+          this.imageUrl = result[0].imageUrl;
         },
         () => {},
         () => {}
       );
+    meme$
+        .getUserInfo("101594") // const for userId 
+        .subscribe(
+          (result1) => {
+            // console.log("username for userid of :" + this.userId); 
+            console.log(result1); 
+            console.log("Get userinfo from a meme"); 
+            console.log(result1); 
+          },
+          () => {},
+          () => {}
+        );
   }
 
   ngOnInit(): void {}
