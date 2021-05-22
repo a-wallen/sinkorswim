@@ -55,8 +55,10 @@ class UserModel {
     }
 
     // get user details
-    public retrieveUserDetails(filter:Object) : Promise<IUserModel> {
-        return this.model.findOne(filter);
+    public retrieveUserDetails(response:any, filter:Object) {
+        this.model.findOne(filter)
+            .then((result) => {response.json(result);})
+            .catch((err) => {response.json(err);});
     }
 
     public updateUserDetails(response:any, userObject:IUserModel){

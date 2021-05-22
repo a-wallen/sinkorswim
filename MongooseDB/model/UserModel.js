@@ -39,8 +39,9 @@ var UserModel = /** @class */ (function () {
             .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     // get user details
-    UserModel.prototype.retrieveUserDetails = function (filter) {
-        return this.model.findOne(filter);
+    UserModel.prototype.retrieveUserDetails = function (response, filter) {
+        this.model.findOne(filter)
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     UserModel.prototype.updateUserDetails = function (response, userObject) {
         this.model.replaceOne({ userId: userObject["userId"] }, userObject)

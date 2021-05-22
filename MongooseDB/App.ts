@@ -83,7 +83,7 @@ class App {
 
     //Get User Details
     router.get("/app/users/:userId/", async (req, res) => {
-      res.json(await this.User.retrieveUserDetails({ userId: req.params.userId}));
+      this.User.retrieveUserDetails(res, { userId: req.params.userId});
     });
 
     router.put("/app/users/", (req, res) => {
@@ -92,10 +92,8 @@ class App {
 
     router.delete("/app/users/", (req, res) => {
       this.User.deleteUser(res, req.body as IUserModel);
-      if(res.json["deletedCount"] == 0) return;
-      let _userId = req.body["userId"];
-      this.Meme.deleteMeme(res, {userId: _userId});
-      this.Comment.deleteComment(res, {commentId: _userId});
+      this.Meme.deleteMeme(res, {userId: req.body["userId"] });
+      this.Comment.deleteComment(res, {commentId: req.body["userId"] });
     });
 
     // #################################################
@@ -122,8 +120,8 @@ class App {
     })
 
     router.delete("/app/memes/", (req, res) => {
-      if(this.Meme.deleteMeme(res, req.body as IMemeModel))
-        this.Comment.deleteComment(res, {commentId: req.body["memeId"]});
+      this.Meme.deleteMeme(res, req.body as IMemeModel);
+      this.Comment.deleteComment(res, {commentId: req.body["memeId"]});
     });
     
     // #################################################
@@ -135,12 +133,12 @@ class App {
     });
 
     router.get("/app/comments/", async (req, res) => {
-      res.json(await this.Comment.retrieveComment(req.body as ICommentModel));
+      this.Comment.retrieveComment(res, req.body as ICommentModel);
     });
 
     //get all comments on a post
     router.get("/app/memes/comment/", async (req, res) => {
-      res.json(await this.Comment.retrieveComments(req.body as IMemeModel));
+      this.Comment.retrieveComments(res, req.body as IMemeModel)
     });
 
     router.put("/app/memes/comments/", (req, res) => {

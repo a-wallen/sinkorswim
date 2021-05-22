@@ -32,45 +32,38 @@ var CommentModel = /** @class */ (function () {
         this.model = mongooseConnection.model("Comments", this.schema);
     };
     CommentModel.prototype.createComment = function (response, commentObject) {
-        var operationSuccess = false;
         this.model.insertMany(commentObject)
             .then(function (result) {
-            operationSuccess = true;
             response.json(result);
         })["catch"](function (err) {
             response.json(err);
         });
-        return operationSuccess;
     };
-    CommentModel.prototype.retrieveComment = function (commentObject) {
-        return this.model.findOne({ commentId: commentObject["commentId"] });
+    CommentModel.prototype.retrieveComment = function (response, commentObject) {
+        this.model.findOne({ commentId: commentObject["commentId"] })
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     // view a comment 
-    CommentModel.prototype.retrieveComments = function (postObject) {
-        return this.model.find({ postId: postObject["memeId"] });
+    CommentModel.prototype.retrieveComments = function (response, postObject) {
+        this.model.find({ postId: postObject["memeId"] })
+            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     CommentModel.prototype.updateComment = function (response, commentObject) {
-        var operationSuccess = false;
         this.model.replaceOne({ commentId: commentObject["commentId"] }, commentObject)
             .then(function (result) {
-            operationSuccess = true;
             response.json(result);
         })["catch"](function (err) {
             response.json(err);
         });
-        return operationSuccess;
     };
     // delete a comment 
     CommentModel.prototype.deleteComment = function (response, commentObject) {
-        var operationSuccess = false;
         this.model.deleteMany({ commentId: commentObject["commentId"] })
             .then(function (result) {
-            operationSuccess = true;
             response.json(result);
         })["catch"](function (err) {
             response.json(err);
         });
-        return operationSuccess;
     };
     return CommentModel;
 }());

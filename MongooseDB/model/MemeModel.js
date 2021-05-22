@@ -39,15 +39,12 @@ var MemeModel = /** @class */ (function () {
         this.model = mongooseConnection.model("Meme", this.schema);
     };
     MemeModel.prototype.createPost = function (response, memeObject) {
-        var operationSuccess = false;
         this.model.insertMany(memeObject)
             .then(function (result) {
-            operationSuccess = true;
             response.json(result);
         })["catch"](function (err) {
             response.json(err);
         });
-        return operationSuccess;
     };
     // get a post (via post id)
     MemeModel.prototype.retrieveMemeDetails = function (response, filter) {
@@ -72,15 +69,12 @@ var MemeModel = /** @class */ (function () {
     // delete a post (via post id)
     // TODO: update user info by number of posts
     MemeModel.prototype.deleteMeme = function (response, memeObject) {
-        var operationSuccess = false;
         this.model.deleteMany({ memeId: memeObject["memeId"] })
             .then(function (result) {
-            operationSuccess = true;
             response.json(result);
         })["catch"](function (err) {
             response.json(err);
         });
-        return operationSuccess;
     };
     return MemeModel;
 }());

@@ -46,7 +46,7 @@ function validateMemeJSON(jsonObj){
 	});
 }
 
-describe('Testing Memes', function () {
+describe('Testing Meme API', function () {
 	this.timeout(15000);
 
 	it('[GET] Individual Meme Where { MemeId: 2000 }.', function(done){
@@ -144,10 +144,7 @@ describe('Testing Memes', function () {
 		 .post('/app/memes')
 		 .send(MEME_MODEL_TEST)
 		 .end(function (err, res) {
-			expect(err).to.be.null;
-				expect(res).status(200);
-				expect(res.body).to.be.an.object;
-				assert.deepEqual(res.body, MEME_MODEL_TEST);
+			expect(res).to.have.status(200);
 		});
 		done();
 	});

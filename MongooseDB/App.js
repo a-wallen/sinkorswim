@@ -95,16 +95,9 @@ var App = /** @class */ (function () {
         });
         //Get User Details
         router.get("/app/users/:userId/", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _b = (_a = res).json;
-                        return [4 /*yield*/, this.User.retrieveUserDetails({ userId: req.params.userId })];
-                    case 1:
-                        _b.apply(_a, [_c.sent()]);
-                        return [2 /*return*/];
-                }
+            return __generator(this, function (_a) {
+                this.User.retrieveUserDetails(res, { userId: req.params.userId });
+                return [2 /*return*/];
             });
         }); });
         router.put("/app/users/", function (req, res) {
@@ -112,11 +105,8 @@ var App = /** @class */ (function () {
         });
         router["delete"]("/app/users/", function (req, res) {
             _this.User.deleteUser(res, req.body);
-            if (res.json["deletedCount"] == 0)
-                return;
-            var _userId = req.body["userId"];
-            _this.Meme.deleteMeme(res, { userId: _userId });
-            _this.Comment.deleteComment(res, { commentId: _userId });
+            _this.Meme.deleteMeme(res, { userId: req.body["userId"] });
+            _this.Comment.deleteComment(res, { commentId: req.body["userId"] });
         });
         // #################################################
         // ##############  memes METHODS    ################
@@ -140,8 +130,8 @@ var App = /** @class */ (function () {
             _this.Meme.updatePostDetails(res, req.body);
         });
         router["delete"]("/app/memes/", function (req, res) {
-            if (_this.Meme.deleteMeme(res, req.body))
-                _this.Comment.deleteComment(res, { commentId: req.body["memeId"] });
+            _this.Meme.deleteMeme(res, req.body);
+            _this.Comment.deleteComment(res, { commentId: req.body["memeId"] });
         });
         // #################################################
         // ##############  COMMENT METHODS    ################
@@ -150,30 +140,16 @@ var App = /** @class */ (function () {
             _this.Comment.createComment(res, req.body);
         });
         router.get("/app/comments/", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _b = (_a = res).json;
-                        return [4 /*yield*/, this.Comment.retrieveComment(req.body)];
-                    case 1:
-                        _b.apply(_a, [_c.sent()]);
-                        return [2 /*return*/];
-                }
+            return __generator(this, function (_a) {
+                this.Comment.retrieveComment(res, req.body);
+                return [2 /*return*/];
             });
         }); });
         //get all comments on a post
         router.get("/app/memes/comment/", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _b = (_a = res).json;
-                        return [4 /*yield*/, this.Comment.retrieveComments(req.body)];
-                    case 1:
-                        _b.apply(_a, [_c.sent()]);
-                        return [2 /*return*/];
-                }
+            return __generator(this, function (_a) {
+                this.Comment.retrieveComments(res, req.body);
+                return [2 /*return*/];
             });
         }); });
         router.put("/app/memes/comments/", function (req, res) {

@@ -3,6 +3,7 @@ import {DataAccess} from './../DataAccess';
 import {ICommentModel} from '../interfaces/ICommentModel';
 import {IMemeModel} from '../interfaces/IMemeModel';
 import { json } from "body-parser";
+import { response } from "express";
 
 let mongooseConnection = DataAccess.mongooseConnection;
 let mongooseObj = DataAccess.mongooseInstance;
@@ -43,52 +44,47 @@ class CommentModel {
       this.model = mongooseConnection.model<ICommentModel>("Comments", this.schema);
     }
 
-    public createComment(response:any, commentObject:ICommentModel) : Boolean {
-      var operationSuccess = false;
+    public createComment(response:any, commentObject:ICommentModel) {
       this.model.insertMany(commentObject)
         .then((result) => { 
-          operationSuccess = true;
           response.json(result);
         })
         .catch((err) => { 
           response.json(err); 
         });
-      return operationSuccess;
     }
 
-    public retrieveComment(commentObject:ICommentModel) : Promise<ICommentModel> {
-      return this.model.findOne({commentId: commentObject["commentId"]});
+    public retrieveComment(response:any, commentObject:ICommentModel) {
+        this.model.findOne({commentId: commentObject["commentId"]})
+          .then((result) => { response.json(result); })
+          .catch((err) => {response.json(err); });
     }
     // view a comment 
-    public retrieveComments(postObject:IMemeModel) : ICommentModel {
-      return this.model.find({postId: postObject["memeId"]});
+    public retrieveComments(response:any, postObject:IMemeModel) {
+      this.model.find({postId: postObject["memeId"]})
+        .then((result) => { response.json(result); })
+        .catch((err) => { response.json(err); });
     }
 
-    public updateComment(response:any, commentObject:ICommentModel) : Boolean {
-      var operationSuccess = false;
+    public updateComment(response:any, commentObject:ICommentModel) {
       this.model.replaceOne({commentId: commentObject["commentId"]}, commentObject)
         .then((result) => {
-          operationSuccess = true; 
           response.json(result); 
         })
         .catch((err) => { 
           response.json(err); 
         });
-      return operationSuccess;
     }
 
     // delete a comment 
     public deleteComment(response: any, commentObject: Object) {
-      var operationSuccess = false;
       this.model.deleteMany({commentId: commentObject["commentId"]})
         .then((result) => {
-          operationSuccess = true; 
           response.json(result); 
         })
         .catch((err) => { 
           response.json(err); 
         });
-      return operationSuccess;
     }
 }
 export {CommentModel};
