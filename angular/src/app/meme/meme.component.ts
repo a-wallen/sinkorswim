@@ -46,11 +46,23 @@ export class MemeComponent implements OnInit {
     meme$
       .getUserInfo("42069") // const for userId
       .subscribe((result) => {
-        console.log(result);
-        console.log(result.userName);
+        //console.log(result);
+        //console.log(result.userName);
         this.userName = result.userName;
       });
+
+    //Get Comments here as well
+  }
+  upvoteMethod() {
+    this.meme$.upvote(this.memeId);
   }
 
+  downvoteMethod() {
+    this.meme$.downvote(this.memeId);
+  }
+
+  reportMethod() {
+    this.meme$.report(this.memeId);
+  }
   ngOnInit(): void {}
 }

@@ -40,4 +40,21 @@ export class MemeService {
       .get("http://localhost:8080/app/users/" + userId)
       .map((response) => response.json());
   }
+
+  //I DONT KNOW HOW TO PASS IN A JSON FOR THIS ROUTE
+  getComments(memeId: String) {
+    return this.http
+      .get("http://localhost:8080/app/memes/comment/")
+      .map((response) => response.json());
+  }
+
+  upvote(memeId: String) {
+    console.log("Upvote is called with memeID :" + memeId);
+  }
+  downvote(memeId: String) {
+    console.log("downvote is called with memeID :" + memeId);
+  }
+  report(memeId: String) {
+    console.log("report is called with memeID :" + memeId);
+  }
 }
