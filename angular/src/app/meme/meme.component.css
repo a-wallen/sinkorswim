@@ -14,3 +14,11 @@
   padding-left: 0px; /* make text start to the right of the image */
   vertical-align: middle; /* align the text vertically centered */
 }
+
+.memeImage {
+  width: 500px;
+  height: 500px;
+  float: left;
+  padding: 10px;
+  border-radius: 50px;
+}
