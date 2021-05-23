@@ -35,25 +35,21 @@ export class MemeComponent implements OnInit {
 
     meme$
       .getMemeDetails(this.memeId) //change this
-      .subscribe(
-        (result) => {
-          // console.log(result);
-          //console.log("in component");
-          this.userId = result[0].userId;
-          this.caption = result[0].caption;
-          this.totalVotes = result[0].totalVotes;
-          this.imageUrl = result[0].imageUrl;
-        }
-      );
+      .subscribe((result) => {
+        // console.log(result);
+        //console.log("in component");
+        this.userId = result[0].userId;
+        this.caption = result[0].caption;
+        this.totalVotes = result[0].totalVotes;
+        this.imageUrl = result[0].imageUrl;
+      });
     meme$
       .getUserInfo("42069") // const for userId
-      .subscribe(
-        (result) => {
-          console.log(result);
-          console.log(result.userName);
-          this.userName = result.userName; 
-        }
-      );
+      .subscribe((result) => {
+        console.log(result);
+        console.log(result.userName);
+        this.userName = result.userName;
+      });
   }
 
   ngOnInit(): void {}

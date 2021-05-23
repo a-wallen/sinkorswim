@@ -163,10 +163,11 @@ class App {
       var voteResult;
       this.Vote.createVote(voteResult, req.body as IVoteModel);
 
-      await this.Meme.retrieveMemeDetails({ memeId: req.body["memeId"] })
-      .then((result) => {
-        this.Meme.updatePostDetails(voteResult, result as IMemeModel);
-      });
+      await this.Meme.retrieveMemeDetails({ memeId: req.body["memeId"] }).then(
+        (result) => {
+          this.Meme.updatePostDetails(voteResult, result as IMemeModel);
+        }
+      );
       return res;
     });
 

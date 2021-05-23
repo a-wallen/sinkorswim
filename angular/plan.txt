@@ -1,3 +1,7 @@
-get userName via userId
-get number of votes
-hookup upvote/downvote button
+make it look better
+upvote and downvote button
+get commments to populate as well
+try and match the hi fi diagram
+    slide 11 https://redhawks.sharepoint.com/:p:/s/SAASGroup9/EScQPlZJDtxEkOKgirRt7cUBhC-SQHAqlkm9AEXoHbzo1A?e=LGiQRy
+
+    

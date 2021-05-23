@@ -193,21 +193,28 @@ var App = /** @class */ (function () {
         // ##############  VOTE METHODS    #################
         // #################################################
         router.post("/app/memes/votes/", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var voteResult;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.Vote.createVote(res, req.body);
-                        return [4 /*yield*/, this.Meme.retrieveMemeDetails({ memeId: req.body["memeId"] })
-                                .then(function (result) {
-                                _this.Meme.updatePostDetails(res, result);
+                        this.Vote.createVote(voteResult, req.body);
+                        return [4 /*yield*/, this.Meme.retrieveMemeDetails({ memeId: req.body["memeId"] }).then(function (result) {
+                                _this.Meme.updatePostDetails(voteResult, result);
                             })];
                     case 1:
                         _a.sent();
-                        return [2 /*return*/];
+                        return [2 /*return*/, res];
                 }
             });
         }); });
+        // router.post("/app/memes/votes/", async (req, res) => {
+        //   this.Vote.createVote(res, req.body as IVoteModel);
+        //   await this.Meme.retrieveMemeDetails({ memeId: req.body["memeId"] })
+        //   .then((result) => {
+        //       this.Meme.updatePostDetails(res, result as IMemeModel);
+        //     });
+        // })
         router["delete"]("/app/memes/votes/", function (req, res) {
             _this.Vote.deleteVote(res, req.body);
         });

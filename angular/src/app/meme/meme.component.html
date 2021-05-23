@@ -6,21 +6,36 @@
   <tbody>
     <tr>
       <td style="width: 100%">
-        <p>Username: {{ userName }}</p>
-        <p>Image:</p>
+        <input
+          type="image"
+          src="https://emoji.gg/assets/emoji/1725_upvote.png"
+          class="button"
+        />
+        <br />
+        <input
+          type="image"
+          src="https://emoji.gg/assets/emoji/9975_downvote.png"
+          class="button"
+        />
+
         <img
           src="{{ imageUrl }}"
           width="500"
-          height="500"
-          style="border: 5px solid black"
+          height="400"
+          style="float: left; padding: 10px; border: 2"
+          border-radius="10px"
         />
+        <p><br />Votes: {{ totalVotes }}</p>
+        <p>Username: {{ userName }}</p>
         <p>
           Caption: <var>{{ caption }}</var>
         </p>
-        <button type="button">Upvote</button>
-        <button type="button">Downvote</button>
-        <button type="button">Flag</button>
-        <button type="button">Report</button>
+
+        <input
+          type="image"
+          src="https://www.rawshorts.com/freeicons/wp-content/uploads/2017/01/red_webpict50_1484337222-1.png"
+          class="button"
+        />
       </td>
     </tr>
   </tbody>

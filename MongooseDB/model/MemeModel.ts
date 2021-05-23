@@ -33,13 +33,13 @@ class MemeModel {
   public createSchema(): void {
     this.schema = new Mongoose.Schema(
       {
-        memeId: {type: String, required: true, index: {unique: true}},
-        userId: {type: String, required: true}, 
-        totalVotes: {type: Number, required: true}, 
-        imageUrl: {type: String, required: true}, // FIXME: how to format
-        caption: {type: String}, 
-        timePost: {type: Date}, 
-        reports: {type: Number},
+        memeId: { type: String, required: true, index: { unique: true } },
+        userId: { type: String, required: true },
+        totalVotes: { type: Number, required: true },
+        imageUrl: { type: String, required: true }, // FIXME: how to format
+        caption: { type: String },
+        timePost: { type: Date },
+        reports: { type: Number },
       },
       { collection: "memes" }
     );
@@ -49,72 +49,83 @@ class MemeModel {
     this.model = mongooseConnection.model<IMemeModel>("Meme", this.schema);
   }
 
-  public createPost(response:any, memeObject:IMemeModel) : Boolean {
+  public createPost(response: any, memeObject: IMemeModel): Boolean {
     var operationSuccess = false;
-    this.model.insertMany(memeObject)
-      .then((result) => { 
-        operationSuccess = true; 
-        response.json(result); 
+    this.model
+      .insertMany(memeObject)
+      .then((result) => {
+        operationSuccess = true;
+        response.json(result);
       })
-      .catch((err) => { 
-        response.json(err); 
+      .catch((err) => {
+        response.json(err);
       });
     return operationSuccess;
   }
-  
+
   // get a post (via post id)
-  public retrieveMemeDetails(filter:Object) : Promise<IMemeModel> {
+  public retrieveMemeDetails(filter: Object): Promise<IMemeModel> {
     return this.model.find(filter);
   }
 
-  public getFeed(response:any, filter:Object) : IMemeModel[] {
-    return this.model.find(filter)
-      .then((result) => { response.json(result) })
-      .catch((err) => { response.json(err) });
+  public getFeed(response: any, filter: Object): IMemeModel[] {
+    return this.model
+      .find(filter)
+      .then((result) => {
+        response.json(result);
+      })
+      .catch((err) => {
+        response.json(err);
+      });
   }
 
-  public updatePostDetails(response:any, memeObject:IMemeModel) : Boolean {
+  public updatePostDetails(response: any, memeObject: IMemeModel): Boolean {
     var operationSuccess = false;
-    this.model.replaceOne({ memeId: memeObject["postId"]}, memeObject)
-      .then((result) => { 
-        operationSuccess = true; 
-        response.json(result); 
+    this.model
+      .replaceOne({ memeId: memeObject["postId"] }, memeObject)
+      .then((result) => {
+        operationSuccess = true;
+        response.json(result);
       })
-      .catch((err) => { 
-        response.json(err); 
+      .catch((err) => {
+        response.json(err);
       });
     return operationSuccess;
   }
 
-  // This function is created to increment a meme's vote 
-  // Params: memeId, voteValue 
+  // This function is created to increment a meme's vote
+  // Params: memeId, voteValue
   // returns: json
-  public voteMeme(response: any, memeId: Number, voteValue: Number) {
-    this.model.findByIdAndUpdate(memeId, { $inc: { totalVotes: voteValue } }, 
-      { new: true })
+  //CHANGED memeID TO STRING INSTEAD OF A NUMBER
+  public voteMeme(response: any, memeId: String, voteValue: Number) {
+    this.model
+      .findByIdAndUpdate(
+        memeId,
+        { $inc: { totalVotes: voteValue } },
+        { new: true }
+      )
       .then((result) => {
-        response.json(result); 
+        response.json(result);
       })
       .catch((err) => {
-        response.json(err); 
-      }); 
+        response.json(err);
+      });
   }
-  
 
   // delete a post (via post id)
   // TODO: update user info by number of posts
-  public deleteMeme(response: any, memeObject:Object) {
+  public deleteMeme(response: any, memeObject: Object) {
     var operationSuccess = false;
-    this.model.deleteMany({memeId: memeObject["memeId"]})
-      .then((result) => { 
-        operationSuccess = true; 
-        response.json(result); 
+    this.model
+      .deleteMany({ memeId: memeObject["memeId"] })
+      .then((result) => {
+        operationSuccess = true;
+        response.json(result);
       })
-      .catch((err) => { 
-        response.json(err); 
+      .catch((err) => {
+        response.json(err);
       });
     return operationSuccess;
   }
-
 }
 export { MemeModel };

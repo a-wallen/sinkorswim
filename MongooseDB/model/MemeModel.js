@@ -40,7 +40,8 @@ var MemeModel = /** @class */ (function () {
     };
     MemeModel.prototype.createPost = function (response, memeObject) {
         var operationSuccess = false;
-        this.model.insertMany(memeObject)
+        this.model
+            .insertMany(memeObject)
             .then(function (result) {
             operationSuccess = true;
             response.json(result);
@@ -54,12 +55,18 @@ var MemeModel = /** @class */ (function () {
         return this.model.find(filter);
     };
     MemeModel.prototype.getFeed = function (response, filter) {
-        return this.model.find(filter)
-            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+        return this.model
+            .find(filter)
+            .then(function (result) {
+            response.json(result);
+        })["catch"](function (err) {
+            response.json(err);
+        });
     };
     MemeModel.prototype.updatePostDetails = function (response, memeObject) {
         var operationSuccess = false;
-        this.model.replaceOne({ memeId: memeObject["postId"] }, memeObject)
+        this.model
+            .replaceOne({ memeId: memeObject["postId"] }, memeObject)
             .then(function (result) {
             operationSuccess = true;
             response.json(result);
@@ -68,11 +75,13 @@ var MemeModel = /** @class */ (function () {
         });
         return operationSuccess;
     };
-    // This function is created to increment a meme's vote 
-    // Params: memeId, voteValue 
+    // This function is created to increment a meme's vote
+    // Params: memeId, voteValue
     // returns: json
+    //CHANGED memeID TO STRING INSTEAD OF A NUMBER
     MemeModel.prototype.voteMeme = function (response, memeId, voteValue) {
-        this.model.findByIdAndUpdate(memeId, { $inc: { totalVotes: voteValue } }, { "new": true })
+        this.model
+            .findByIdAndUpdate(memeId, { $inc: { totalVotes: voteValue } }, { "new": true })
             .then(function (result) {
             response.json(result);
         })["catch"](function (err) {
@@ -83,7 +92,8 @@ var MemeModel = /** @class */ (function () {
     // TODO: update user info by number of posts
     MemeModel.prototype.deleteMeme = function (response, memeObject) {
         var operationSuccess = false;
-        this.model.deleteMany({ memeId: memeObject["memeId"] })
+        this.model
+            .deleteMany({ memeId: memeObject["memeId"] })
             .then(function (result) {
             operationSuccess = true;
             response.json(result);
