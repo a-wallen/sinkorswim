@@ -66,5 +66,4 @@ export class MemeService {
         .map((response) => response.json())
     );
   }
-
 }

@@ -16,7 +16,7 @@ import { MemeService } from "../meme-service.service";
   styleUrls: ["./meme.component.css"],
 })
 export class MemeComponent implements OnInit {
-  memeId: string;
+  public memeId: string;
   userId: string;
   caption: string;
   totalVotes: Number;
@@ -38,9 +38,9 @@ export class MemeComponent implements OnInit {
     this.memeId = route.snapshot.params["memeId"];
     console.log(this.htmlmeme);
     meme$
-      .getMemeDetails(this.memeId) //change this
+      .getMemeDetails("4000") //change this
       .subscribe((result) => {
-        //this.memeModel = result[0];
+        this.memeModel = result[0];
         //console.log(this.htmlmeme);
         // console.log(result);
         //console.log("in component");
@@ -72,9 +72,5 @@ export class MemeComponent implements OnInit {
   reportMethod() {
     this.meme$.report(this.memeId);
   }
-  ngOnInit(): void {
-    this.memeId = this.htmlmeme;
-    //console.log(this.htmlmeme);
-    //console.log("test^^");
-  }
+  ngOnInit(): void {}
 }

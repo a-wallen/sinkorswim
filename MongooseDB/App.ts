@@ -139,12 +139,16 @@ class App {
     });
 
     router.get("/app/comments/", async (req, res) => {
-      res.json(await this.Comment.retrieveComment(res, req.body as ICommentModel));
+      res.json(
+        await this.Comment.retrieveComment(res, req.body as ICommentModel)
+      );
     });
 
     //get all comments on a post
     router.get("/app/memes/comment/", async (req, res) => {
-      res.json(await this.Comment.retrieveComments(res, req.body as IMemeModel));
+      res.json(
+        await this.Comment.retrieveComments(res, req.body as IMemeModel)
+      );
     });
 
     router.put("/app/memes/comments/", (req, res) => {
