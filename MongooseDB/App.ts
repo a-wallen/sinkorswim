@@ -1,6 +1,7 @@
 //import * as path from 'path';
 import * as express from "express";
 import * as logger from "morgan";
+import * as cors from "cors";
 //import * as mongodb from 'mongodb';
 //import * as url from 'url';
 import * as bodyParser from "body-parser";
@@ -55,23 +56,6 @@ class App {
 
   private routes(): void {
     let router = express.Router();
-
-    //What do we need
-    /*
-    Create User
-    Get User 
-    Authentication
-    Create Post
-    Get Post
-    Delete Post
-    Upvote
-    Downvote
-    get feed
-    create comment
-    update comment
-    delete comment
-    */
-
     // #################################################
     // ##############  USERS METHODS    ################
     // #################################################

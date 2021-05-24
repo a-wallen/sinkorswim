@@ -2,7 +2,6 @@ import Mongoose = require("mongoose");
 import {DataAccess} from './../DataAccess';
 import {IUserModel} from '../interfaces/IUserModel';
 import { STATUS_CODES } from "http";
-import HTTP_STATUS from "../data/http_status";
 
 
 let mongooseConnection = DataAccess.mongooseConnection;

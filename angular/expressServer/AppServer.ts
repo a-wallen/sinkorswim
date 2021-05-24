@@ -6,5 +6,5 @@ import * as bodyParser from 'body-parser';
 import {App} from './App';
 
 let server: any = new App().express;
-server.listen(4200);
+server.listen(8080);
 

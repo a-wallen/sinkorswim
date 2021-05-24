@@ -11,7 +11,7 @@ import { Location } from "@angular/common";
 
 //Added these
 import IMemeModelAngular from "../share/IMemeModelAngular";
-import { MemeService } from "../meme-service.service";
+import { MemeService } from "../meme.service";
 
 @Component({
   // moduleId: module.id,
