@@ -6,24 +6,6 @@ import "rxjs/add/operator/map";
 export class MemeService {
   constructor(private http: Http) {}
 
-  getListsIndex() {
-    return (
-      this.http
-        .get("http://localhost:8080/json/lists.json")
-        //    return this.http.get( '/app/list/')
-        .map((response) => response.json())
-    );
-  }
-
-  getItems(index: string) {
-    return (
-      this.http
-        .get("http://localhost:8080/json/lists/" + index + ".json")
-        //    return this.http.get( '/app/list/' + index)
-        .map((response) => response.json())
-    );
-  }
-
   getMemeDetails(memeId: string) {
     //console.log("Enters get meme detials");
     //console.log(memeId);
