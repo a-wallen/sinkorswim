@@ -10,7 +10,9 @@ export class UserService {
   fetchUser(userId: string) {
     return this.http
       .get("http://localhost:8080/app/users/" + userId)
-      .map((response) => response.json());
+      .map((response) => {
+        response.json();
+      });
   }
 }
 

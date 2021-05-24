@@ -25,7 +25,7 @@
         <!-- Text-->
 
         <p><br />Votes: {{ totalVotes }}</p>
-        <p>Username: {{ userName }}</p>
+        <p routerLink="../users/{{ userId }}">Username: {{ userId }}</p>
         <p>
           Caption: <var>{{ caption }}</var>
         </p>
@@ -43,3 +43,4 @@
 </table>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
+

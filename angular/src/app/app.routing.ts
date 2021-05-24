@@ -1,17 +1,19 @@
 import { Routes, RouterModule } from "@angular/router";
-import { WelcomeComponent } from "./welcome/welcome.component";
-import { ListsComponent } from "./lists/lists.component";
-import { ListComponent } from "./list/list.component";
 
 //Added this
 import { MemeComponent } from "./meme/meme.component";
 import { FeedComponent } from "./feed/feed.component";
+import { UserDetailComponent } from "./user-detail/user-detail.component";
+import { LoginComponent } from "./login/login.component";
+
+const currentday = "2021-05-02T23:03:18.254+00:00";
 
 const routes: Routes = [
-  { path: "", component: FeedComponent },
-  { path: "list", component: ListsComponent },
-  { path: "list/:id", component: ListComponent },
-  { path: "meme/:memeId", component: MemeComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'landing', component: FeedComponent},
+  { path: "memes/:memeId", component: MemeComponent },
+  { path: "users/:userId", component: UserDetailComponent },
 ];
 
 export const routing = RouterModule.forRoot(routes);

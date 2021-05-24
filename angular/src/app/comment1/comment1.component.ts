@@ -29,12 +29,14 @@ export class Comment1Component implements OnInit {
     );
     
     // fetch the user profile of the user that made the comment
-    user$.fetchUser(this.commentObj.userId).subscribe((jsonResult) => {
-      this.userObj.avatar_url = jsonResult.avatar_url;
-    },
-    () => {},
-    () => {},
-    );
+    // user$.fetchUser(this.commentObj.userId).subscribe((jsonResult) => {
+    //   if(jsonResult == null) return;
+    //   this.userObj = jsonResult as IUserModelAngular;
+    //   this.userObj.avatar_url = jsonResult.avatar_url;
+    // },
+    // () => {},
+    // () => {},
+    // );
   }
 
   ngOnInit() {

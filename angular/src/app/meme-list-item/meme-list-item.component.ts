@@ -11,7 +11,7 @@ import { Location } from "@angular/common";
 
 //Added these
 import IMemeModelAngular from "../share/IMemeModelAngular";
-import { MemeService } from "../meme-service.service";
+import { MemeService } from "../meme.service";
 
 @Component({
   // moduleId: module.id,
@@ -33,8 +33,10 @@ export class MemeListItemComponent implements OnInit {
     private meme$: MemeService
   ) {
     this.memeId = route.snapshot.params["memeId"];
+  }
 
-    meme$
+  ngOnInit(): void {
+    this.meme$
       .getMemeDetails(this.memeId) //change this
       .subscribe(
         (result) => {
@@ -47,7 +49,5 @@ export class MemeListItemComponent implements OnInit {
         () => {}
       );
   }
-
-  ngOnInit(): void {}
 
 }
