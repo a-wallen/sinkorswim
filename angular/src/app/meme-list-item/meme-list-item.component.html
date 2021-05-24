@@ -1,10 +1,12 @@
 <div class="panel panel-default">
   <div class="row p-3">
     <div class="col-md-6">
+      <!-- [routerLink]="['../memes/', {{memeId}}]" -->
       <img
-        [routerLink]="['/memes/', 4000]"
+        
+        routerLink="../../../memes/{{memeId}}"
         width="450"
-        src="https://ichef.bbci.co.uk/images/ic/704xn/p072ms6r.jpg"
+        src="{{imageUrl}}"
       />
     </div>
     <div class="col-md-5">
@@ -17,8 +19,7 @@
         </div>
         <div class="col-md-10 px-5">
           <h4>
-            <strong>fake_username</strong>
-            <!-- <strong>{{userName}}</strong> -->
+            <strong>{{userName}}</strong>
           </h4>
           <p>Dis me LMAO</p>
         </div>

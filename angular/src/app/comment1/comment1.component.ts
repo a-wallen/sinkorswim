@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommentService } from 'app/comment.service';
 import { UserService } from 'app/user.service'
 import  ICommentModelAngular from "../share/ICommentModelAngular";
@@ -12,13 +12,15 @@ import  IUserModelAngular  from "../share/IUserModelAngular";
 export class Comment1Component implements OnInit {
   commentObj: ICommentModelAngular;
   userObj: IUserModelAngular;
-  constructor(
-    private memeId:string, 
+  @Input() memeId: string;
+ 
+  constructor( 
     private comment$: CommentService,
     private user$: UserService,
     ) { 
     // fetch comment object
-    comment$.fetchComments(memeId).subscribe((jsonResult) => {
+    comment$.fetchComments(this.memeId).subscribe((jsonResult) => {
+      console.log(jsonResult);
       this.commentObj.commentId = jsonResult.commentId;
       this.commentObj.content = jsonResult.content;
       this.memeId = jsonResult.memeId;

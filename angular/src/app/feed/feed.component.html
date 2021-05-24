@@ -4,17 +4,19 @@
       <!-- <app-meme *ngFor="let item of memes" [memeModel]="meme"></app-meme> -->
 <!-- 
       <app-meme memeId="4000" [routerLink]="['/meme','4000']"></app-meme> -->
-      <app-meme-list-item ></app-meme-list-item>
-      <app-meme-list-item ></app-meme-list-item>
+
+      <app-meme-list-item memeId="4000"></app-meme-list-item>
+      <div *ngFor="let memeId of memeIds"><app-meme-list-item memeId="{{memeId}}"></app-meme-list-item></div>
+
     </div>
-    <!-- <div class="col-md-2">
+    <div class="col-md-2">
       <div class="panel panel-default">
         <h4 class="text-muted">this is where ads live</h4>
         <img
           src="https://imagizer.imageshack.com/v2/172x835q90/923/qUAmxP.png"
         />
       </div>
-    </div> -->
+    </div>
   </div>
 </div>
 

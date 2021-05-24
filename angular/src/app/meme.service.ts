@@ -30,9 +30,9 @@ export class MemeService {
   getFeed(datetime: String) {
     return this.http
       .get("http://localhost:8080/app/memes/day/" + datetime)
-      .map((response) => {
-        response.json();
-      });
+      .map((response) => 
+        response.json()
+      );
   }
 
   getUserInfo(userId: string) {
