@@ -1,11 +1,11 @@
 interface IMemeModelAngular {
-  memeId: String;
-  userId: String;
-  feedId: String;
-  totalVotes: Number;
-  caption: String;
+  memeId: string;
+  userId: string;
+  feedId: string;
+  totalVotes: number;
+  caption: string;
   timePost: Date;
-  imageUrl: String; // FIXME: how to format
-  reports: Number;
+  imageUrl: string; // FIXME: how to format
+  reports: number;
 }
 export default IMemeModelAngular;

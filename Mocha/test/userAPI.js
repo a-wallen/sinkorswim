@@ -28,6 +28,7 @@ const USER_MODEL_TEST  = {
 		"userName": "wallenstephe",
 		"password": "1234567",
 		"email": "wallenstephe@seattleu.edu",
+		"avatar_url": "https://sunrift.com/wp-content/uploads/2014/12/Blake-profile-photo-square.jpg",
 		"totalUpvotes": {
 			"$numberInt": "123"
 		},
@@ -64,7 +65,7 @@ describe('Testing User API', function () {
 			expect(err).to.be.null;
 			expect(res).to.have.status(200);
 			expect(res.body).to.be.an.object;
-			res.body.forEach(jsonResponse => validateMemeJSON(jsonResponse));
+			res.body.forEach(jsonResponse => validateUserJSON(jsonResponse));
 		});
 		done();
 	});

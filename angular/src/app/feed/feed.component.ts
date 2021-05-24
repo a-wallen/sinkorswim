@@ -1,12 +1,15 @@
 import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/map";
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Params } from "@angular/router";
+import { Component, Input, OnInit } from "@angular/core";
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from "@angular/common";
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 // //Added these
 import IMemeModelAngular from "../share/IMemeModelAngular";
-import { MemeService } from "../meme-service.service";
+import { MemeService } from "../meme.service";
+import { UserService } from "app/user.service";
 
 @Component({
   // moduleId: module.id,
@@ -19,30 +22,28 @@ export class FeedComponent implements OnInit {
   memes: IMemeModelAngular[];
   day: String;
 
+  @Input()
+  datetime: String;
+
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private meme$: MemeService,
-
-  ) {
-    this.day = "2021-05-02T23:03:18.254+00:00" //change to current date later
-    meme$
-      .getFeed(this.day) //change this
-
-      .subscribe(
-        (result) => {
-          // put JSON objects into Meme model array
-          this.memes = result;
-
-          console.log(this.memes);
-        },
-        () => {},
-        () => {}
-      );
+  ) { //change to current date later
 
   }
 
   ngOnInit(): void {
+    
+    this.meme$
+      .getFeed(this.datetime) //change this
+      .subscribe(
+        (result) => {
+          
+        },
+        () => {},
+        () => {}
+      );
   }
 
 }

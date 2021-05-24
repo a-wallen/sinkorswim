@@ -7,33 +7,39 @@ import { Optional } from "@angular/core";
 
 //Added these
 import IMemeModelAngular from "../share/IMemeModelAngular";
-import { MemeService } from "../meme-service.service";
+import { MemeService } from "../meme.service";
+
+import IUserModelAngular from "../share/IUserModelAngular";
+import { UserService } from "../user.service";
 
 @Component({
   moduleId: module.id,
   selector: "app-meme",
   templateUrl: "./meme.component.html",
   styleUrls: ["./meme.component.css"],
+  providers: [MemeService, UserService],
 })
 export class MemeComponent implements OnInit {
   public memeId: string;
+  memeDetails: IMemeModelAngular;
   userId: string;
+  imageUrl: string;
   caption: string;
-  totalVotes: Number;
-  imageUrl: String;
-  timePost: Date;
-  memeModel: IMemeModelAngular;
-
+  totalVotes: number;
+  reports: number;
+  
+  userDetails: IUserModelAngular;
   userName: string;
-  //not sure what else we need, if any
+
 
   @Input()
-  htmlmeme: string;
+  //memeId: string;
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private meme$: MemeService
+    private meme$: MemeService,
+    private user$: UserService,
   ) {
     this.memeId = route.snapshot.params["memeId"];
     console.log(this.htmlmeme);
@@ -59,8 +65,10 @@ export class MemeComponent implements OnInit {
     //     this.userName = result.userName;
     //   });
 
+    // this.memeId = route.snapshot.params["memeId"];
     //Get Comments here as well
   }
+
   upvoteMethod() {
     this.meme$.upvote(this.memeId);
   }
@@ -72,5 +80,33 @@ export class MemeComponent implements OnInit {
   reportMethod() {
     this.meme$.report(this.memeId);
   }
-  ngOnInit(): void {}
+
+  ngOnInit(): void {
+    this.meme$
+      .getMemeDetails(this.memeId) //change this
+      .subscribe((result) => {
+        if(result == null) return;
+        this.memeDetails = result[0] as IMemeModelAngular;
+        this.userId = this.memeDetails["userId"];
+        this.imageUrl = this.memeDetails["imageUrl"];
+        this.caption = this.memeDetails["caption"];
+        this.totalVotes = this.memeDetails["totalVotes"];
+        this.caption = this.memeDetails["caption"];
+        this.reports = this.memeDetails["reports"];
+      },
+        // this.user$
+        // .fetchUser(this.userId)
+        // .subscribe((result) => {
+        //   console.log(result);
+        //   if(result == null) return;
+        //   this.userDetails = result[0] as IUserModelAngular;
+        //   this.userName = this.userDetails["userName"];
+        // },
+        // () => {},
+        // () => {});
+    
+      () => {},
+      () => {});
+  }
 }
+
