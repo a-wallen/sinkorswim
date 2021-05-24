@@ -51,8 +51,9 @@ var MemeModel = /** @class */ (function () {
         return operationSuccess;
     };
     // get a post (via post id)
-    MemeModel.prototype.retrieveMemeDetails = function (filter) {
-        return this.model.find(filter);
+    MemeModel.prototype.retrieveMemeDetails = function (response, filter) {
+        return this.model.find(filter)
+            .then(function (result) { return response.json(result); })["catch"](function (err) { return response.json(err); });
     };
     MemeModel.prototype.getFeed = function (response, filter) {
         return this.model

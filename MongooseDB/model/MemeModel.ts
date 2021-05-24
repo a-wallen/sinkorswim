@@ -1,6 +1,7 @@
 import Mongoose = require("mongoose");
 import { DataAccess } from "./../DataAccess";
 import { IMemeModel } from "../interfaces/IMemeModel";
+import { json } from "body-parser";
 
 let mongooseConnection = DataAccess.mongooseConnection;
 let mongooseObj = DataAccess.mongooseInstance;
@@ -64,8 +65,10 @@ class MemeModel {
   }
 
   // get a post (via post id)
-  public retrieveMemeDetails(filter: Object): Promise<IMemeModel> {
-    return this.model.find(filter);
+  public retrieveMemeDetails(response:any, filter: Object): Promise<IMemeModel> {
+    return this.model.find(filter)
+      .then((result) => response.json(result))
+      .catch((err) => response.json(err));
   }
 
   public getFeed(response: any, filter: Object): IMemeModel[] {

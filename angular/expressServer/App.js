@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+exports.App = void 0;
 var express = require("express");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
@@ -23,7 +24,7 @@ var App = /** @class */ (function () {
          * working so far. This function will change when we start to add more
          * API endpoints */
         var router = express.Router();
-        router.use(function (req, res, next) {
+        this.express.use(function (req, res, next) {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
             next();
