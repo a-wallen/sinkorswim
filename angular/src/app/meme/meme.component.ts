@@ -11,13 +11,16 @@ import { MemeService } from "../meme.service";
 
 import IUserModelAngular from "../share/IUserModelAngular";
 import { UserService } from "../user.service";
+import ICommentModelAngular from "app/share/ICommentModelAngular";
+import { CommentService } from "app/comment.service";
+import {Comment1Component} from "app/comment1/comment1.component";
 
 @Component({
   moduleId: module.id,
   selector: "app-meme",
   templateUrl: "./meme.component.html",
   styleUrls: ["./meme.component.css"],
-  providers: [MemeService, UserService],
+  providers: [MemeService, UserService, CommentService],
 })
 export class MemeComponent implements OnInit {
   public memeId: string;
@@ -27,6 +30,7 @@ export class MemeComponent implements OnInit {
   caption: string;
   totalVotes: number;
   reports: number;
+  comments: ICommentModelAngular[];
 
   userDetails: IUserModelAngular;
   userName: string;
@@ -35,7 +39,8 @@ export class MemeComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private meme$: MemeService,
-    private user$: UserService
+    private user$: UserService,
+    private comments$: CommentService
   ) {
     this.memeId = route.snapshot.params["memeId"];
     //console.log(this.htmlmeme);
@@ -79,7 +84,7 @@ export class MemeComponent implements OnInit {
 
   ngOnInit(): void {
     this.meme$
-      .getMemeDetails("4000") //change this----------------------------
+      .getMemeDetails(this.memeId) //change this----------------------------
       .subscribe(
         (result) => {
           if (result == null) return;
@@ -88,7 +93,6 @@ export class MemeComponent implements OnInit {
           this.imageUrl = this.memeDetails["imageUrl"];
           this.caption = this.memeDetails["caption"];
           this.totalVotes = this.memeDetails["totalVotes"];
-          this.caption = this.memeDetails["caption"];
           this.reports = this.memeDetails["reports"];
         },
         // this.user$
@@ -105,5 +109,11 @@ export class MemeComponent implements OnInit {
         () => {},
         () => {}
       );
+    // this.comments$.fetchComments(this.memeId)
+    // .subscribe(
+    //   (result) => {
+    //     this.comments = result
+    //   }
+    // )
   }
 }

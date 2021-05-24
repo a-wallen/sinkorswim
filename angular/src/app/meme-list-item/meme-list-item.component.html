@@ -1,9 +1,12 @@
 <div class="panel panel-default">
   <div class="row p-3">
     <div class="col-md-6">
+      <!-- [routerLink]="['../memes/', {{memeId}}]" -->
       <img
+        
+        routerLink="../../../memes/{{memeId}}"
         width="450"
-        src="https://ichef.bbci.co.uk/images/ic/704xn/p072ms6r.jpg"
+        src="{{imageUrl}}"
       />
     </div>
     <div class="col-md-5">
@@ -16,16 +19,15 @@
         </div>
         <div class="col-md-10 px-5">
           <h4>
-            <strong>fake_username</strong>
-            <!-- <strong>{{userName}}</strong> -->
+            <strong>{{userName}}</strong>
           </h4>
           <p>Dis me LMAO</p>
         </div>
       </div>
+      <!-- <feed-comment></feed-comment>
       <feed-comment></feed-comment>
       <feed-comment></feed-comment>
-      <feed-comment></feed-comment>
-      <feed-comment></feed-comment>
+      <feed-comment></feed-comment> -->
       <div class="row">
         <div class="col-md-2 px-4">
           <img
@@ -70,22 +72,31 @@
       </div>
     </div>
     <div class="col-md-1">
-      <div class="row align-items-end pt-5"></div>
-      <div class="row align-items-end pt-5"></div>
-      <div class="row align-items-end pt-5">
-        <a href="#"
-          ><img height="50" src="https://i.ibb.co/1f0Vpm2/arrow-up.png"
-        /></a>
+      <!-- Buttons - upvote/downvote/comment -->
+    <div class="col-md-1" id="buttons-col">
+      <div id="upvote-button" class="row">
+        <input 
+        type="image" 
+        src="https://i.ibb.co/1f0Vpm2/arrow-up.png"
+        height="50"
+        class="button"
+        (click)="upvoteMethod()"/>
       </div>
-      <div class="row align-items-end pt-2">
-        <a href="#"
-          ><img height="50" src="https://i.ibb.co/xLN283n/arrow-down.png"
-        /></a>
+      <div id="downvote-button" class="row">
+        <input 
+        type="image" 
+        src="https://i.ibb.co/xLN283n/arrow-down.png"
+        height="50"
+        class="button"
+        (click)="downvoteMethod()"/>
       </div>
-      <div class="row align-items-end pt-2">
-        <a href="#"
-          ><img height="50" src="https://i.ibb.co/qp19KYP/comment-button.png"
-        /></a>
+      <div id="comment-button" class="row">
+        <input 
+        type="image" 
+        src="https://i.ibb.co/qp19KYP/comment-button.png"
+        height="50"
+        class="button"
+        (click)="addCommentMethod()"/>
       </div>
     </div>
   </div>
