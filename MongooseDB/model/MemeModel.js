@@ -39,16 +39,13 @@ var MemeModel = /** @class */ (function () {
         this.model = mongooseConnection.model("Meme", this.schema);
     };
     MemeModel.prototype.createPost = function (response, memeObject) {
-        var operationSuccess = false;
         this.model
             .insertMany(memeObject)
             .then(function (result) {
-            operationSuccess = true;
             response.json(result);
         })["catch"](function (err) {
             response.json(err);
         });
-        return operationSuccess;
     };
     // get a post (via post id)
     MemeModel.prototype.retrieveMemeDetails = function (response, filter) {
@@ -56,7 +53,7 @@ var MemeModel = /** @class */ (function () {
             .then(function (result) { return response.json(result); })["catch"](function (err) { return response.json(err); });
     };
     MemeModel.prototype.getFeed = function (response, filter) {
-        return this.model
+        this.model
             .find(filter)
             .then(function (result) {
             response.json(result);
@@ -65,16 +62,13 @@ var MemeModel = /** @class */ (function () {
         });
     };
     MemeModel.prototype.updatePostDetails = function (response, memeObject) {
-        var operationSuccess = false;
         this.model
             .replaceOne({ memeId: memeObject["postId"] }, memeObject)
             .then(function (result) {
-            operationSuccess = true;
             response.json(result);
         })["catch"](function (err) {
             response.json(err);
         });
-        return operationSuccess;
     };
     // This function is created to increment a meme's vote
     // Params: memeId, voteValue
@@ -92,16 +86,13 @@ var MemeModel = /** @class */ (function () {
     // delete a post (via post id)
     // TODO: update user info by number of posts
     MemeModel.prototype.deleteMeme = function (response, memeObject) {
-        var operationSuccess = false;
         this.model
             .deleteMany({ memeId: memeObject["memeId"] })
             .then(function (result) {
-            operationSuccess = true;
             response.json(result);
         })["catch"](function (err) {
             response.json(err);
         });
-        return operationSuccess;
     };
     return MemeModel;
 }());

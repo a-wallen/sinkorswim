@@ -31,9 +31,7 @@ export class MemeService {
     return this.http
       .get("http://localhost:8080/app/memes/day/"+datetime)
       .map((response) => 
-      {
-        response.json();
-      });
+        response.json());
   }
 
 

@@ -39,7 +39,7 @@ export class FeedComponent implements OnInit {
       .getFeed(this.datetime) //change this
       .subscribe(
         (result) => {
-          
+          console.log(result);
         },
         () => {},
         () => {}
