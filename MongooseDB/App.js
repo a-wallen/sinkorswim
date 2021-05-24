@@ -146,9 +146,9 @@ var App = /** @class */ (function () {
             });
         }); });
         //get all comments on a post
-        router.get("/app/memes/comment/", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        router.get("/app/memes/comments/:memeId", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                this.Comment.retrieveComments(res, req.body);
+                this.Comment.retrieveComments(res, { memeId: req.params.memeId });
                 return [2 /*return*/];
             });
         }); });

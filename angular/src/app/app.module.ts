@@ -19,6 +19,7 @@ import { MemeComponent } from "./meme/meme.component";
 import { MemeService } from "app/meme-service.service";
 import { FeedComponent } from './feed/feed.component';
 import { MemeListItemComponent } from './meme-list-item/meme-list-item.component';
+import { Comment1Component } from './comment1/comment1.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { MemeListItemComponent } from './meme-list-item/meme-list-item.component
     MemeComponent,
     FeedComponent,
     MemeListItemComponent,
+    Comment1Component,
   ],
   imports: [BrowserModule, FormsModule, HttpModule, routing],
 

@@ -60,8 +60,8 @@ class CommentModel {
           .catch((err) => {response.json(err); });
     }
     // view a comment 
-    public retrieveComments(response:any, postObject:IMemeModel) {
-      this.model.find({postId: postObject["memeId"]})
+    public retrieveComments(response:any, filterObj:any) {
+      this.model.find(filterObj)
         .then((result) => { response.json(result); })
         .catch((err) => { response.json(err); });
     }
