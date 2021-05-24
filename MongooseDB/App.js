@@ -100,7 +100,7 @@ var App = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _b = (_a = res).json;
-                        return [4 /*yield*/, this.User.retrieveUserDetails({ userId: req.params.userId })];
+                        return [4 /*yield*/, this.User.retrieveUserDetails(res, { userId: req.params.userId })];
                     case 1:
                         _b.apply(_a, [_c.sent()]);
                         return [2 /*return*/];
@@ -140,7 +140,7 @@ var App = /** @class */ (function () {
             });
         }); });
         //load feed (get post by day)
-        router.get("/app/memes/:day", function (req, res) {
+        router.get("/app/feed/:day", function (req, res) {
             _this.Meme.getFeed(res, { timePost: new Date(req.params.day) });
         });
         router.put("/app/memes/", function (req, res) {
@@ -162,7 +162,7 @@ var App = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _b = (_a = res).json;
-                        return [4 /*yield*/, this.Comment.retrieveComment(req.body)];
+                        return [4 /*yield*/, this.Comment.retrieveComment(res, req.body)];
                     case 1:
                         _b.apply(_a, [_c.sent()]);
                         return [2 /*return*/];
@@ -176,7 +176,7 @@ var App = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _b = (_a = res).json;
-                        return [4 /*yield*/, this.Comment.retrieveComments(req.body)];
+                        return [4 /*yield*/, this.Comment.retrieveComments(res, req.body)];
                     case 1:
                         _b.apply(_a, [_c.sent()]);
                         return [2 /*return*/];

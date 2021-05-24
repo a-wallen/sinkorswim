@@ -1,6 +1,6 @@
 import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/map";
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Location } from "@angular/common";
 
@@ -21,21 +21,27 @@ export class MemeComponent implements OnInit {
   totalVotes: Number;
   imageUrl: String;
   timePost: Date;
+  memeModel: IMemeModelAngular;
 
   userName: string;
   //not sure what else we need, if any
+
+  @Input()
+  htmlmeme: string;
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private meme$: MemeService
   ) {
-    this.memeId = route.snapshot.params["memeId"];
+    // this.memeId = route.snapshot.params["memeId"];
+    this.memeId = this.htmlmeme;
     var result2 = meme$.getUserInfo(this.memeId);
 
     meme$
-      .getMemeDetails(this.memeId) //change this
+      .getMemeDetails("4000") //change this
       .subscribe((result) => {
+        this.memeModel = result[0];
         // console.log(result);
         //console.log("in component");
         this.userId = result[0].userId;

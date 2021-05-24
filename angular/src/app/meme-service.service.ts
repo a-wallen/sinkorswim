@@ -57,4 +57,14 @@ export class MemeService {
   report(memeId: String) {
     console.log("report is called with memeID :" + memeId);
   }
+
+  getFeed(datetime: String) {
+    return (
+      this.http
+        .get("http://localhost:8080/app/feed/" + datetime)
+        //    return this.http.get( '/app/list/' + index)
+        .map((response) => response.json())
+    );
+  }
+
 }

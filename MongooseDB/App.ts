@@ -84,7 +84,7 @@ class App {
     //Get User Details
     router.get("/app/users/:userId/", async (req, res) => {
       res.json(
-        await this.User.retrieveUserDetails({ userId: req.params.userId })
+        await this.User.retrieveUserDetails(res, { userId: req.params.userId })
       );
     });
 
@@ -117,7 +117,7 @@ class App {
     });
 
     //load feed (get post by day)
-    router.get("/app/memes/:day", (req, res) => {
+    router.get("/app/feed/:day", (req, res) => {
       this.Meme.getFeed(res, { timePost: new Date(req.params.day) });
     });
 
@@ -139,12 +139,12 @@ class App {
     });
 
     router.get("/app/comments/", async (req, res) => {
-      res.json(await this.Comment.retrieveComment(req.body as ICommentModel));
+      res.json(await this.Comment.retrieveComment(res, req.body as ICommentModel));
     });
 
     //get all comments on a post
     router.get("/app/memes/comment/", async (req, res) => {
-      res.json(await this.Comment.retrieveComments(req.body as IMemeModel));
+      res.json(await this.Comment.retrieveComments(res, req.body as IMemeModel));
     });
 
     router.put("/app/memes/comments/", (req, res) => {
