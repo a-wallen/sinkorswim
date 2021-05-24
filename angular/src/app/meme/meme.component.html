@@ -1,26 +1,42 @@
 <p>&nbsp;</p>
-<table
-  style="width: 100%; border-collapse: collapse; border-color: black"
-  border="2"
->
+<table style="width: 800px; border-color: var(--primary-color)" border="2">
   <tbody>
     <tr>
       <td style="width: 100%">
-        <p>Username: {{ userId }}</p>
-        <p>Image:</p>
-        <img
-          src="{{ imageUrl }}"
-          width="500"
-          height="500"
-          style="border: 5px solid black"
+        <!-- Upvote and Downvote button-->
+        <input
+          type="image"
+          src="https://emoji.gg/assets/emoji/1725_upvote.png"
+          class="button"
+          (click)="upvoteMethod()"
         />
+
+        <input
+          type="image"
+          src="https://emoji.gg/assets/emoji/9975_downvote.png"
+          class="button"
+          (click)="downvoteMethod()"
+        />
+
+        <!-- Image/Meme-->
+
+        <img src="{{ imageUrl }}" class="memeImage" />
+
+        <!-- Text-->
+
+        <p><br />Votes: {{ totalVotes }}</p>
+        <p>Username: {{ userName }}</p>
         <p>
           Caption: <var>{{ caption }}</var>
         </p>
-        <button type="button">Upvote</button>
-        <button type="button">Downvote</button>
-        <button type="button">Flag</button>
-        <button type="button">Report</button>
+
+        <!-- Report button-->
+        <input
+          type="image"
+          src="https://www.rawshorts.com/freeicons/wp-content/uploads/2017/01/red_webpict50_1484337222-1.png"
+          class="reportButton"
+          (click)="reportMethod()"
+        />
       </td>
     </tr>
   </tbody>
