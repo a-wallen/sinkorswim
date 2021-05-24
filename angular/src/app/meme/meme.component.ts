@@ -27,26 +27,22 @@ export class MemeComponent implements OnInit {
   caption: string;
   totalVotes: number;
   reports: number;
-  
+
   userDetails: IUserModelAngular;
   userName: string;
-
-
-  @Input()
-  //memeId: string;
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private meme$: MemeService,
-    private user$: UserService,
+    private user$: UserService
   ) {
     this.memeId = route.snapshot.params["memeId"];
-    console.log(this.htmlmeme);
+    //console.log(this.htmlmeme);
     meme$
-      .getMemeDetails("4000") //change this
+      .getMemeDetails("4000") //change this----------------------
       .subscribe((result) => {
-        this.memeModel = result[0];
+        //this.memeModel = result[0];
         //console.log(this.htmlmeme);
         // console.log(result);
         //console.log("in component");
@@ -83,17 +79,18 @@ export class MemeComponent implements OnInit {
 
   ngOnInit(): void {
     this.meme$
-      .getMemeDetails(this.memeId) //change this
-      .subscribe((result) => {
-        if(result == null) return;
-        this.memeDetails = result[0] as IMemeModelAngular;
-        this.userId = this.memeDetails["userId"];
-        this.imageUrl = this.memeDetails["imageUrl"];
-        this.caption = this.memeDetails["caption"];
-        this.totalVotes = this.memeDetails["totalVotes"];
-        this.caption = this.memeDetails["caption"];
-        this.reports = this.memeDetails["reports"];
-      },
+      .getMemeDetails("4000") //change this----------------------------
+      .subscribe(
+        (result) => {
+          if (result == null) return;
+          this.memeDetails = result[0] as IMemeModelAngular;
+          this.userId = this.memeDetails["userId"];
+          this.imageUrl = this.memeDetails["imageUrl"];
+          this.caption = this.memeDetails["caption"];
+          this.totalVotes = this.memeDetails["totalVotes"];
+          this.caption = this.memeDetails["caption"];
+          this.reports = this.memeDetails["reports"];
+        },
         // this.user$
         // .fetchUser(this.userId)
         // .subscribe((result) => {
@@ -104,9 +101,9 @@ export class MemeComponent implements OnInit {
         // },
         // () => {},
         // () => {});
-    
-      () => {},
-      () => {});
+
+        () => {},
+        () => {}
+      );
   }
 }
-
