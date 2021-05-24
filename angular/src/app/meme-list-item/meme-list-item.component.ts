@@ -47,7 +47,21 @@ export class MemeListItemComponent implements OnInit {
         () => {}
       );
   }
+  upvoteMethod() {
+    this.meme$.upvote(this.memeId);
+  }
 
+  downvoteMethod() {
+    this.meme$.downvote(this.memeId);
+  }
+
+  reportMethod() {
+    this.meme$.report(this.memeId);
+  }
+
+  addCommentMethod() {
+    //this.meme$.upvote(this.memeId); change to comment method later TODO
+  }
   ngOnInit(): void {}
 
 }
