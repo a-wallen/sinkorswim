@@ -9,9 +9,9 @@ import { LoginComponent } from "./login/login.component";
 const currentday = "2021-05-02T23:03:18.254+00:00";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'landing', component: FeedComponent},
+  { path: "", redirectTo: "/login", pathMatch: "full" },
+  { path: "login", component: LoginComponent },
+  { path: "memes/day/:day", component: FeedComponent },
   { path: "memes/:memeId", component: MemeComponent },
   { path: "users/:userId", component: UserDetailComponent },
 ];

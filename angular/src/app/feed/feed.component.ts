@@ -20,9 +20,8 @@ import { UserService } from "app/user.service";
 export class FeedComponent implements OnInit {
   userId: string;
   memes: IMemeModelAngular[];
+  memeIds: String[];
   day: String;
-
-  @Input()
   datetime: String;
 
   constructor(
@@ -30,16 +29,20 @@ export class FeedComponent implements OnInit {
     private location: Location,
     private meme$: MemeService,
   ) { //change to current date later
-
+    this.memeIds = []
   }
 
   ngOnInit(): void {
-    
+    this.datetime = this.route.snapshot.params["day"];
+    console.log(this.datetime);
     this.meme$
       .getFeed(this.datetime) //change this
       .subscribe(
         (result) => {
-          console.log(result);
+          result.forEach(element => {
+            this.memeIds.push(element["memeId"]);
+          });
+          console.log(this.memeIds)
         },
         () => {},
         () => {}

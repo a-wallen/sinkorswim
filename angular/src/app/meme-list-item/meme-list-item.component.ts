@@ -1,6 +1,6 @@
 import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/map";
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Location } from "@angular/common";
 
@@ -20,19 +20,19 @@ import { MemeService } from "../meme.service";
   styleUrls: ['./meme-list-item.component.css']
 })
 export class MemeListItemComponent implements OnInit {
-  memeId: string;
   userId: string;
   caption: string;
   totalVotes: Number;
   imageUrl: String;
   timePost: Date;
+  @Input() memeId: string;
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private meme$: MemeService
   ) {
-    this.memeId = route.snapshot.params["memeId"];
+
   }
 
   ngOnInit(): void {
@@ -40,10 +40,11 @@ export class MemeListItemComponent implements OnInit {
       .getMemeDetails(this.memeId) //change this
       .subscribe(
         (result) => {
-          this.userId = result.userId;
-          this.caption = result.caption;
-          this.totalVotes = result.totalVotes;
-          this.imageUrl = result.imageUrl;
+          console.log(result)
+          this.userId = result[0]["userId"];
+          this.caption = result[0]["caption"];
+          this.totalVotes = result[0]["totalVotes"];
+          this.imageUrl = result[0]["imageUrl"];
         },
         () => {},
         () => {}

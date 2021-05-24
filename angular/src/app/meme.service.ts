@@ -21,26 +21,26 @@ export class MemeService {
       .map((response) => response.json());
   }
 
-  getMemeDetails(memeId: String){
+  getMemeDetails(memeId: String) {
     return this.http
-      .get("http://localhost:8080/app/memes/"+memeId)
+      .get("http://localhost:8080/app/memes/" + memeId)
       .map((response) => response.json());
   }
 
-  getFeed(datetime: String){
+  getFeed(datetime: String) {
     return this.http
-      .get("http://localhost:8080/app/memes/day/"+datetime)
+      .get("http://localhost:8080/app/memes/day/" + datetime)
       .map((response) => 
-        response.json());
+        response.json()
+      );
   }
-
 
   getUserInfo(userId: string) {
     return this.http
       .get("http://localhost:8080/app/users/" + userId)
       .map((data) => {
-        data["userId"]; 
-      }); 
+        data["userId"];
+      });
   }
 
   upvote(memeId: String) {
