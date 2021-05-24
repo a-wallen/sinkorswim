@@ -64,7 +64,7 @@ describe('Testing User API', function () {
 			expect(err).to.be.null;
 			expect(res).to.have.status(200);
 			expect(res.body).to.be.an.object;
-			res.body.forEach(jsonResponse => validateMemeJSON(jsonResponse));
+			res.body.forEach(jsonResponse => validateUserJSON(jsonResponse));
 		});
 		done();
 	});
