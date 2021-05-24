@@ -6,7 +6,7 @@ import { Location } from "@angular/common";
 
 // //Added these
 import IMemeModelAngular from "../share/IMemeModelAngular";
-import { MemeService } from "../meme.service";
+import { MemeService } from "../meme-service.service";
 
 @Component({
   // moduleId: module.id,
@@ -28,10 +28,12 @@ export class FeedComponent implements OnInit {
     this.day = "2021-05-02T23:03:18.254+00:00" //change to current date later
     meme$
       .getFeed(this.day) //change this
+
       .subscribe(
         (result) => {
           // put JSON objects into Meme model array
           this.memes = result;
+
           console.log(this.memes);
         },
         () => {},

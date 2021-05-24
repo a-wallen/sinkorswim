@@ -71,6 +71,21 @@ var App = /** @class */ (function () {
     App.prototype.routes = function () {
         var _this = this;
         var router = express.Router();
+        //What do we need
+        /*
+        Create User
+        Get User
+        Authentication
+        Create Post
+        Get Post
+        Delete Post
+        Upvote
+        Downvote
+        get feed
+        create comment
+        update comment
+        delete comment
+        */
         // #################################################
         // ##############  USERS METHODS    ################
         // #################################################
