@@ -25,8 +25,8 @@ export class MemeService {
   }
 
   getMemeDetails(memeId: string) {
-    console.log("Enters get meme detials");
-    console.log(memeId);
+    //console.log("Enters get meme detials");
+    //console.log(memeId);
     //IS THIS ROUTE CORRECT? ==============================================================================
     return this.http
       .get("http://localhost:8080/app/memes/" + memeId)
@@ -34,12 +34,27 @@ export class MemeService {
   }
 
   getUserInfo(userId: string) {
-    console.log("Gets username for a meme");
-    console.log(userId); 
+    //console.log("Gets username for a meme");
+    //console.log(userId);
     return this.http
       .get("http://localhost:8080/app/users/" + userId)
-      .map((data) => {
-        data["userId"]; 
-      }); 
+      .map((response) => response.json());
+  }
+
+  //I DONT KNOW HOW TO PASS IN A JSON FOR THIS ROUTE
+  getComments(memeId: String) {
+    return this.http
+      .get("http://localhost:8080/app/memes/comment/")
+      .map((response) => response.json());
+  }
+
+  upvote(memeId: String) {
+    console.log("Upvote is called with memeID :" + memeId);
+  }
+  downvote(memeId: String) {
+    console.log("downvote is called with memeID :" + memeId);
+  }
+  report(memeId: String) {
+    console.log("report is called with memeID :" + memeId);
   }
 }

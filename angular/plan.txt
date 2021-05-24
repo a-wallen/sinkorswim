@@ -1,10 +1,7 @@
-Steps
-Add a button  to test functionality
-    make sure database for getting details is succesful
-    make sure it displays it all (maybe as a json?)
-    button---
-        how do we "pass in" the meme id to the button 
-            --maybe hard code at first?
-Get it to display result as a single block of text
-if works- make pretty
-else-fix shit
+make it look better
+upvote and downvote button
+get commments to populate as well
+try and match the hi fi diagram
+    slide 11 https://redhawks.sharepoint.com/:p:/s/SAASGroup9/EScQPlZJDtxEkOKgirRt7cUBhC-SQHAqlkm9AEXoHbzo1A?e=LGiQRy
+
+    

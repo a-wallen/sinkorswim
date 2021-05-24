@@ -39,42 +39,68 @@ var MemeModel = /** @class */ (function () {
         this.model = mongooseConnection.model("Meme", this.schema);
     };
     MemeModel.prototype.createPost = function (response, memeObject) {
-        this.model.insertMany(memeObject)
+        var operationSuccess = false;
+        this.model
+            .insertMany(memeObject)
             .then(function (result) {
+            operationSuccess = true;
             response.json(result);
         })["catch"](function (err) {
             response.json(err);
         });
+        return operationSuccess;
     };
     // get a post (via post id)
-    MemeModel.prototype.retrieveMemeDetails = function (response, filter) {
-        return this.model.find(filter)
-            .then(function (result) { return response.json(result); })["catch"](function (err) { return response.json(err); });
+    MemeModel.prototype.retrieveMemeDetails = function (filter) {
+        return this.model.find(filter);
     };
     MemeModel.prototype.getFeed = function (response, filter) {
-        return this.model.find(filter)
-            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
-    };
-    MemeModel.prototype.updatePostDetails = function (response, memeObject) {
-        this.model.replaceOne({ memeId: memeObject["memeId"] }, memeObject)
+        return this.model
+            .find(filter)
             .then(function (result) {
             response.json(result);
         })["catch"](function (err) {
             response.json(err);
         });
     };
-    // TODO: This function is created to increment a post's vote 
-    // Params: postId, voteValue 
+    MemeModel.prototype.updatePostDetails = function (response, memeObject) {
+        var operationSuccess = false;
+        this.model
+            .replaceOne({ memeId: memeObject["postId"] }, memeObject)
+            .then(function (result) {
+            operationSuccess = true;
+            response.json(result);
+        })["catch"](function (err) {
+            response.json(err);
+        });
+        return operationSuccess;
+    };
+    // This function is created to increment a meme's vote
+    // Params: memeId, voteValue
     // returns: json
+    //CHANGED memeID TO STRING INSTEAD OF A NUMBER
+    MemeModel.prototype.voteMeme = function (response, memeId, voteValue) {
+        this.model
+            .findByIdAndUpdate(memeId, { $inc: { totalVotes: voteValue } }, { "new": true })
+            .then(function (result) {
+            response.json(result);
+        })["catch"](function (err) {
+            response.json(err);
+        });
+    };
     // delete a post (via post id)
     // TODO: update user info by number of posts
     MemeModel.prototype.deleteMeme = function (response, memeObject) {
-        this.model.deleteMany({ memeId: memeObject["memeId"] })
+        var operationSuccess = false;
+        this.model
+            .deleteMany({ memeId: memeObject["memeId"] })
             .then(function (result) {
+            operationSuccess = true;
             response.json(result);
         })["catch"](function (err) {
             response.json(err);
         });
+        return operationSuccess;
     };
     return MemeModel;
 }());
