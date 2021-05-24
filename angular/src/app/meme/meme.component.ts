@@ -3,6 +3,7 @@ import "rxjs/add/operator/map";
 import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Location } from "@angular/common";
+import { Optional } from "@angular/core";
 
 //Added these
 import IMemeModelAngular from "../share/IMemeModelAngular";
@@ -34,14 +35,13 @@ export class MemeComponent implements OnInit {
     private location: Location,
     private meme$: MemeService
   ) {
-    // this.memeId = route.snapshot.params["memeId"];
-    this.memeId = this.htmlmeme;
-    var result2 = meme$.getUserInfo(this.memeId);
-
+    this.memeId = route.snapshot.params["memeId"];
+    console.log(this.htmlmeme);
     meme$
-      .getMemeDetails("4000") //change this
+      .getMemeDetails(this.memeId) //change this
       .subscribe((result) => {
-        this.memeModel = result[0];
+        //this.memeModel = result[0];
+        //console.log(this.htmlmeme);
         // console.log(result);
         //console.log("in component");
         this.userId = result[0].userId;
@@ -49,13 +49,15 @@ export class MemeComponent implements OnInit {
         this.totalVotes = result[0].totalVotes;
         this.imageUrl = result[0].imageUrl;
       });
-    meme$
-      .getUserInfo("42069") // const for userId
-      .subscribe((result) => {
-        //console.log(result);
-        //console.log(result.userName);
-        this.userName = result.userName;
-      });
+
+    //
+    // meme$
+    //   .getUserInfo("42069") // const for userId
+    //   .subscribe((result) => {
+    //     //console.log(result);
+    //     //console.log(result.userName);
+    //     this.userName = result.userName;
+    //   });
 
     //Get Comments here as well
   }
@@ -70,5 +72,9 @@ export class MemeComponent implements OnInit {
   reportMethod() {
     this.meme$.report(this.memeId);
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.memeId = this.htmlmeme;
+    //console.log(this.htmlmeme);
+    //console.log("test^^");
+  }
 }
