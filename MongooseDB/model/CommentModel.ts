@@ -54,8 +54,8 @@ class CommentModel {
         });
     }
 
-    public retrieveComment(response:any, commentObject:ICommentModel) {
-        this.model.findOne({commentId: commentObject["commentId"]})
+    public retrieveComment(response:any, filter) {
+        this.model.findOne(filter)
           .then((result) => { response.json(result); })
           .catch((err) => {response.json(err); });
     }
