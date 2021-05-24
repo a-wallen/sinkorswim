@@ -44,8 +44,8 @@ var CommentModel = /** @class */ (function () {
             .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     // view a comment 
-    CommentModel.prototype.retrieveComments = function (response, postObject) {
-        this.model.find({ postId: postObject["memeId"] })
+    CommentModel.prototype.retrieveComments = function (response, filterObj) {
+        this.model.find(filterObj)
             .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     CommentModel.prototype.updateComment = function (response, commentObject) {

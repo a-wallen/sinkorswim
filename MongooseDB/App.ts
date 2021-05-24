@@ -137,8 +137,8 @@ class App {
     });
 
     //get all comments on a post
-    router.get("/app/memes/comment/", async (req, res) => {
-      this.Comment.retrieveComments(res, req.body as IMemeModel)
+    router.get("/app/memes/comments/:memeId", async (req, res) => {
+      this.Comment.retrieveComments(res, {memeId: req.params.memeId});
     });
 
     router.put("/app/memes/comments/", (req, res) => {

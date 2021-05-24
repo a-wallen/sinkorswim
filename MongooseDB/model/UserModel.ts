@@ -35,6 +35,7 @@ class UserModel {
                 userName: { type: String, required: true }, 
                 password: { type: String, required: true },
                 email: { type: String, required: true }, 
+                avatar_url: { type: String },
                 totalUpvotes: { type: Number },
                 swimmingPosts: { type: Number },
                 sinkingPosts: { type: Number }, 

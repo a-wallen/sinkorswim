@@ -3,11 +3,10 @@ import { Http } from "@angular/http";
 import "rxjs/add/operator/map";
 
 @Injectable()
-export class ListsService {
+export class MemeService {
   constructor(private http: Http) {}
 
   getListsIndex() {
-    console.log("enters getListsIndex in list-service.service.ts");
     return (
       this.http
         .get("http://localhost:8080/json/lists.json")
@@ -23,5 +22,24 @@ export class ListsService {
         //    return this.http.get( '/app/list/' + index)
         .map((response) => response.json())
     );
+  }
+
+  getMemeDetails(memeId: string) {
+    console.log("Enters get meme detials");
+    console.log(memeId);
+    //IS THIS ROUTE CORRECT? ==============================================================================
+    return this.http
+      .get("http://localhost:8080/app/memes/" + memeId)
+      .map((response) => response.json());
+  }
+
+  getUserInfo(userId: string) {
+    console.log("Gets username for a meme");
+    console.log(userId); 
+    return this.http
+      .get("http://localhost:8080/app/users/" + userId)
+      .map((data) => {
+        data["userId"]; 
+      }); 
   }
 }

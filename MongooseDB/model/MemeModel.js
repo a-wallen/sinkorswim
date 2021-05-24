@@ -63,9 +63,17 @@ var MemeModel = /** @class */ (function () {
             response.json(err);
         });
     };
-    // TODO: This function is created to increment a post's vote 
-    // Params: postId, voteValue 
+    // This function is created to increment a meme's vote 
+    // Params: memeId, voteValue 
     // returns: json
+    MemeModel.prototype.voteMeme = function (response, memeId, voteValue) {
+        this.model.findByIdAndUpdate(memeId, { $inc: { totalVotes: voteValue } }, { "new": true })
+            .then(function (result) {
+            response.json(result);
+        })["catch"](function (err) {
+            response.json(err);
+        });
+    };
     // delete a post (via post id)
     // TODO: update user info by number of posts
     MemeModel.prototype.deleteMeme = function (response, memeObject) {
