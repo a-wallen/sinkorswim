@@ -50,29 +50,26 @@ class MemeModel {
     this.model = mongooseConnection.model<IMemeModel>("Meme", this.schema);
   }
 
-  public createPost(response: any, memeObject: IMemeModel): Boolean {
-    var operationSuccess = false;
+  public createPost(response: any, memeObject: IMemeModel) {
     this.model
       .insertMany(memeObject)
       .then((result) => {
-        operationSuccess = true;
         response.json(result);
       })
       .catch((err) => {
         response.json(err);
       });
-    return operationSuccess;
   }
 
   // get a post (via post id)
-  public retrieveMemeDetails(response:any, filter: Object): Promise<IMemeModel> {
+  public retrieveMemeDetails(response:any, filter: Object) {
     return this.model.find(filter)
       .then((result) => response.json(result))
       .catch((err) => response.json(err));
   }
 
-  public getFeed(response: any, filter: Object): IMemeModel[] {
-    return this.model
+  public getFeed(response: any, filter: Object) {
+    this.model
       .find(filter)
       .then((result) => {
         response.json(result);
@@ -82,19 +79,16 @@ class MemeModel {
       });
   }
 
-  public updatePostDetails(response: any, memeObject: IMemeModel): Boolean {
-    var operationSuccess = false;
+  public updatePostDetails(response: any, memeObject: IMemeModel) {
     this.model
       .replaceOne({ memeId: memeObject["postId"] }, memeObject)
       .then((result) => {
-        operationSuccess = true;
         response.json(result);
       })
       .catch((err) => {
         response.json(err);
       });
-    return operationSuccess;
-  }
+    }
 
   // This function is created to increment a meme's vote
   // Params: memeId, voteValue
@@ -118,17 +112,14 @@ class MemeModel {
   // delete a post (via post id)
   // TODO: update user info by number of posts
   public deleteMeme(response: any, memeObject: Object) {
-    var operationSuccess = false;
     this.model
       .deleteMany({ memeId: memeObject["memeId"] })
       .then((result) => {
-        operationSuccess = true;
         response.json(result);
       })
       .catch((err) => {
         response.json(err);
       });
-    return operationSuccess;
   }
 }
 export { MemeModel };

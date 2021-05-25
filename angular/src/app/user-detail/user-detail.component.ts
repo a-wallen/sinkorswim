@@ -12,10 +12,10 @@ import { Observable } from 'rxjs';
 export class UserDetailComponent implements OnInit {
 
   userObject: IUserModelAngular;
+  userId: string;
   userName: string;
   avatar_url: string;
-
-  @Input() userId: string;
+  email: string;
 
   constructor(
     private user$ : UserService,
@@ -24,18 +24,14 @@ export class UserDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user$
-      .fetchUser(this.userId)
-      .subscribe((response) => {
-        if(response == null) return;
-        this.userObject = response[0] as IUserModelAngular;
-        this.userName = this.userObject.userName;
-        this.avatar_url = this.userObject.avatar_url;
-        console.log(response);
-      },
-      () => {},
-      () => {},
-      );
+    this.userId = this.route.snapshot.params["userId"];
+    this.user$.fetchUser(this.userId).subscribe((result) => {
+      this.userName = result["userName"];
+      this.avatar_url = result["avatar_url"];
+      this.email = result["email"];
+    },
+    () => {},
+    () => {})
   }
 
 }

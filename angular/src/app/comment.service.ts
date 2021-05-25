@@ -7,9 +7,15 @@ export class CommentService {
 
   constructor(private http: Http) { }
 
-  fetchComments(memeId: string) {
+  fetchMemeComments(memeId: string){
     return this.http
-      .get("http://localhost:8080/app/memes/comments/" + memeId)
+      .get("http://localhost:8080/app/memes/comment/"+ memeId)
+      .map((response) => response.json());
+  }
+
+  fetchCommentDetails(commentId: string) {
+    return this.http
+      .get("http://localhost:8080/app/comments/" + commentId)
       .map((response) => response.json());
   }
 }

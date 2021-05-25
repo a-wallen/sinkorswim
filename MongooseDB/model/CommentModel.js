@@ -39,8 +39,8 @@ var CommentModel = /** @class */ (function () {
             response.json(err);
         });
     };
-    CommentModel.prototype.retrieveComment = function (response, commentObject) {
-        this.model.findOne({ commentId: commentObject["commentId"] })
+    CommentModel.prototype.retrieveComment = function (response, filter) {
+        this.model.findOne(filter)
             .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
     };
     // view a comment 

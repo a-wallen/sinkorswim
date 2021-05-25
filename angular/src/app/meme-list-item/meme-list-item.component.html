@@ -10,7 +10,7 @@
       />
     </div>
     <div class="col-md-5">
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-2 px-4">
           <img
             height="65"
@@ -23,12 +23,11 @@
           </h4>
           <p>Dis me LMAO</p>
         </div>
+      </div> -->
+      <div *ngFor="let commentId of commentIds">
+        <feed-comment commentId="{{commentId}}"></feed-comment>
       </div>
-      <!-- <feed-comment></feed-comment>
-      <feed-comment></feed-comment>
-      <feed-comment></feed-comment>
-      <feed-comment></feed-comment> -->
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-2 px-4">
           <img
             class="justify-right"
@@ -69,7 +68,7 @@
             id="usr"
           />
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="col-md-1">
       <!-- Buttons - upvote/downvote/comment -->

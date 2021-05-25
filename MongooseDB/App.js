@@ -139,14 +139,14 @@ var App = /** @class */ (function () {
         router.post("/app/comments/", function (req, res) {
             _this.Comment.createComment(res, req.body);
         });
-        router.get("/app/comments/", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        router.get("/app/comments/:commentId", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                this.Comment.retrieveComment(res, req.body);
+                this.Comment.retrieveComment(res, { commentId: req.params.commentId });
                 return [2 /*return*/];
             });
         }); });
         //get all comments on a post
-        router.get("/app/memes/comments/:memeId", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        router.get("/app/memes/comment/:memeId", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.Comment.retrieveComments(res, { memeId: req.params.memeId });
                 return [2 /*return*/];
