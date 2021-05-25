@@ -132,25 +132,16 @@ class App {
       this.Comment.createComment(res, req.body as ICommentModel);
     });
 
-    router.get("/app/comments/", async (req, res) => {
-      res.json(
-        await this.Comment.retrieveComment(res, req.body as ICommentModel)
-      );
+    router.get("/app/comments/:commentId", async (req, res) => {
+        this.Comment.retrieveComment(res, { commentId: req.params.commentId });
     });
 
     //get all comments on a post
-    router.get("/app/memes/comment/", async (req, res) => {
-      res.json(
-        await this.Comment.retrieveComments(res, req.body as IMemeModel)
-      );
-      this.Comment.retrieveComment(res, req.body as ICommentModel);
-    });
-
-    //get all comments on a post
-    router.get("/app/memes/comments/:memeId", async (req, res) => {
+    router.get("/app/memes/comment/:memeId", async (req, res) => {
       this.Comment.retrieveComments(res, { memeId: req.params.memeId });
+      // this.Comment.retrieveComment(res, req.body as ICommentModel);
     });
-
+    
     router.put("/app/memes/comments/", (req, res) => {
       this.Comment.updateComment(res, req.body as ICommentModel);
     });

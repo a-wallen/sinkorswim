@@ -11,24 +11,19 @@ import  IUserModelAngular  from "../share/IUserModelAngular";
 })
 export class Comment1Component implements OnInit {
   commentObj: ICommentModelAngular;
+  userId: string;
+  content: string; 
+  avatar_url: string;
+  userName: string;
   userObj: IUserModelAngular;
-  @Input() memeId: string;
- 
+
+  @Input() commentId: string;
+
   constructor( 
     private comment$: CommentService,
     private user$: UserService,
     ) { 
     // fetch comment object
-    comment$.fetchComments(this.memeId).subscribe((jsonResult) => {
-      console.log(jsonResult);
-      this.commentObj.commentId = jsonResult.commentId;
-      this.commentObj.content = jsonResult.content;
-      this.memeId = jsonResult.memeId;
-      this.commentObj.userId = jsonResult.userId;
-    },
-    () => {},
-    () => {},
-    );
     
     // fetch the user profile of the user that made the comment
     // user$.fetchUser(this.commentObj.userId).subscribe((jsonResult) => {
@@ -42,6 +37,20 @@ export class Comment1Component implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.commentId);
+    this.comment$.fetchCommentDetails(this.commentId).subscribe((commentObj) => {
+      if(commentObj == null) return;
+      this.content = commentObj["content"];
+      this.userId = commentObj["userId"];
+      this.user$.fetchUser(this.userId).subscribe((usrObj) => {
+        if(usrObj == null) return;
+        this.userName = usrObj["userName"];
+        this.avatar_url = usrObj["avatarUrl"];
+      })
+    },
+    () => {},
+    () => {},
+    );
   }
 
 }

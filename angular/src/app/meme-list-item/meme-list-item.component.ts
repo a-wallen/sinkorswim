@@ -11,7 +11,11 @@ import { Location } from "@angular/common";
 
 //Added these
 import IMemeModelAngular from "../share/IMemeModelAngular";
+import ICommentModel from "../share/ICommentModelAngular";
+
 import { MemeService } from "../meme.service";
+import { CommentService } from "../comment.service";
+import { UserService } from "app/user.service";
 
 @Component({
   // moduleId: module.id,
@@ -25,14 +29,18 @@ export class MemeListItemComponent implements OnInit {
   totalVotes: Number;
   imageUrl: String;
   timePost: Date;
+  commentIds: number[];
+
   @Input() memeId: string;
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private meme$: MemeService
+    private meme$: MemeService,
+    private comment$: CommentService,
+    private user$: UserService,
   ) {
-
+    this.commentIds = [];
   }
 
   ngOnInit(): void {
@@ -40,7 +48,6 @@ export class MemeListItemComponent implements OnInit {
       .getMemeDetails(this.memeId) //change this
       .subscribe(
         (result) => {
-          console.log(result)
           this.userId = result[0]["userId"];
           this.caption = result[0]["caption"];
           this.totalVotes = result[0]["totalVotes"];
@@ -49,6 +56,16 @@ export class MemeListItemComponent implements OnInit {
         () => {},
         () => {}
       );
+    this.comment$
+      .fetchMemeComments(this.memeId)
+      .subscribe((result) => {
+        result.forEach(element => {
+          this.commentIds.push(element["commentId"]);
+        });
+    },
+    () => {},
+    () => {});
+    
   }
 
 }
