@@ -15,6 +15,7 @@ export class UserDetailComponent implements OnInit {
   userId: string;
   userName: string;
   avatar_url: string;
+  email: string;
 
   constructor(
     private user$ : UserService,
@@ -25,7 +26,9 @@ export class UserDetailComponent implements OnInit {
   ngOnInit() {
     this.userId = this.route.snapshot.params["userId"];
     this.user$.fetchUser(this.userId).subscribe((result) => {
-      console.log(result);
+      this.userName = result["userName"];
+      this.avatar_url = result["avatar_url"];
+      this.email = result["email"];
     },
     () => {},
     () => {})
