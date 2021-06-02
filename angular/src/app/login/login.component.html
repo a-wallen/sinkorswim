@@ -1,3 +1,9 @@
+<meta
+  name="google-signin-client_id"
+  content="131963474491-f02cagbubq846imio4ujgpvf1ok38bom.apps.googleusercontent.com"
+/>
+<script src="https://apis.google.com/js/platform.js"></script>
+
 <body style="background-color: #666666">
   <div class="limiter">
     <div class="container-login100">
@@ -41,14 +47,24 @@
             >
               Login
             </button>
-            <!-- I added this for sso Saif -----------------------------------------------------------------                                                                                             -->
-            <button class="login100-form-btn" href="/auth/google">
-              Login with Google
-            </button>
           </div>
+
           <div class="text-center p-t-46 p-b-20">
             <span class="txt2"> or sign up using </span>
+
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
           </div>
+
+          <!--  I Dont know why the fuck this says signOut is not defined in chrome console and doesnt work-->
+          <a href="#" onclick="signOut();">Sign out</a>
+          <script>
+            function signOut() {
+              var auth2 = gapi.auth2.getAuthInstance();
+              auth2.signOut().then(function () {
+                console.log("User signed out.");
+              });
+            }
+          </script>
           <div class="login100-form-social flex-c-m">
             <a href="#" class="login100-form-social-item flex-c-m bg1 m-r-5">
               <i class="fa fa-facebook-f" aria-hidden="true"></i>
@@ -67,6 +83,7 @@
       </div>
     </div>
   </div>
+
   <!-- 
   <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>
   <script src="vendor/jquery/jquery-3.2.1.min.js"></script>

@@ -20,7 +20,8 @@ import { VoteModel } from "./model/VoteModel";
 
 import GooglePassportObj from "./GooglePassport";
 import * as passport from "passport";
-
+import * as session from "express-session";
+import * as cookieParser from "cookie-parser";
 // Creates and configures an ExpressJS web server.
 class App {
   // ref to Express instance
