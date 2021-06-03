@@ -106,7 +106,7 @@ var App = /** @class */ (function () {
         router.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "/" }), function (req, res) {
             console.log("successfully authenticated user and returned to callback page.");
             console.log("redirecting to /#/list");
-            res.redirect("/#/list"); // ----------------------------------------------------------change this
+            res.redirect("http://localhost:4200/#/memes/day/2021-05-02T23%3A03%3A18.254%2B00%3A00"); // ----------------------------------------------------------change this
         });
         // #################################################
         // ##############  USERS METHODS    ################
