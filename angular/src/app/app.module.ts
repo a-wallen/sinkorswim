@@ -31,7 +31,15 @@ const routes: Routes = [];
     Comment1Component,
     UserDetailComponent,
   ],
-  imports: [BrowserModule, FormsModule, HttpModule, routing],
+
+  //added SSO import at end --- Saif
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    routing,
+    RouterModule.forRoot(routes, { useHash: true }),
+  ],
   exports: [RouterModule],
   //Aded meme service to the end of this
   providers: [

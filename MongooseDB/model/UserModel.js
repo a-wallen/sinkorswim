@@ -29,28 +29,48 @@ var UserModel = /** @class */ (function () {
             swimmingPosts: { type: Number },
             sinkingPosts: { type: Number },
             reports: { type: Number }
-        }, { collection: 'users' });
+        }, { collection: "users" });
     };
     // create a user
     UserModel.prototype.createModel = function () {
         this.model = mongooseConnection.model("User", this.schema);
     };
     UserModel.prototype.createUser = function (response, userObject) {
-        this.model.insertMany(userObject)
-            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+        this.model
+            .insertMany(userObject)
+            .then(function (result) {
+            response.json(result);
+        })["catch"](function (err) {
+            response.json(err);
+        });
     };
     // get user details
     UserModel.prototype.retrieveUserDetails = function (response, filter) {
-        this.model.findOne(filter)
-            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+        this.model
+            .findOne(filter)
+            .then(function (result) {
+            response.json(result);
+        })["catch"](function (err) {
+            response.json(err);
+        });
     };
     UserModel.prototype.updateUserDetails = function (response, userObject) {
-        this.model.replaceOne({ userId: userObject["userId"] }, userObject)
-            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+        this.model
+            .replaceOne({ userId: userObject["userId"] }, userObject)
+            .then(function (result) {
+            response.json(result);
+        })["catch"](function (err) {
+            response.json(err);
+        });
     };
     UserModel.prototype.deleteUser = function (response, userObject) {
-        this.model.deleteOne(userObject)
-            .then(function (result) { response.json(result); })["catch"](function (err) { response.json(err); });
+        this.model
+            .deleteOne(userObject)
+            .then(function (result) {
+            response.json(result);
+        })["catch"](function (err) {
+            response.json(err);
+        });
     };
     UserModel.prototype.mongoExecHandler = function (response, mongoQuery) {
         mongoQuery.exec(function (err, result) {

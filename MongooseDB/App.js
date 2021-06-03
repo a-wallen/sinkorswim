@@ -47,10 +47,13 @@ var UserModel_1 = require("./model/UserModel");
 var MemeModel_1 = require("./model/MemeModel");
 var CommentModel_1 = require("./model/CommentModel");
 var VoteModel_1 = require("./model/VoteModel");
+var GooglePassport_1 = require("./GooglePassport");
+var passport = require("passport");
 // Creates and configures an ExpressJS web server.
 var App = /** @class */ (function () {
     //Run configuration methods on the Express instance.
     function App() {
+        this.googlePassportObj = new GooglePassport_1["default"]();
         this.expressApp = express();
         this.middleware();
         this.routes();
@@ -66,6 +69,16 @@ var App = /** @class */ (function () {
         this.expressApp.use(logger("dev"));
         this.expressApp.use(bodyParser.json());
         this.expressApp.use(bodyParser.urlencoded({ extended: false }));
+        this.expressApp.use(passport.initialize());
+        this.expressApp.use(passport.session());
+    };
+    App.prototype.validateAuth = function (req, res, next) {
+        if (req.isAuthenticated()) {
+            console.log("user is authenticated");
+            return next();
+        }
+        console.log("user is not authenticated");
+        res.redirect("/");
     };
     // Configure API endpoints.
     App.prototype.routes = function () {
@@ -86,6 +99,15 @@ var App = /** @class */ (function () {
         update comment
         delete comment
         */
+        // #################################################
+        // ##############  OAUTH2 Methods   ################
+        // #################################################
+        router.get("/auth/google", passport.authenticate("google", { scope: ["profile"] }));
+        router.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "/" }), function (req, res) {
+            console.log("successfully authenticated user and returned to callback page.");
+            console.log("redirecting to /#/list");
+            res.redirect("/#/list"); // ----------------------------------------------------------change this
+        });
         // #################################################
         // ##############  USERS METHODS    ################
         // #################################################
