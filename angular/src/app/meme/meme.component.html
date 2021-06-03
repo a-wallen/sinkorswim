@@ -60,10 +60,9 @@
 
     <div class="content">
       <label style="font-size: 200%">Comments</label>
-      <p>
-        this is just placeholder for comments section for now please and thank
-        you
-      </p>
+      <div *ngFor="let commentId of commentIds">
+        <feed-comment commentId="{{commentId}}"></feed-comment>
+      </div>
       <!-- TODO add loop for comments -->
       <!-- <app-comment1 memeId="4000"></app-comment1> -->
       <!-- <p>{{comments[0].content}}</p> -->

@@ -13,7 +13,7 @@ import IUserModelAngular from "../share/IUserModelAngular";
 import { UserService } from "../user.service";
 import ICommentModelAngular from "app/share/ICommentModelAngular";
 import { CommentService } from "app/comment.service";
-import {Comment1Component} from "app/comment1/comment1.component";
+import { Comment1Component } from "app/comment1/comment1.component";
 
 @Component({
   moduleId: module.id,
@@ -31,7 +31,7 @@ export class MemeComponent implements OnInit {
   totalVotes: number;
   reports: number;
   comments: ICommentModelAngular[];
-
+  commentIds: string[];
   userDetails: IUserModelAngular;
   userName: string;
 
@@ -40,34 +40,10 @@ export class MemeComponent implements OnInit {
     private location: Location,
     private meme$: MemeService,
     private user$: UserService,
-    private comments$: CommentService
+    private comment$: CommentService
   ) {
     this.memeId = route.snapshot.params["memeId"];
-    //console.log(this.htmlmeme);
-    meme$
-      .getMemeDetails("4000") //change this----------------------
-      .subscribe((result) => {
-        //this.memeModel = result[0];
-        //console.log(this.htmlmeme);
-        // console.log(result);
-        //console.log("in component");
-        this.userId = result[0].userId;
-        this.caption = result[0].caption;
-        this.totalVotes = result[0].totalVotes;
-        this.imageUrl = result[0].imageUrl;
-      });
-
-    //
-    // meme$
-    //   .getUserInfo("42069") // const for userId
-    //   .subscribe((result) => {
-    //     //console.log(result);
-    //     //console.log(result.userName);
-    //     this.userName = result.userName;
-    //   });
-
-    // this.memeId = route.snapshot.params["memeId"];
-    //Get Comments here as well
+    this.commentIds = [];
   }
 
   upvoteMethod() {
@@ -106,14 +82,18 @@ export class MemeComponent implements OnInit {
         // () => {},
         // () => {});
 
-        () => {},
-        () => {}
+        () => { },
+        () => { }
       );
-    // this.comments$.fetchComments(this.memeId)
-    // .subscribe(
-    //   (result) => {
-    //     this.comments = result
-    //   }
-    // )
+    this.comment$
+      .fetchMemeComments(this.memeId)
+      .subscribe((result) => {
+        console.log(result);
+        result.forEach(element => {
+          this.commentIds.push(element["commentId"]);
+        });
+      },
+        () => { },
+        () => { });
   }
 }
