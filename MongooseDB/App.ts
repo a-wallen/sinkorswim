@@ -1,18 +1,17 @@
-//import * as path from 'path';
+import * as path from "path";
 import * as express from "express";
 import * as logger from "morgan";
-//import * as mongodb from 'mongodb';
-//import * as url from 'url';
+import * as mongodb from "mongodb";
+import * as url from "url";
 import * as bodyParser from "body-parser";
-//var MongoClient = require('mongodb').MongoClient;
-//var Q = require('q');
-import { DataAccess } from "./DataAccess";
+import * as session from "express-session";
+import * as cookieParser from "cookie-parser";
 
+import { DataAccess } from "./DataAccess";
 import { IUserModel } from "./interfaces/IUserModel";
 import { IMemeModel } from "./interfaces/IMemeModel";
 import { ICommentModel } from "./interfaces/ICommentModel";
 import { IVoteModel } from "./interfaces/IVoteModel";
-
 import { UserModel } from "./model/UserModel";
 import { MemeModel } from "./model/MemeModel";
 import { CommentModel } from "./model/CommentModel";
@@ -20,8 +19,7 @@ import { VoteModel } from "./model/VoteModel";
 
 import GooglePassportObj from "./GooglePassport";
 import * as passport from "passport";
-import * as session from "express-session";
-import * as cookieParser from "cookie-parser";
+
 // Creates and configures an ExpressJS web server.
 class App {
   // ref to Express instance
@@ -57,14 +55,17 @@ class App {
     this.expressApp.use(logger("dev"));
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: false }));
-
+    this.expressApp.use(session({ secret: "keyboard cat" }));
+    this.expressApp.use(cookieParser());
     this.expressApp.use(passport.initialize());
     this.expressApp.use(passport.session());
   }
 
   private validateAuth(req, res, next): void {
     if (req.isAuthenticated()) {
-      console.log("user is authenticated");
+      console.log(
+        "user is authenticated. displayName : " + req.user.displayname
+      );
       return next();
     }
     console.log("user is not authenticated");
@@ -95,6 +96,12 @@ class App {
     // #################################################
     // ##############  OAUTH2 Methods   ################
     // #################################################
+
+    router.get("/app/getUserSSO/", this.validateAuth, (req, res) => {
+      console.log("cookies: " + req.cookies);
+      console.log("User: " + req);
+    });
+
     router.get(
       "/auth/google",
       passport.authenticate("google", { scope: ["profile"] })
@@ -107,7 +114,7 @@ class App {
         console.log(
           "successfully authenticated user and returned to callback page."
         );
-        console.log("redirecting to /#/list");
+        console.log("redirecting to meme page");
         res.redirect(
           "http://localhost:4200/#/memes/day/2021-05-02T23%3A03%3A18.254%2B00%3A00"
         ); // ----------------------------------------------------------change this
@@ -147,11 +154,17 @@ class App {
       this.Meme.createPost(res, req.body as IMemeModel);
     });
 
+    // //get individual post details by id
+    // router.get("/app/memes/:memeId/", this.validateAuth, async (req, res) => {
+    //   console.log("Console Log of Req" + req);
+    //   console.log("Cookies: ", req.cookies);
+    //   this.Meme.retrieveMemeDetails(res, { memeId: req.params.memeId });
+    // });
+
     //get individual post details by id
     router.get("/app/memes/:memeId/", async (req, res) => {
       this.Meme.retrieveMemeDetails(res, { memeId: req.params.memeId });
     });
-
     //load feed (get post by day)
     router.get("/app/memes/day/:day", (req, res) => {
       this.Meme.getFeed(res, { timePost: new Date(req.params.day) });
@@ -207,7 +220,7 @@ class App {
     this.expressApp.use("/", router);
     this.expressApp.use("/app/json/", express.static(__dirname + "/app/json"));
     this.expressApp.use("/images", express.static(__dirname + "/img"));
-    this.expressApp.use("/", express.static(__dirname + "/pages"));
+    this.expressApp.use("/", express.static(__dirname + "/angularSrc"));
   }
 }
 
