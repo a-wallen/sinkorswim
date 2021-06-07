@@ -4,19 +4,17 @@ import "rxjs/add/operator/map";
 
 @Injectable()
 export class CommentService {
+  constructor(private http: Http) {}
 
-  constructor(private http: Http) { }
-
-  fetchMemeComments(memeId: string){
+  fetchMemeComments(memeId: string) {
     return this.http
-      .get("http://localhost:8080/app/memes/comment/"+ memeId)
+      .get("/app/memes/comment/" + memeId)
       .map((response) => response.json());
   }
 
   fetchCommentDetails(commentId: string) {
     return this.http
-      .get("http://localhost:8080/app/comments/" + commentId)
+      .get("/app/comments/" + commentId)
       .map((response) => response.json());
   }
 }
-

@@ -1,10 +1,10 @@
 import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/map";
 import { Component, Input, OnInit } from "@angular/core";
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params } from "@angular/router";
 import { Location } from "@angular/common";
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable } from "rxjs";
+import { switchMap } from "rxjs/operators";
 
 // //Added these
 import IMemeModelAngular from "../share/IMemeModelAngular";
@@ -13,9 +13,9 @@ import { UserService } from "app/user.service";
 
 @Component({
   // moduleId: module.id,
-  selector: 'app-feed',
-  templateUrl: './feed.component.html',
-  styleUrls: ['./feed.component.css']
+  selector: "app-feed",
+  templateUrl: "./feed.component.html",
+  styleUrls: ["./feed.component.css"],
 })
 export class FeedComponent implements OnInit {
   userId: string;
@@ -27,9 +27,10 @@ export class FeedComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private meme$: MemeService,
-  ) { //change to current date later
-    this.memeIds = []
+    private meme$: MemeService
+  ) {
+    //change to current date later
+    this.memeIds = [];
   }
 
   ngOnInit(): void {
@@ -39,14 +40,13 @@ export class FeedComponent implements OnInit {
       .getFeed(this.datetime) //change this
       .subscribe(
         (result) => {
-          result.forEach(element => {
+          result.forEach((element) => {
             this.memeIds.push(element["memeId"]);
           });
-          console.log(this.memeIds)
+          console.log(this.memeIds);
         },
         () => {},
         () => {}
       );
   }
-
 }

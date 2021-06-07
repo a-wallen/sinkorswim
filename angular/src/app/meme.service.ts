@@ -29,16 +29,14 @@ export class MemeService {
 
   getFeed(datetime: String) {
     return this.http
-      .get("http://localhost:8080/app/memes/day/" + datetime)
+      .get("/app/memes/day/" + datetime)
       .map((response) => response.json());
   }
 
   getUserInfo(userId: string) {
-    return this.http
-      .get("http://localhost:8080/app/users/" + userId)
-      .map((data) => {
-        data["userId"];
-      });
+    return this.http.get("/app/users/" + userId).map((data) => {
+      data["userId"];
+    });
   }
 
   upvote(memeId: String) {
@@ -54,7 +52,7 @@ export class MemeService {
   getItems(index: string) {
     return (
       this.http
-        .get("http://localhost:8080/json/lists/" + index + ".json")
+        .get("/json/lists/" + index + ".json")
         //    return this.http.get( '/app/list/' + index)
         .map((response) => response.json())
     );
