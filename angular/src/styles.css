@@ -41,9 +41,6 @@ h1 {
       font-family: 'Oswald';
       color: var(--primary-color);
   }
-  /* title-nav{
-      font-size: 250%;
-  } */
 
   body {
     background-color: var(--primary-color);
@@ -57,28 +54,29 @@ body, input[type="text"], button {
 
 #buttons-col {
   position: relative;
-  min-height: 270px;
+  min-height: 350px;
 }
 #comment-button {
   position: absolute;
-  bottom: 0px;
+  bottom: 25px;
 }
 #upvote-button {
   position: absolute;
-  bottom: 55px;
+  bottom: 138px;
 }
 #downvote-button {
   position: absolute;
-  bottom: 110px;
+  bottom: 80px;
 }
 
-.container {
+.container-custom {
   height: 80vh;
   width: 80vw;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 10px 1fr 700px;
 }
+
 .body {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -87,20 +85,90 @@ body, input[type="text"], button {
 .content {
   overflow-y: scroll;
   padding: 10px;
+  margin-left: 10px;
+  margin-right: -200px;
  }
 
 .header {
   border-bottom: 1px solid white;
 }
 .meme-image{
-  max-height: 450px;
-  max-width: 550px;
+  height: 350px;
+  width: 100%;
+  object-fit: scale-down;
 }
+
+.meme-image-detail{
+  height: 350px;
+  width: 100%;
+  object-fit: scale-down;
+}
+
 .padding{
   min-height: 10px;
 }
 .sidebar {
-  padding-left: -10px;
+  padding-left: 80px;
+  margin-right: 30px;
+}
+
+.button-round {
+  border: none;
+  position: relative;
+}
+.button-round span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.glyphicon {
+  font-size: 55px;
+  overflow:hidden;
+  color: var(--secondary-light-color);
+}
+
+.glyphicon.glyphicon-circle-arrow-up {
+  font-size: 55px;
+  overflow:hidden;
+  color: var(--secondary-color);
+}
+
+.glyphicon.glyphicon-circle-arrow-down {
+  font-size: 55px;
+  overflow:hidden;
+  color: var(--highlight-color);
+}
+
+.glyphicon.glyphicon-comment {
+  font-size: 55px;
+  overflow:hidden;
+  color: var(--primary-color);
+}
+
+.glyphicon.glyphicon-flag{
+  font-size: 55px;
+  overflow:hidden;
+  color: darkred;
+}
+
+.table td.fit, 
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+    border: none;
+}
+tr{
+  border-top: hidden;
+}
+#comment-button-detail {
+  position: relative;
+  right: -50px;
+  top: -32px;
+  /* bottom: 500px; */
+}
+.row-custom{
+  margin-left: 50px;
 }
   * {
     font-family: 'Bebas Neue','Montserrat';
