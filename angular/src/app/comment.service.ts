@@ -9,13 +9,13 @@ export class CommentService {
 
   fetchMemeComments(memeId: string){
     return this.http
-      .get("/app/memes/comment/"+ memeId)
+      .get("http://localhost:8080/app/memes/comment/"+ memeId)
       .map((response) => response.json());
   }
 
   fetchCommentDetails(commentId: string) {
     return this.http
-      .get("/app/comments/" + commentId)
+      .get("http://localhost:8080/app/comments/" + commentId)
       .map((response) => response.json());
   }
 }

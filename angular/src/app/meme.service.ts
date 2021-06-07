@@ -9,7 +9,7 @@ export class MemeService {
   getListsIndex() {
     return (
       this.http
-        .get("/json/lists.json")
+        .get("http://localhost:8080/json/lists.json")
         //    return this.http.get( '/app/list/')
         .map((response) => response.json())
     );
@@ -17,19 +17,19 @@ export class MemeService {
 
   getComments(memeId: String) {
     return this.http
-      .get("/app/memes/comment/")
+      .get("http://localhost:8080/app/memes/comment/")
       .map((response) => response.json());
   }
 
   getMemeDetails(memeId: String) {
     return this.http
-      .get("/app/memes/" + memeId)
+      .get("http://localhost:8080/app/memes/" + memeId)
       .map((response) => response.json());
   }
 
   getFeed(datetime: String) {
     return this.http
-      .get("/app/memes/day/" + datetime)
+      .get("http://localhost:8080/app/memes/day/" + datetime)
       .map((response) => 
         response.json()
       );
@@ -37,7 +37,7 @@ export class MemeService {
 
   getUserInfo(userId: string) {
     return this.http
-      .get("/app/users/" + userId)
+      .get("http://localhost:8080/app/users/" + userId)
       .map((data) => {
         data["userId"];
       });
@@ -56,7 +56,7 @@ export class MemeService {
   getItems(index: string) {
     return (
       this.http
-        .get("/json/lists/" + index + ".json")
+        .get("http://localhost:8080/json/lists/" + index + ".json")
         //    return this.http.get( '/app/list/' + index)
         .map((response) => response.json())
     );

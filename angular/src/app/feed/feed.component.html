@@ -1,11 +1,10 @@
 <div class="container">
   <div class="row">
     <div class="col-md-10">
-      <!-- <app-meme *ngFor="let item of memes" [memeModel]="meme"></app-meme> -->
-<!-- 
-      <app-meme memeId="4000" [routerLink]="['/meme','4000']"></app-meme> -->
-
-      <div *ngFor="let memeId of memeIds"><app-meme-list-item memeId="{{memeId}}"></app-meme-list-item></div>
+      
+      <div *ngFor="let memeId of memeIds">
+        <app-meme-list-item memeId="{{memeId}}"></app-meme-list-item>
+      </div>
 
     </div>
     <div class="col-md-2">
